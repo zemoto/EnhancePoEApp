@@ -19,10 +19,5 @@ namespace EnhancePoE.UserControls
       {
          MainWindow.overlay.RunFetching();
       }
-
-      private void ReloadFilterButton_Click( object sender, RoutedEventArgs e )
-      {
-         MainWindow.overlay.ReloadItemFilter();
-      }
    }
 }

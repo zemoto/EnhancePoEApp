@@ -196,17 +196,11 @@
     <Compile Include="Model\AutoFetch.cs" />
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Coordinates.cs" />
-    <Compile Include="Model\FilterGeneration.cs" />
-    <Compile Include="Model\ReloadItemFilter.cs" />
-    <Compile Include="Model\Storage\FileFilterStorage.cs" />
-    <Compile Include="Model\Storage\FilterStorageFactory.cs" />
     <Compile Include="Model\ItemSet.cs" />
     <Compile Include="Model\MouseHook.cs" />
     <Compile Include="Model\RateLimit.cs" />
     <Compile Include="Model\StashTabList.cs" />
     <Compile Include="Model\StashTabPropsList.cs" />
-    <Compile Include="Model\Storage\IFilterStorage.cs" />
-    <Compile Include="Model\Storage\OnlineFilterStorage.cs" />
     <Compile Include="Model\Utility.cs" />
     <Compile Include="Model\Utils\UserWarning.cs" />
     <Compile Include="Model\Win32.cs" />
@@ -326,16 +320,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Styles\NormalItemsStyle.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Styles\InfluencedItemsStyle.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\chest.png" />
     <Resource Include="Assets\boots.png" />
     <Resource Include="Assets\gloves.png" />
@@ -344,9 +328,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\password.ttf" />
-    <None Include="Sounds\filterchanged.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="coin.ico">

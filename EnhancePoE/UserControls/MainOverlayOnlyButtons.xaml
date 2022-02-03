@@ -11,7 +11,6 @@
          <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="auto" />
-         <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="5" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
@@ -28,17 +27,7 @@
               Grid.Column="3"
               Grid.Row="1"
               Content="Fetch"
-              Margin="3,0"></Button>
-      <Button x:Name="ReloadFilterButton"
-              Click="ReloadFilterButton_Click"
-              Width="50"
-              Height="40"
-              Grid.Column="4"
-              Grid.Row="1"
-              Margin="5,0">
-         <TextBlock FontSize="14"
-                    TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
-      </Button>
+              Margin="3,0" />
       <Button x:Name="OpenStashTabOverlay"
               Click="OpenStashTabOverlay_Click"
               Width="50"
@@ -46,7 +35,7 @@
               Grid.Column="1"
               Grid.Row="1"
               Content="{Binding OpenStashOverlayButtonContent}"
-              Margin="3,0"></Button>
+              Margin="3,0" />
       <UniformGrid Grid.Row="1"
                    Grid.Column="2"
                    Height="30"

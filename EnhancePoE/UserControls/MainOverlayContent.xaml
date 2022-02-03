@@ -20,7 +20,6 @@
          <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="auto" />
-         <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="5" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
@@ -298,14 +297,6 @@
               Grid.Row="1"
               Content="Fetch"
               Margin="5,0"></Button>
-      <Button x:Name="ReloadFilterButton"
-              Click="ReloadFilterButton_Click"
-              Width="50"
-              Grid.Column="12"
-              Grid.Row="1"
-              Margin="5,0">
-         <TextBlock TextAlignment="Center">Reload<LineBreak />Filter</TextBlock>
-      </Button>
       <Button x:Name="OpenStashTabOverlay"
               Click="OpenStashTabOverlay_Click"
               Width="50"

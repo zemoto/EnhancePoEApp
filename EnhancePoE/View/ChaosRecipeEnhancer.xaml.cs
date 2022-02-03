@@ -340,9 +340,9 @@ namespace EnhancePoE
              {
                 try
                 {
-                   await Task.Run( async () =>
+                   await Task.Run( () =>
                     {
-                       await Data.CheckActives();
+                       Data.CheckActives();
                        SetOpacity();
                        CalculationActive = false;
                        _ = Dispatcher.Invoke( () => IsIndeterminate = false );
@@ -433,11 +433,6 @@ namespace EnhancePoE
                }
             }
          }
-      }
-
-      public void ReloadItemFilter()
-      {
-         Model.ReloadItemFilter.ReloadItemfilter();
       }
 
       private void OnTimedEvent( object source, System.Timers.ElapsedEventArgs e )

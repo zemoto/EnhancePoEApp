@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:properties="clr-namespace:EnhancePoE.Properties"
-        xmlns:storage="clr-namespace:EnhancePoE.Model.Storage"
         mc:Ignorable="d"
         FontSize="14"
         Title="Chaos Recipe Enhancer Settings"
@@ -15,8 +14,7 @@
         MouseDown="Window_MouseDown"
         ResizeMode="CanMinimize"
         ShowActivated="True"
-        Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftMain, Mode=TwoWay}"
-        Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopMain, Mode=TwoWay}">
+        WindowStartupLocation="CenterScreen">
    <Border BorderBrush="DarkGray"
            BorderThickness="1">
       <Grid Name="MainGrid"
@@ -229,10 +227,6 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="5"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
                      </Grid.RowDefinitions>
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
@@ -245,8 +239,7 @@
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
                                 Text="Notification Sound:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Plays a sound everytime you have to refresh your lootfilter." />
+                                ToolTipService.InitialShowDelay="50" />
                      <CheckBox x:Name="PlaySoundCheckBox"
                                Grid.Column="3"
                                Grid.Row="3"
@@ -270,43 +263,15 @@
                              AutoToolTipPrecision="0"
                              PreviewMouseUp="VolumeSlider_PreviewMouseUp"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}" />
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Lootfilter Sound:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The location of your Lootfilte sound mp3 file (*.mp3). If you don't choose a file the default sound will be used" />
-                     <Button Grid.Column="3"
-                             Grid.Row="7"
-                             x:Name="FilterSoundLocationDialog"
-                             Width="200"
-                             Click="FilterSoundLocationDialog_OnClick"
-                             ToolTipService.InitialShowDelay="50"
-                             ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=FilterChangeSoundFileLocation, Mode=TwoWay}"
-                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=FilterChangeSoundFileLocation, Mode=TwoWay}"
-                             HorizontalContentAlignment="Left">
-                        <Button.Style>
-                           <Style TargetType="Button">
-                              <Setter Property="Background"
-                                      Value="Transparent" />
-                              <Style.Triggers>
-                                 <Trigger Property="IsMouseOver"
-                                          Value="True">
-                                    <Setter Property="Background"
-                                            Value="Transparent" />
-                                 </Trigger>
-                              </Style.Triggers>
-                           </Style>
-                        </Button.Style>
-                     </Button>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="9"
                                 VerticalAlignment="Center"
                                 Text="Item Set Sound:"
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The location of your Item Set Sound mp3 file (*.mp3). If you don't choose a file the default sound will be used" />
                      <Button Grid.Column="3"
-                             Grid.Row="9"
+                             Grid.Row="7"
                              x:Name="ItemPickupLocationDialog"
                              Width="200"
                              Click="ItemPickupLocationDialog_OnClick"
@@ -772,411 +737,6 @@
                              AutoToolTipPrecision="1"
                              ValueChanged="TabHeaderGapSlider_ValueChanged"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderGap, Mode=TwoWay}" />
-                  </Grid>
-               </Grid>
-            </TabItem>
-            <!-- LOOTFILTER -->
-            <TabItem Header="Lootfilter">
-               <Grid>
-                  <Grid.ColumnDefinitions>
-                     <ColumnDefinition Width="10" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="*" />
-                     <ColumnDefinition Width="10" />
-                  </Grid.ColumnDefinitions>
-                  <Grid.RowDefinitions>
-                     <RowDefinition Height="1" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="10" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="*" />
-                  </Grid.RowDefinitions>
-                  <!-- GENERAL -->
-                  <Grid Grid.Column="1"
-                        Grid.Row="1">
-                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                     </Grid.ColumnDefinitions>
-                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
-                     </Grid.RowDefinitions>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Text="General"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Lootfilter Manipulation:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates manipulation of lootfilter. When active your lootfilter gets rewritten as soon as an itemtype changes." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="3"
-                               x:Name="LootfilterActiveCheckbox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterActive, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Online Filter:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates working with on-line filters." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="5"
-                               x:Name="LootfilterOnlineCheckbox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnline, Mode=TwoWay}"
-                               Checked="LootfilterOnlineCheckbox_Checked"
-                               Unchecked="LootfilterOnlineCheckbox_Checked" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Lootfilter Location:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The path to your lootfilter. Standard path is: 'Username/Documents/My Games/Path of Exile'."
-                                Visibility="{Binding LootfilterFileDialogVisible}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Name of filter to control. Can be found by the link. You should be signed in."
-                                Visibility="{Binding LootfilterOnlineFilterNameVisible}">
-								Filter Name (<Hyperlink NavigateUri="{x:Static storage:OnlineFilterStorage.FiltersUrl}"
-                                                RequestNavigate="Hyperlink_RequestNavigateByAccName">here</Hyperlink>):</TextBlock>
-                     <TextBox x:Name="LootfilterOnlineFilterName"
-                              Grid.Column="3"
-                              Grid.Row="7"
-                              Width="200"
-                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterOnlineName, Mode=TwoWay}"
-                              Visibility="{Binding LootfilterOnlineFilterNameVisible}" />
-                     <Button Grid.Column="3"
-                             Grid.Row="7"
-                             x:Name="LootfilterFileDialog"
-                             Width="200"
-                             Click="LootfilterFileDialog_Click"
-                             ToolTipService.InitialShowDelay="50"
-                             ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterLocation, Mode=TwoWay}"
-                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterLocation, Mode=TwoWay}"
-                             HorizontalContentAlignment="Left"
-                             Visibility="{Binding LootfilterFileDialogVisible}">
-                        <Button.Style>
-                           <Style TargetType="Button">
-                              <Setter Property="Background"
-                                      Value="Transparent" />
-                              <Style.Triggers>
-                                 <Trigger Property="IsMouseOver"
-                                          Value="True">
-                                    <Setter Property="Background"
-                                            Value="Transparent" />
-                                 </Trigger>
-                              </Style.Triggers>
-                           </Style>
-                        </Button.Style>
-                     </Button>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Show Icon on Map:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates icons on the minimap." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="9"
-                               x:Name="LootfilterIconsCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LootfilterIcons, Mode=TwoWay}" />
-                  </Grid>
-                  <!-- COLORS -->
-                  <Grid Grid.Column="2"
-                        Grid.Row="1">
-                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                     </Grid.ColumnDefinitions>
-                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
-                     </Grid.RowDefinitions>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Text="Colors"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="3"
-                                Text="Ring Color:"
-                                VerticalAlignment="Center"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of rings. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.." />
-                     <xctk:ColorPicker Grid.Column="3"
-                                       Grid.Row="3"
-                                       Width="200"
-                                       Name="ColorRingPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorRingPicker_SelectedColorChanged"></xctk:ColorPicker>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Amulet Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of amulets. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.." />
-                     <xctk:ColorPicker Grid.Column="3"
-                                       Grid.Row="5"
-                                       Width="200"
-                                       Name="ColorAmuletPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorAmuletPicker_SelectedColorChanged" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Belt Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of belts. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.." />
-                     <xctk:ColorPicker Grid.Column="3"
-                                       Grid.Row="7"
-                                       Width="200"
-                                       Name="ColorBeltPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorBeltPicker_SelectedColorChanged"></xctk:ColorPicker>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Boots Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of boots. This color will also be written into your lootfilter if you activated Lootfilter Manipulation." />
-                     <xctk:ColorPicker Grid.Column="3"
-                                       Grid.Row="9"
-                                       Width="200"
-                                       Name="ColorBootsPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorBootsPicker_SelectedColorChanged"></xctk:ColorPicker>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="11"
-                                VerticalAlignment="Center"
-                                Text="Gloves Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of gloves. This color will also be written into your lootfilter if you activated Lootfilter Manipulation." />
-                     <xctk:ColorPicker Grid.Column="3"
-                                       Grid.Row="11"
-                                       Width="200"
-                                       Name="ColorGlovesPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorGlovesPicker_SelectedColorChanged"></xctk:ColorPicker>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="13"
-                                VerticalAlignment="Center"
-                                Text="Helmet Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of helmets. This color will also be written into your lootfilter if you activated Lootfilter Manipulation." />
-                     <xctk:ColorPicker Grid.Column="3"
-                                       Grid.Row="13"
-                                       Width="200"
-                                       Name="ColorHelmetPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorHelmetPicker_SelectedColorChanged"></xctk:ColorPicker>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="15"
-                                VerticalAlignment="Center"
-                                Text="Body Armour Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of body armours. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.." />
-                     <xctk:ColorPicker Grid.Column="3"
-                                       Grid.Row="15"
-                                       Width="200"
-                                       Name="ColorChestPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorChestPicker_SelectedColorChanged"></xctk:ColorPicker>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="17"
-                                VerticalAlignment="Center"
-                                Text="Weapons Color:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The color of weapons. This color will also be written into your lootfilter if you activated Lootfilter Manipulation.." />
-                     <xctk:ColorPicker Grid.Column="3"
-                                       Grid.Row="17"
-                                       Width="200"
-                                       Name="ColorWeaponsPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorWeaponsPicker_SelectedColorChanged"></xctk:ColorPicker>
-                  </Grid>
-                  <!-- COLORS -->
-                  <Grid Grid.Column="3"
-                        Grid.Row="1">
-                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                     </Grid.ColumnDefinitions>
-                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
-                     </Grid.RowDefinitions>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Text="Always Active"
-                                FontSize="24"
-                                VerticalAlignment="Center"
-                                FontWeight="Bold" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Rings:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="3"
-                               Width="200"
-                               x:Name="RingsAlwaysActiveCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RingsAlwaysActive, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Amulets:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="5"
-                               Width="200"
-                               x:Name="AmuletsAlwaysActiveCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=AmuletsAlwaysActive, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Belts:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="7"
-                               Width="200"
-                               x:Name="BeltsAlwaysActiveCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=BeltsAlwaysActive, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Boots:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="9"
-                               Width="200"
-                               x:Name="BootsAlwaysActiveCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=BootsAlwaysActive, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="11"
-                                VerticalAlignment="Center"
-                                Text="Gloves:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="11"
-                               Width="200"
-                               x:Name="GlovesAlwaysActiveCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlovesAlwaysActive, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="13"
-                                VerticalAlignment="Center"
-                                Text="Helmets:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="13"
-                               Width="200"
-                               x:Name="HelmetsAlwaysActiveCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=HelmetsAlwaysActive, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="15"
-                                VerticalAlignment="Center"
-                                Text="Body Armours:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="15"
-                               Width="200"
-                               x:Name="ChestsAlwaysActiveCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ChestsAlwaysActive, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="17"
-                                VerticalAlignment="Center"
-                                Text="Weapons:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="." />
-                     <CheckBox Grid.Column="3"
-                               Grid.Row="17"
-                               Width="200"
-                               x:Name="WeaponsAlwaysActiveCheckBox"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=WeaponsAlwaysActive, Mode=TwoWay}" />
                   </Grid>
                </Grid>
             </TabItem>

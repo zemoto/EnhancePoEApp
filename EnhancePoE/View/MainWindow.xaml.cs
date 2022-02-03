@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,14 +55,6 @@ namespace EnhancePoE
          }
       }
 
-      public Visibility LootfilterFileDialogVisible => Properties.Settings.Default.LootfilterOnline
-            ? Visibility.Collapsed
-            : Visibility.Visible;
-
-      public Visibility LootfilterOnlineFilterNameVisible => Properties.Settings.Default.LootfilterOnline
-          ? Visibility.Visible
-          : Visibility.Collapsed;
-
       private bool _closingFromTrayIcon;
 
       public static MainWindow instance;
@@ -72,15 +64,6 @@ namespace EnhancePoE
          instance = this;
          InitializeComponent();
          DataContext = this;
-
-         if ( !string.IsNullOrEmpty( Properties.Settings.Default.FilterChangeSoundFileLocation ) && !FilterSoundLocationDialog.Content.Equals( "Default Sound" ) )
-         {
-            Data.Player.Open( new Uri( Properties.Settings.Default.FilterChangeSoundFileLocation ) );
-         }
-         else
-         {
-            Data.Player.Open( new Uri( Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), @"Sounds\filterchanged.mp3" ) ) );
-         }
 
          if ( !string.IsNullOrEmpty( Properties.Settings.Default.ItemPickupSoundFileLocation ) && !ItemPickupLocationDialog.Content.Equals( "Default Sound" ) )
          {
@@ -94,34 +77,13 @@ namespace EnhancePoE
          InitializeColors();
          InitializeTray();
          LoadModeVisibility();
-         // add Action to MouseHook
-         MouseHook.MouseAction += Coordinates.Event;
 
+         MouseHook.MouseAction += Coordinates.Event;
          SingleInstance.PingedBySecondProcess += ( s, a ) => Dispatcher.Invoke( Show );
       }
 
       private void InitializeColors()
       {
-         if ( Properties.Settings.Default.ColorBoots != "" )
-         {
-            ColorBootsPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorBoots );
-         }
-         if ( Properties.Settings.Default.ColorChest != "" )
-         {
-            ColorChestPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorChest );
-         }
-         if ( Properties.Settings.Default.ColorWeapon != "" )
-         {
-            ColorWeaponsPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorWeapon );
-         }
-         if ( Properties.Settings.Default.ColorGloves != "" )
-         {
-            ColorGlovesPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorGloves );
-         }
-         if ( Properties.Settings.Default.ColorHelmet != "" )
-         {
-            ColorHelmetPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorHelmet );
-         }
          if ( Properties.Settings.Default.ColorStash != "" )
          {
             ColorStashPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash );
@@ -129,18 +91,6 @@ namespace EnhancePoE
          if ( Properties.Settings.Default.StashTabBackgroundColor != "" )
          {
             ColorStashBackgroundPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.StashTabBackgroundColor );
-         }
-         if ( Properties.Settings.Default.ColorRing != "" )
-         {
-            ColorRingPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorRing );
-         }
-         if ( Properties.Settings.Default.ColorAmulet != "" )
-         {
-            ColorAmuletPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorAmulet );
-         }
-         if ( Properties.Settings.Default.ColorBelt != "" )
-         {
-            ColorBeltPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorBelt );
          }
       }
 
@@ -248,49 +198,9 @@ namespace EnhancePoE
          return null;
       }
 
-      private void ColorBootsPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.ColorBoots = ColorBootsPicker.SelectedColor.ToString();
-      }
-
-      private void ColorGlovesPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.ColorGloves = ColorGlovesPicker.SelectedColor.ToString();
-      }
-
-      private void ColorHelmetPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.ColorHelmet = ColorHelmetPicker.SelectedColor.ToString();
-      }
-
-      private void ColorChestPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.ColorChest = ColorChestPicker.SelectedColor.ToString();
-      }
-
-      private void ColorWeaponsPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.ColorWeapon = ColorWeaponsPicker.SelectedColor.ToString();
-      }
-
       private void ColorStashPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
       {
          Properties.Settings.Default.ColorStash = ColorStashPicker.SelectedColor.ToString();
-      }
-
-      private void ColorRingPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.ColorRing = ColorRingPicker.SelectedColor.ToString();
-      }
-
-      private void ColorAmuletPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.ColorAmulet = ColorAmuletPicker.SelectedColor.ToString();
-      }
-
-      private void ColorBeltPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.ColorBelt = ColorBeltPicker.SelectedColor.ToString();
       }
 
       private void Window_MouseDown( object sender, MouseButtonEventArgs e )
@@ -303,10 +213,6 @@ namespace EnhancePoE
          string accName = Properties.Settings.Default.accName;
          string sessId = Properties.Settings.Default.SessionId;
          string league = Properties.Settings.Default.League;
-         string lootfilterLocation = Properties.Settings.Default.LootfilterLocation;
-         bool lootfilterOnline = Properties.Settings.Default.LootfilterOnline;
-         string lootfilterOnlineName = Properties.Settings.Default.LootfilterOnlineName;
-         bool lootfilterActive = Properties.Settings.Default.LootfilterActive;
          string logLocation = Properties.Settings.Default.LogLocation;
          bool autoFetch = Properties.Settings.Default.AutoFetch;
 
@@ -324,18 +230,6 @@ namespace EnhancePoE
          if ( league == "" )
          {
             missingSettings.Add( "- League \n" );
-         }
-         if ( lootfilterActive )
-         {
-            if ( !lootfilterOnline && lootfilterLocation == "" )
-            {
-               missingSettings.Add( "- Lootfilter Location \n" );
-            }
-
-            if ( lootfilterOnline && lootfilterOnlineName == "" )
-            {
-               missingSettings.Add( "- Lootfilter Name \n" );
-            }
          }
          if ( autoFetch && logLocation == "" )
          {
@@ -382,21 +276,6 @@ namespace EnhancePoE
       private void ColorStashBackgroundPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
       {
          Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
-      }
-
-      private void LootfilterFileDialog_Click( object sender, RoutedEventArgs e )
-      {
-         var open = new System.Windows.Forms.OpenFileDialog
-         {
-            Filter = "Lootfilter|*.filter"
-         };
-         var res = open.ShowDialog();
-         if ( res == System.Windows.Forms.DialogResult.OK )
-         {
-            string filename = open.FileName;
-            Properties.Settings.Default.LootfilterLocation = filename;
-            LootfilterFileDialog.Content = filename;
-         }
       }
 
       private void ComboBox_SelectionChanged( object sender, SelectionChangedEventArgs e )
@@ -530,12 +409,6 @@ namespace EnhancePoE
          }
       }
 
-      private void LootfilterOnlineCheckbox_Checked( object sender, RoutedEventArgs e )
-      {
-         OnPropertyChanged( nameof( LootfilterFileDialogVisible ) );
-         OnPropertyChanged( nameof( LootfilterOnlineFilterNameVisible ) );
-      }
-
       private void Hyperlink_RequestNavigateByAccName( object sender, RequestNavigateEventArgs e )
       {
          if ( string.IsNullOrWhiteSpace( Properties.Settings.Default.accName ) )
@@ -547,20 +420,6 @@ namespace EnhancePoE
          {
             string url = string.Format( e.Uri.ToString(), Properties.Settings.Default.accName );
             _ = System.Diagnostics.Process.Start( url );
-         }
-      }
-
-      private void FilterSoundLocationDialog_OnClick( object sender, RoutedEventArgs e )
-      {
-         var soundFilePath = GetSoundFilePath();
-
-         if ( soundFilePath != null )
-         {
-            Properties.Settings.Default.FilterChangeSoundFileLocation = soundFilePath;
-            FilterSoundLocationDialog.Content = soundFilePath;
-            Data.Player.Open( new Uri( soundFilePath ) );
-
-            Data.PlayNotificationSound();
          }
       }
 

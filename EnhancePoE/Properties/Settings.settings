@@ -8,12 +8,6 @@
     <Setting Name="hideOnClose" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TopMain" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="LeftMain" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="TopOverlay" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -70,12 +64,6 @@
     </Setting>
     <Setting Name="ColorBelt" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFFF0303</Value>
-    </Setting>
-    <Setting Name="LootfilterLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="LootfilterActive" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ExaltedRecipe" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -161,25 +149,13 @@
     <Setting Name="LogLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="LootfilterIcons" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="LockOverlayPosition" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Language" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="LootfilterOnline" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="LootfilterOnlineName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="ItemPickupSoundFileLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Default Sound</Value>
-    </Setting>
-    <Setting Name="FilterChangeSoundFileLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)">Default Sound</Value>
     </Setting>
   </Settings>

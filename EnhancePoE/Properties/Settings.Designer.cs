@@ -50,30 +50,6 @@ namespace EnhancePoE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double TopMain {
-            get {
-                return ((double)(this["TopMain"]));
-            }
-            set {
-                this["TopMain"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public double LeftMain {
-            get {
-                return ((double)(this["LeftMain"]));
-            }
-            set {
-                this["LeftMain"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public double TopOverlay {
             get {
                 return ((double)(this["TopOverlay"]));
@@ -296,30 +272,6 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["ColorBelt"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LootfilterLocation {
-            get {
-                return ((string)(this["LootfilterLocation"]));
-            }
-            set {
-                this["LootfilterLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool LootfilterActive {
-            get {
-                return ((bool)(this["LootfilterActive"]));
-            }
-            set {
-                this["LootfilterActive"] = value;
             }
         }
         
@@ -662,18 +614,6 @@ namespace EnhancePoE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool LootfilterIcons {
-            get {
-                return ((bool)(this["LootfilterIcons"]));
-            }
-            set {
-                this["LootfilterIcons"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool LockOverlayPosition {
             get {
                 return ((bool)(this["LockOverlayPosition"]));
@@ -697,30 +637,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool LootfilterOnline {
-            get {
-                return ((bool)(this["LootfilterOnline"]));
-            }
-            set {
-                this["LootfilterOnline"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LootfilterOnlineName {
-            get {
-                return ((string)(this["LootfilterOnlineName"]));
-            }
-            set {
-                this["LootfilterOnlineName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
         public string ItemPickupSoundFileLocation {
             get {
@@ -728,18 +644,6 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["ItemPickupSoundFileLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
-        public string FilterChangeSoundFileLocation {
-            get {
-                return ((string)(this["FilterChangeSoundFileLocation"]));
-            }
-            set {
-                this["FilterChangeSoundFileLocation"] = value;
             }
         }
     }

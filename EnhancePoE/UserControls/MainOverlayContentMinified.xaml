@@ -20,7 +20,6 @@
          <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="auto" />
-         <ColumnDefinition Width="auto" />
          <ColumnDefinition Width="3" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
@@ -325,23 +324,6 @@
                     TextAlignment="Center"
                     Foreground="{Binding FetchButtonColor}" />
       </Border>
-      <Border Grid.Row="1"
-              Name="ReloadItemFilterButton"
-              Grid.Column="12"
-              Height="30"
-              Width="30"
-              CornerRadius="50"
-              Margin="3,0"
-              PreviewMouseDown="ReloadItemFilterButton_Click"
-              Background="White"
-              BorderThickness="3"
-              BorderBrush="DarkSlateGray">
-         <TextBlock Text="R"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    TextAlignment="Center"
-                    Foreground="Black" />
-      </Border>
       <ProgressBar Grid.Column="1"
                    Grid.ColumnSpan="12"
                    Grid.Row="2"
@@ -353,7 +335,7 @@
                    Foreground="Aqua"
                    Background="AntiqueWhite"
                    BorderThickness="0,0,0,0"
-                   x:Name="OverlayProgressBar"></ProgressBar>
+                   x:Name="OverlayProgressBar" />
       <Border Grid.Column="3"
               Grid.ColumnSpan="9"
               Grid.Row="0"
@@ -363,7 +345,7 @@
               Visibility="{Binding WarningMessageVisibility}">
          <TextBlock VerticalAlignment="Center"
                     HorizontalAlignment="Center"
-                    Text="{Binding WarningMessage}"></TextBlock>
+                    Text="{Binding WarningMessage}" />
       </Border>
    </Grid>
 </UserControl>
