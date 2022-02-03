@@ -18,10 +18,7 @@ namespace EnhancePoE
       private static readonly string appVersion = "1.2.6.0";
       public static string AppVersionText { get; set; } = "v." + appVersion;
 
-      private System.Windows.Forms.NotifyIcon ni = new System.Windows.Forms.NotifyIcon();
-      private System.Windows.Forms.ContextMenu contextMenu;
-      private System.Windows.Forms.MenuItem menuItem;
-      private System.Windows.Forms.MenuItem menuItemUpdate;
+      private System.Windows.Forms.NotifyIcon _trayIcon;
       private IContainer components;
 
       public static bool SettingsComplete { get; set; }
@@ -67,7 +64,7 @@ namespace EnhancePoE
           ? Visibility.Visible
           : Visibility.Collapsed;
 
-      private bool trayClose;
+      private bool _closingFromTrayIcon;
 
       public static MainWindow instance;
 
@@ -161,63 +158,38 @@ namespace EnhancePoE
       // creates tray icon with menu
       private void InitializeTray()
       {
-         ni.Icon = Properties.Resources.coin;
-         ni.Visible = true;
-         ni.DoubleClick +=
-             ( object sender, EventArgs args ) =>
-             {
-                Show();
-                WindowState = WindowState.Normal;
-             };
+         var menuItem = new System.Windows.Forms.MenuItem { Text = "Close" };
+         menuItem.Click += OnTrayItemMenuClicked;
 
-         components = new Container();
-         contextMenu = new System.Windows.Forms.ContextMenu();
-         menuItem = new System.Windows.Forms.MenuItem();
-         menuItemUpdate = new System.Windows.Forms.MenuItem();
+         var contextMenu = new System.Windows.Forms.ContextMenu();
+         _ = contextMenu.MenuItems.Add( menuItem );
 
-         // Initialize contextMenu1
-         contextMenu.MenuItems.AddRange( new System.Windows.Forms.MenuItem[] { menuItem, menuItemUpdate } );
-
-         // Initialize menuItem1
-         menuItem.Index = 1;
-         menuItem.Text = "E&xit";
-         menuItem.Click += MenuItem_Click;
-
-         // Initialize menuItemUpdate
-         menuItemUpdate.Index = 0;
-         menuItemUpdate.Text = "C&eck for Updates";
-         menuItemUpdate.Click += CheckForUpdates_Click;
-
-         ni.ContextMenu = contextMenu;
+         _trayIcon = new System.Windows.Forms.NotifyIcon
+         {
+            Icon = Properties.Resources.coin,
+            Visible = true,
+            ContextMenu = contextMenu
+         };
+         _trayIcon.MouseClick += ( s, a ) => Show();
       }
 
-      private void CheckForUpdates_Click( object Sender, EventArgs e )
+      private void OnTrayItemMenuClicked( object Sender, EventArgs e )
       {
-      }
-
-      // Close the form, which closes the application.
-      private void MenuItem_Click( object Sender, EventArgs e )
-      {
-         trayClose = true;
+         _closingFromTrayIcon = true;
          Close();
       }
 
-      // Minimize to system tray when application is closed.
       protected override void OnClosing( CancelEventArgs e )
       {
-         // if hideOnClose
-         // setting cancel to true will cancel the close request
-         // so the application is not closed
-         if ( Properties.Settings.Default.hideOnClose && !trayClose )
+         if ( Properties.Settings.Default.hideOnClose && !_closingFromTrayIcon )
          {
             e.Cancel = true;
             Hide();
             base.OnClosing( e );
          }
-
-         if ( !Properties.Settings.Default.hideOnClose || trayClose )
+         else if ( !Properties.Settings.Default.hideOnClose || _closingFromTrayIcon )
          {
-            ni.Visible = false;
+            _trayIcon.Visible = false;
             MouseHook.Stop();
             HotkeysManager.ShutdownSystemHook();
             Properties.Settings.Default.Save();
