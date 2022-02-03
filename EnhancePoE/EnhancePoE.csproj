@@ -230,6 +230,7 @@
     <Compile Include="UserControls\MainOverlayOnlyButtons.xaml.cs">
       <DependentUpon>MainOverlayOnlyButtons.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\SingleInstance.cs" />
     <Compile Include="View\StashTabWindow.xaml.cs">
       <DependentUpon>StashTabWindow.xaml</DependentUpon>
     </Compile>

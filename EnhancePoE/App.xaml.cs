@@ -1,29 +1,29 @@
-﻿using System;
+﻿using EnhancePoE.Utils;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace EnhancePoE
 {
-   /// <summary>
-   /// Interaction logic for App.xaml
-   /// </summary>
    public partial class App : Application
    {
       public App()
       {
          SetupUnhandledExceptionHandling();
+         if ( !SingleInstance.Claim() )
+         {
+            Shutdown();
+         }
       }
 
       private void SetupUnhandledExceptionHandling()
       {
          // Catch exceptions from all threads in the AppDomain.
-         AppDomain.CurrentDomain.UnhandledException += ( sender, args ) =>
-             ShowUnhandledException( args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException", false );
+         AppDomain.CurrentDomain.UnhandledException += ( sender, args ) => ShowUnhandledException( args.ExceptionObject as Exception, "AppDomain.CurrentDomain.UnhandledException", false );
 
          // Catch exceptions from each AppDomain that uses a task scheduler for async operations.
-         TaskScheduler.UnobservedTaskException += ( sender, args ) =>
-             ShowUnhandledException( args.Exception, "TaskScheduler.UnobservedTaskException", false );
+         TaskScheduler.UnobservedTaskException += ( sender, args ) => ShowUnhandledException( args.Exception, "TaskScheduler.UnobservedTaskException", false );
 
          // Catch exceptions from a single specific UI dispatcher thread.
          Dispatcher.UnhandledException += ( sender, args ) =>

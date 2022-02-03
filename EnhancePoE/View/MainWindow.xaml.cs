@@ -9,8 +9,7 @@ using EnhancePoE.Model;
 using EnhancePoE.View;
 using System.IO;
 using System.Reflection;
-
-//using EnhancePoE.TabItemViewModel;
+using EnhancePoE.Utils;
 
 namespace EnhancePoE
 {
@@ -102,6 +101,8 @@ namespace EnhancePoE
          LoadModeVisibility();
          // add Action to MouseHook
          MouseHook.MouseAction += Coordinates.Event;
+
+         SingleInstance.PingedBySecondProcess += ( s, a ) => Dispatcher.Invoke( Show );
       }
 
       private void InitializeHotkeys()
@@ -224,8 +225,6 @@ namespace EnhancePoE
             {
                LogWatcher.StopWatchingLogFile();
             }
-            //overlay.Close();
-            //stashTabOverlay.Close();
             Application.Current.Shutdown();
          }
       }
