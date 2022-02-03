@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.ComponentModel;
-using System.Windows.Navigation;
 using EnhancePoE.Model;
 using EnhancePoE.View;
 using System.IO;
@@ -20,7 +19,7 @@ namespace EnhancePoE
       public static ChaosRecipeEnhancer Overlay { get; private set; } = new ChaosRecipeEnhancer();
       public static StashTabWindow StashTabOverlay { get; private set; } = new StashTabWindow();
 
-      public string AppVersionText { get; } = "v.1.2.6.0";
+      public string AppVersionText { get; } = "v.1.2.7-zemoto";
 
       private Visibility _indicesVisible = Visibility.Hidden;
       public Visibility IndicesVisible
