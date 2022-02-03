@@ -265,42 +265,6 @@ namespace EnhancePoE
          }
       }
 
-      public static void GetAlwaysActive()
-      {
-         if ( Properties.Settings.Default.RingsAlwaysActive )
-         {
-            ActiveItems.RingActive = true;
-         }
-         if ( Properties.Settings.Default.AmuletsAlwaysActive )
-         {
-            ActiveItems.AmuletActive = true;
-         }
-         if ( Properties.Settings.Default.BeltsAlwaysActive )
-         {
-            ActiveItems.BeltActive = true;
-         }
-         if ( Properties.Settings.Default.GlovesAlwaysActive )
-         {
-            ActiveItems.GlovesActive = true;
-         }
-         if ( Properties.Settings.Default.BootsAlwaysActive )
-         {
-            ActiveItems.BootsActive = true;
-         }
-         if ( Properties.Settings.Default.HelmetsAlwaysActive )
-         {
-            ActiveItems.HelmetActive = true;
-         }
-         if ( Properties.Settings.Default.ChestsAlwaysActive )
-         {
-            ActiveItems.ChestActive = true;
-         }
-         if ( Properties.Settings.Default.WeaponsAlwaysActive )
-         {
-            ActiveItems.WeaponActive = true;
-         }
-      }
-
       public static void CheckActives()
       {
          try
@@ -473,8 +437,6 @@ namespace EnhancePoE
                         ActiveItems.BootsActive = false;
                         break;
                      case "OneHandWeapons":
-                        ActiveItems.WeaponActive = false;
-                        break;
                      case "TwoHandWeapons":
                         ActiveItems.WeaponActive = false;
                         break;
@@ -490,8 +452,6 @@ namespace EnhancePoE
                   }
                }
             }
-
-            GetAlwaysActive();
 
             if ( !Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe )
             {
@@ -535,7 +495,7 @@ namespace EnhancePoE
 
             Trace.WriteLine( fullSets, "full sets" );
 
-            if ( Properties.Settings.Default.Sound 
+            if ( Properties.Settings.Default.Sound
                && !( PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive
                    && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
                    && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
@@ -684,14 +644,14 @@ namespace EnhancePoE
             else if ( Properties.Settings.Default.ShowItemAmount == 2 )
             {
                amounts[4] = weaponsSmall + weaponBig;
-               MainWindow.overlay.RingsAmount = ( SetTargetAmount * 2 ) - amounts[0];
-               MainWindow.overlay.AmuletsAmount = SetTargetAmount - amounts[1];
-               MainWindow.overlay.BeltsAmount = SetTargetAmount - amounts[2];
-               MainWindow.overlay.ChestsAmount = SetTargetAmount - amounts[3];
-               MainWindow.overlay.WeaponsAmount = ( ( SetTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ) );
-               MainWindow.overlay.GlovesAmount = SetTargetAmount - amounts[5];
-               MainWindow.overlay.HelmetsAmount = SetTargetAmount - amounts[6];
-               MainWindow.overlay.BootsAmount = SetTargetAmount - amounts[7];
+               MainWindow.overlay.RingsAmount = Math.Max( ( SetTargetAmount * 2 ) - amounts[0], 0 );
+               MainWindow.overlay.AmuletsAmount = Math.Max( SetTargetAmount - amounts[1], 0 );
+               MainWindow.overlay.BeltsAmount = Math.Max( SetTargetAmount - amounts[2], 0 );
+               MainWindow.overlay.ChestsAmount = Math.Max( SetTargetAmount - amounts[3], 0 );
+               MainWindow.overlay.WeaponsAmount = Math.Max( ( SetTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ), 0 );
+               MainWindow.overlay.GlovesAmount = Math.Max( SetTargetAmount - amounts[5], 0 );
+               MainWindow.overlay.HelmetsAmount = Math.Max( SetTargetAmount - amounts[6], 0 );
+               MainWindow.overlay.BootsAmount = Math.Max( SetTargetAmount - amounts[7], 0 );
             }
          }
       }
