@@ -6,8 +6,6 @@ using System.Windows.Input;
 using System.ComponentModel;
 using EnhancePoE.Model;
 using EnhancePoE.View;
-using System.IO;
-using System.Reflection;
 using EnhancePoE.Utils;
 using System.Collections.ObjectModel;
 
@@ -15,11 +13,13 @@ namespace EnhancePoE
 {
    public partial class MainWindow : Window, INotifyPropertyChanged
    {
-      public static MainWindow Instance { get; private set; }
-      public static ChaosRecipeEnhancer Overlay { get; private set; } = new ChaosRecipeEnhancer();
-      public static StashTabWindow StashTabOverlay { get; private set; } = new StashTabWindow();
+      private static MainWindow _instance;
+      public static MainWindow Instance => _instance ?? ( _instance = new MainWindow() );
 
-      public string AppVersionText { get; } = "v.1.2.7-zemoto";
+      public static ChaosRecipeEnhancer Overlay { get; } = new ChaosRecipeEnhancer();
+      public static StashTabWindow StashTabOverlay { get; } = new StashTabWindow();
+
+      public string AppVersionText { get; } = "v.1.2.8-zemoto";
 
       private Visibility _indicesVisible = Visibility.Hidden;
       public Visibility IndicesVisible
@@ -58,18 +58,8 @@ namespace EnhancePoE
 
       public MainWindow()
       {
-         Instance = this;
          InitializeComponent();
          DataContext = this;
-
-         if ( !string.IsNullOrEmpty( Properties.Settings.Default.ItemPickupSoundFileLocation ) && !ItemPickupLocationButton.Content.Equals( "Default Sound" ) )
-         {
-            Data.Player.Open( new Uri( Properties.Settings.Default.ItemPickupSoundFileLocation ) );
-         }
-         else
-         {
-            Data.Player.Open( new Uri( Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), @"Res\notificationSound.mp3" ) ) );
-         }
 
          InitializeColors();
          InitializeTray();
@@ -175,17 +165,6 @@ namespace EnhancePoE
          }
       }
 
-      private string GetSoundFilePath()
-      {
-         var open = new System.Windows.Forms.OpenFileDialog
-         {
-            Filter = "MP3|*.mp3"
-         };
-         var res = open.ShowDialog();
-
-         return res == System.Windows.Forms.DialogResult.OK ? open.FileName : null;
-      }
-
       private void ColorStashPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
       {
          Properties.Settings.Default.ColorStash = ColorStashPicker.SelectedColor.ToString();
@@ -240,14 +219,12 @@ namespace EnhancePoE
          return false;
       }
 
-      private void OnVolumeSliderPreviewMouseUp( object sender, MouseButtonEventArgs e ) => Data.PlayNotificationSound();
-
       private void OnColorStashBackgroundColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
       {
          Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
       }
 
-      private void ComboBox_SelectionChanged( object sender, SelectionChangedEventArgs e ) => LoadModeVisibility();
+      private void OnStashtabModeComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e ) => LoadModeVisibility();
 
       private void LoadModeVisibility()
       {
@@ -305,16 +282,6 @@ namespace EnhancePoE
          StashTabOverlay.TabMargin = new Thickness( Properties.Settings.Default.TabMargin, 0, 0, 0 );
       }
 
-      public static void GenerateNewOverlay()
-      {
-         Overlay = new ChaosRecipeEnhancer();
-      }
-
-      public static void GenerateNewStashtabOverlay()
-      {
-         StashTabOverlay = new StashTabWindow();
-      }
-
       private void OnSaveButtonClicked( object sender, RoutedEventArgs e )
       {
          Properties.Settings.Default.Save();
@@ -362,20 +329,6 @@ namespace EnhancePoE
       private void OnShowNumbersComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e )
       {
          Overlay.AmountsVisibility = Properties.Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
-      }
-
-      private void OnItemPickupLocationButtonClicked( object sender, RoutedEventArgs e )
-      {
-         var soundFilePath = GetSoundFilePath();
-
-         if ( soundFilePath != null )
-         {
-            Properties.Settings.Default.ItemPickupSoundFileLocation = soundFilePath;
-            ItemPickupLocationButton.Content = soundFilePath;
-            Data.Player.Open( new Uri( soundFilePath ) );
-
-            Data.PlayNotificationSound();
-         }
       }
 
       #region INotifyPropertyChanged implementation

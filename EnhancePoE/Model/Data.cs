@@ -11,7 +11,6 @@ namespace EnhancePoE
    {
       public static ActiveItemTypes ActiveItems { get; set; } = new ActiveItemTypes();
       public static ActiveItemTypes PreviousActiveItems { get; set; }
-      public static MediaPlayer Player { get; set; } = new MediaPlayer();
 
       public static int SetAmount { get; set; }
       public static int SetTargetAmount { get; set; }
@@ -280,20 +279,6 @@ namespace EnhancePoE
                MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                return;
             }
-            if ( Properties.Settings.Default.Sound )
-            {
-               PreviousActiveItems = new ActiveItemTypes
-               {
-                  BootsActive = ActiveItems.BootsActive,
-                  GlovesActive = ActiveItems.GlovesActive,
-                  HelmetActive = ActiveItems.HelmetActive,
-                  WeaponActive = ActiveItems.WeaponActive,
-                  ChestActive = ActiveItems.ChestActive,
-                  RingActive = ActiveItems.RingActive,
-                  AmuletActive = ActiveItems.AmuletActive,
-                  BeltActive = ActiveItems.BeltActive
-               };
-            }
 
             bool exaltedActive = Properties.Settings.Default.ExaltedRecipe;
 
@@ -491,19 +476,6 @@ namespace EnhancePoE
             }
 
             Trace.WriteLine( fullSets, "full sets" );
-
-            if ( Properties.Settings.Default.Sound
-               && !( PreviousActiveItems.GlovesActive == ActiveItems.GlovesActive
-                   && PreviousActiveItems.BootsActive == ActiveItems.BootsActive
-                   && PreviousActiveItems.HelmetActive == ActiveItems.HelmetActive
-                   && PreviousActiveItems.ChestActive == ActiveItems.ChestActive
-                   && PreviousActiveItems.WeaponActive == ActiveItems.WeaponActive
-                   && PreviousActiveItems.RingActive == ActiveItems.RingActive
-                   && PreviousActiveItems.AmuletActive == ActiveItems.AmuletActive
-                   && PreviousActiveItems.BeltActive == ActiveItems.BeltActive ) )
-            {
-               Player.Dispatcher.Invoke( () => PlayNotificationSound() );
-            }
          }
          catch ( OperationCanceledException ex ) when ( ex.CancellationToken == ct )
          {
@@ -653,13 +625,6 @@ namespace EnhancePoE
          }
       }
 
-      public static void PlayNotificationSound()
-      {
-         Player.Volume = (double)( Properties.Settings.Default.Volume / 100.0 );
-         Player.Position = TimeSpan.Zero;
-         Player.Play();
-      }
-
       public static StashTab GetStashTabFromItem( Item item )
       {
          foreach ( var s in StashTabList.StashTabs )
@@ -685,21 +650,10 @@ namespace EnhancePoE
                   s.TabHeaderColor = Brushes.Transparent;
                }
 
-               // remove and sound if itemlist empty
-               if ( ItemSetListHighlight.Count > 0 )
+               // remove if itemlist empty
+               if ( ItemSetListHighlight.Count > 0 && ItemSetListHighlight[0].ItemList.Count == 0 )
                {
-                  if ( ItemSetListHighlight[0].ItemList.Count == 0 )
-                  {
-                     ItemSetListHighlight.RemoveAt( 0 );
-                     Player.Dispatcher.Invoke( () => PlayNotificationSound() );
-                  }
-               }
-               else
-               {
-                  if ( ItemSetListHighlight.Count > 0 )
-                  {
-                     Player.Dispatcher.Invoke( () => PlayNotificationSound() );
-                  }
+                  ItemSetListHighlight.RemoveAt( 0 );
                }
 
                // next item if itemlist not empty
@@ -774,7 +728,6 @@ namespace EnhancePoE
 
                         // activate next set
                         ActivateNextCell( true, null );
-                        Player.Dispatcher.Invoke( () => PlayNotificationSound() );
                      }
                   }
                }

@@ -17,12 +17,10 @@
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type={x:Type local:MainWindow}}">
-   
+
    <Border BorderBrush="DarkGray"
            BorderThickness="1">
       <Grid Name="MainGrid"
-            MinHeight="500"
-            MinWidth="1143"
             Focusable="True">
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -32,62 +30,41 @@
          <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
-
          </Grid.RowDefinitions>
          <TabControl Grid.Column="1"
                      Grid.Row="1">
             <TabItem Header="General">
-               <Grid>
-                  <Grid.ColumnDefinitions>
-                     <ColumnDefinition Width="10" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="*" />
-                     <ColumnDefinition Width="10" />
-                  </Grid.ColumnDefinitions>
-                  <Grid.RowDefinitions>
-                     <RowDefinition Height="1" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="10" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="*" />
-                  </Grid.RowDefinitions>
+               <StackPanel Orientation="Horizontal"
+                           Margin="10,0">
                   <!-- POE SETTINGS -->
-                  <Grid Grid.Column="1"
-                        Grid.Row="1">
+                  <Grid>
                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="5"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
                      </Grid.ColumnDefinitions>
                      <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="10" />
                      </Grid.RowDefinitions>
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
-                                Text="Path of Exile"
+                                Text="Account"
                                 FontSize="24"
                                 FontWeight="Bold" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -99,7 +76,7 @@
                               Grid.Row="3"
                               Width="200"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=accName, Mode=TwoWay}" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -113,7 +90,7 @@
                               VerticalContentAlignment="Center"
                               FontFamily="{StaticResource PasswordFont}"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=SessionId, Mode=TwoWay}" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -140,215 +117,28 @@
                                 Click="OnRefreshLeaguesButtonClicked" />
                      </Grid>
                   </Grid>
-                  <!-- RECIPES -->
-                  <Grid Grid.Column="1"
-                        Grid.Row="2">
-                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                     </Grid.ColumnDefinitions>
-                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
-                     </Grid.RowDefinitions>
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="1"
-                                VerticalAlignment="Center"
-                                Grid.ColumnSpan="2"
-                                Text="Recipes"
-                                FontSize="24"
-                                FontWeight="Bold" />
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Chaos Orb Recipe:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates Chaos Recipe. Mutually exclusiv to Regal Recipe." />
-                     <CheckBox x:Name="ChaosRecipeCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="3"
-                               VerticalAlignment="Center"
-                               Checked="OnChaosRecipeCheckBoxChecked"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ChaosRecipe, Mode=TwoWay}" />
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Regal Recipe:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates Regal Recipe. Mutually exclusive to Chaos Recipe." />
-                     <CheckBox x:Name="RegalRecipeCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="5"
-                               VerticalAlignment="Center"
-                               Checked="OnRegalRecipeCheckBoxChecked"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RegalRecipe, Mode=TwoWay}" />
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Exalted Shard Recipe:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information." />
-                     <CheckBox x:Name="ExaltedRecipeCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="7"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}" />
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Fill Greedy Mode:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Sets will be filled with more than 1 low ilvl item. Deactivate to only allow 1 low ilvl item." />
-                     <CheckBox x:Name="LimitChaosCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="9"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=FillWithChaos, Mode=TwoWay}" />
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="11"
-                                VerticalAlignment="Center"
-                                Text="Include Identified Items:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Also counts identified Items for 1 chaos per set." />
-                     <CheckBox x:Name="IncludeIdentifiedCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="11"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentified, Mode=TwoWay}" />
-                  </Grid>
-                  <!-- SOUND -->
-                  <Grid Grid.Column="3"
-                        Grid.Row="1">
-                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                     </Grid.ColumnDefinitions>
-                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                     </Grid.RowDefinitions>
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="1"
-                                VerticalAlignment="Center"
-                                Grid.ColumnSpan="2"
-                                Text="Sound"
-                                FontSize="24"
-                                FontWeight="Bold" />
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Notification Sound:"
-                                ToolTipService.InitialShowDelay="50" />
-                     <CheckBox x:Name="PlaySoundCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="3"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Sound, Mode=TwoWay}" />
-                     
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Sound Volume:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Sound Volume" />
-                     <Slider x:Name="VolumeSlider"
-                             Width="200"
-                             Grid.Column="3"
-                             Grid.Row="5"
-                             VerticalAlignment="Center"
-                             Minimum="0"
-                             Maximum="100"
-                             AutoToolTipPlacement="TopLeft"
-                             IsMoveToPointEnabled="True"
-                             AutoToolTipPrecision="0"
-                             PreviewMouseUp="OnVolumeSliderPreviewMouseUp"
-                             Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="Item Set Sound:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The location of your Item Set Sound mp3 file (*.mp3). If you don't choose a file the default sound will be used" />
-                     <Button Grid.Column="3"
-                             Grid.Row="7"
-                             x:Name="ItemPickupLocationButton"
-                             Width="200"
-                             Click="OnItemPickupLocationButtonClicked"
-                             ToolTipService.InitialShowDelay="50"
-                             ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=ItemPickupSoundFileLocation, Mode=TwoWay}"
-                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=ItemPickupSoundFileLocation, Mode=TwoWay}"
-                             HorizontalContentAlignment="Left">
-                        <Button.Style>
-                           <Style TargetType="Button">
-                              <Setter Property="Background"
-                                      Value="Transparent" />
-                              <Style.Triggers>
-                                 <Trigger Property="IsMouseOver"
-                                          Value="True">
-                                    <Setter Property="Background"
-                                            Value="Transparent" />
-                                 </Trigger>
-                              </Style.Triggers>
-                           </Style>
-                        </Button.Style>
-                     </Button>
-                  </Grid>
                   <!-- GENERAL -->
-                  <Grid Grid.Column="2"
-                        Grid.Row="1"
-                        Grid.RowSpan="3">
+                  <Grid>
                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
                      </Grid.ColumnDefinitions>
                      <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
                      </Grid.RowDefinitions>
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 VerticalAlignment="Center"
@@ -356,7 +146,7 @@
                                 Text="General"
                                 FontSize="24"
                                 FontWeight="Bold" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -368,23 +158,24 @@
                               Grid.Row="3"
                               Width="200"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=Sets, Mode=TwoWay}" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
                                 Text="Stashtab Mode:"
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The stashtab fetching mode. Stashtabs will automatically be added." />
-                     <ComboBox Grid.Column="3"
+                     <ComboBox x:Name="StashtabModeComboBox"
+                               Grid.Column="3"
                                Grid.Row="5"
                                Width="200"
                                VerticalContentAlignment="Center"
-                               SelectionChanged="ComboBox_SelectionChanged"
+                               SelectionChanged="OnStashtabModeComboBoxSelectionChanged"
                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=StashtabMode, Mode=TwoWay}">
                         <ComboBoxItem Content="ID" />
                         <ComboBoxItem Content="Prefix" />
                      </ComboBox>
-                     
+
                      <TextBlock Name="StashTabNameTextBlock"
                                 Grid.Column="1"
                                 Grid.Row="7"
@@ -399,7 +190,7 @@
                               Width="200"
                               Visibility="{Binding NameVisible}"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabName, Mode=TwoWay}" />
-                     
+
                      <TextBlock Name="StashTabIndicesTextBlock"
                                 Grid.Column="1"
                                 Grid.Row="7"
@@ -414,7 +205,7 @@
                               Width="200"
                               Visibility="{Binding IndicesVisible}"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -427,62 +218,125 @@
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
                   </Grid>
-               </Grid>
+                  <!-- RECIPES -->
+                  <Grid>
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                     </Grid.ColumnDefinitions>
+                     <Grid.RowDefinitions>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="10" />
+                     </Grid.RowDefinitions>
+
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="1"
+                                VerticalAlignment="Center"
+                                Grid.ColumnSpan="2"
+                                Text="Recipes"
+                                FontSize="24"
+                                FontWeight="Bold" />
+
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="2"
+                                VerticalAlignment="Center"
+                                Text="Chaos Orb Recipe:"
+                                ToolTipService.InitialShowDelay="50"
+                                ToolTip="Activates Chaos Recipe. Mutually exclusiv to Regal Recipe." />
+                     <CheckBox x:Name="ChaosRecipeCheckBox"
+                               Grid.Column="3"
+                               Grid.Row="2"
+                               VerticalAlignment="Center"
+                               Checked="OnChaosRecipeCheckBoxChecked"
+                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ChaosRecipe, Mode=TwoWay}" />
+
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="3"
+                                VerticalAlignment="Center"
+                                Text="Regal Recipe:"
+                                ToolTipService.InitialShowDelay="50"
+                                ToolTip="Activates Regal Recipe. Mutually exclusive to Chaos Recipe." />
+                     <CheckBox x:Name="RegalRecipeCheckBox"
+                               Grid.Column="3"
+                               Grid.Row="3"
+                               VerticalAlignment="Center"
+                               Checked="OnRegalRecipeCheckBoxChecked"
+                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RegalRecipe, Mode=TwoWay}" />
+
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="4"
+                                VerticalAlignment="Center"
+                                Text="Exalted Shard Recipe:"
+                                ToolTipService.InitialShowDelay="50"
+                                ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information." />
+                     <CheckBox x:Name="ExaltedRecipeCheckBox"
+                               Grid.Column="3"
+                               Grid.Row="4"
+                               VerticalAlignment="Center"
+                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}" />
+
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="5"
+                                VerticalAlignment="Center"
+                                Text="Fill Greedy Mode:"
+                                ToolTipService.InitialShowDelay="50"
+                                ToolTip="Sets will be filled with more than 1 low ilvl item. Deactivate to only allow 1 low ilvl item." />
+                     <CheckBox x:Name="LimitChaosCheckBox"
+                               Grid.Column="3"
+                               Grid.Row="5"
+                               VerticalAlignment="Center"
+                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=FillWithChaos, Mode=TwoWay}" />
+
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="6"
+                                VerticalAlignment="Center"
+                                Text="Include Identified Items:"
+                                ToolTipService.InitialShowDelay="50"
+                                ToolTip="Also counts identified Items for 1 chaos per set." />
+                     <CheckBox x:Name="IncludeIdentifiedCheckBox"
+                               Grid.Column="3"
+                               Grid.Row="6"
+                               VerticalAlignment="Center"
+                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentified, Mode=TwoWay}" />
+                  </Grid>
+               </StackPanel>
             </TabItem>
             <!-- OVERLAYS -->
             <TabItem Header="Overlays">
-               <Grid>
-                  <Grid.ColumnDefinitions>
-                     <ColumnDefinition Width="10" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="1*" />
-                     <ColumnDefinition Width="*" />
-                     <ColumnDefinition Width="10" />
-                  </Grid.ColumnDefinitions>
-                  <Grid.RowDefinitions>
-                     <RowDefinition Height="1" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="10" />
-                     <RowDefinition Height="auto" />
-                     <RowDefinition Height="*" />
-                  </Grid.RowDefinitions>
-                  <!-- Main Overlay -->
-                  <Grid Grid.Column="1"
-                        Grid.Row="1">
+               <StackPanel Orientation="Horizontal"
+                           Margin="10,0">
+                  <!-- MAIN OVERLAY -->
+                  <Grid>
                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
                      </Grid.ColumnDefinitions>
                      <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="10" />
                      </Grid.RowDefinitions>
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
@@ -490,7 +344,7 @@
                                 FontSize="24"
                                 VerticalAlignment="Center"
                                 FontWeight="Bold" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -508,7 +362,7 @@
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="2"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=Opacity, Mode=TwoWay}" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -526,7 +380,7 @@
                         <ComboBoxItem Content="Total Items"></ComboBoxItem>
                         <ComboBoxItem Content="Items Missing"></ComboBoxItem>
                      </ComboBox>
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -544,7 +398,7 @@
                         <ComboBoxItem Content="Minified"></ComboBoxItem>
                         <ComboBoxItem Content="Only Buttons"></ComboBoxItem>
                      </ComboBox>
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -557,36 +411,35 @@
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LockOverlayPosition, Mode=TwoWay}" />
                   </Grid>
-                  <!-- Stashtab Overlay -->
-                  <Grid Grid.Column="2"
-                        Grid.Row="1">
+                  <!-- STASHTAB OVERLAY -->
+                  <Grid>
                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="10"></ColumnDefinition>
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
                      </Grid.ColumnDefinitions>
                      <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="10" />
                      </Grid.RowDefinitions>
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
@@ -594,7 +447,7 @@
                                 FontSize="24"
                                 VerticalAlignment="Center"
                                 FontWeight="Bold" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -612,7 +465,7 @@
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="2"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab, Mode=TwoWay}" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -625,7 +478,7 @@
                                        Name="ColorStashBackgroundPicker"
                                        ColorMode="ColorCanvas"
                                        SelectedColorChanged="OnColorStashBackgroundColorChanged" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -638,7 +491,7 @@
                                        Name="ColorStashPicker"
                                        ColorMode="ColorCanvas"
                                        SelectedColorChanged="ColorStashPicker_SelectedColorChanged" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -655,7 +508,7 @@
                         <ComboBoxItem Content="Set by Set" />
                         <ComboBoxItem Content="All Items" />
                      </ComboBox>
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="11"
                                 VerticalAlignment="Center"
@@ -674,7 +527,7 @@
                              AutoToolTipPrecision="1"
                              ValueChanged="OnTabHeaderMarginSliderValueChanged"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabMargin, Mode=TwoWay}" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="13"
                                 VerticalAlignment="Center"
@@ -693,7 +546,7 @@
                              AutoToolTipPrecision="1"
                              ValueChanged="OnTabHeaderWidthSliderValueChanged"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderWidth, Mode=TwoWay}" />
-                     
+
                      <TextBlock Grid.Column="1"
                                 Grid.Row="15"
                                 VerticalAlignment="Center"
@@ -713,27 +566,32 @@
                              ValueChanged="OnTabHeaderGapSliderValueChanged"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderGap, Mode=TwoWay}" />
                   </Grid>
-               </Grid>
+               </StackPanel>
             </TabItem>
          </TabControl>
          <Grid Grid.Column="1"
                Grid.Row="2">
             <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="20" />
-               <ColumnDefinition Width="1*" />
-               <ColumnDefinition Width="1*" />
-               <ColumnDefinition Width="1*" />
-               <ColumnDefinition Width="20" />
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
+               <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                <RowDefinition Height="20" />
                <RowDefinition Height="*" />
-               <RowDefinition Height="auto" />
-               <RowDefinition Height="auto" />
+               <RowDefinition Height="10" />
+               <RowDefinition Height="Auto" />
+               <RowDefinition Height="10" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Column="2"
+
+            <TextBlock Grid.Column="0"
                        Grid.Row="3"
-                       Margin="0,10,0,10"
+                       FontSize="10"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       Text="This product is not affiliated with or endorsed by Grinding Gear Games" />
+            <TextBlock Grid.Column="1"
+                       Grid.Row="3"
                        FontSize="12"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
@@ -741,38 +599,32 @@
                <TextBlock.Inlines>
                   <Run FontFamily="Segoe UI"
                        FontSize="12"
-                       Text="by kosace " />
+                       Text="by kosace" />
                </TextBlock.Inlines>
             </TextBlock>
-            <TextBlock Grid.Column="1"
-                       Grid.Row="3"
-                       FontSize="10"
-                       VerticalAlignment="Center"
-                       TextAlignment="Center"
-                       Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
-
-            <Button x:Name="RunOverlayButton"
-                    Click="OnRunOverlayButtonClicked"
-                    Content="Run Overlay"
-                    Grid.Column="3"
-                    Grid.Row="2" />
-            <Button x:Name="SaveButton"
-                    Click="OnSaveButtonClicked"
-                    Content="Save Settings"
-                    Grid.Column="1"
-                    Grid.Row="2" />
-            <Button x:Name="ResetButton"
-                    Click="OnResetButtonClicked"
-                    Width="100"
-                    Content="Reset Settings"
-                    Grid.Column="2"
-                    Grid.Row="2" />
-            <TextBlock Grid.Column="3"
+            <TextBlock Grid.Column="2"
                        Grid.Row="3"
                        Text="{Binding AppVersionText}"
                        FontSize="12"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center" />
+
+            <Button x:Name="SaveButton"
+                    Click="OnSaveButtonClicked"
+                    Content="Save Settings"
+                    Grid.Column="0"
+                    Grid.Row="1" />
+            <Button x:Name="ResetButton"
+                    Click="OnResetButtonClicked"
+                    Width="100"
+                    Content="Reset Settings"
+                    Grid.Column="1"
+                    Grid.Row="1" />
+            <Button x:Name="RunOverlayButton"
+                    Click="OnRunOverlayButtonClicked"
+                    Content="Run Overlay"
+                    Grid.Column="2"
+                    Grid.Row="1" />
          </Grid>
       </Grid>
    </Border>

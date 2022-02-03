@@ -323,9 +323,6 @@
     <Resource Include="Assets\amulet.png" />
     <Resource Include="Assets\belt.png" />
     <Resource Include="Assets\ring.png" />
-    <Content Include="Res\notificationSound.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

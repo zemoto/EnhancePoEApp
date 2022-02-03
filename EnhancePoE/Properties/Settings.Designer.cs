@@ -289,30 +289,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool Sound {
-            get {
-                return ((bool)(this["Sound"]));
-            }
-            set {
-                this["Sound"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("50")]
-        public int Volume {
-            get {
-                return ((int)(this["Volume"]));
-            }
-            set {
-                this["Volume"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#14FFFFFF")]
         public string StashTabBackgroundColor {
             get {
@@ -500,18 +476,6 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["LockOverlayPosition"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default Sound")]
-        public string ItemPickupSoundFileLocation {
-            get {
-                return ((string)(this["ItemPickupSoundFileLocation"]));
-            }
-            set {
-                this["ItemPickupSoundFileLocation"] = value;
             }
         }
     }
