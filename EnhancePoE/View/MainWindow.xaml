@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:properties="clr-namespace:EnhancePoE.Properties"
+        xmlns:local="clr-namespace:EnhancePoE"
         mc:Ignorable="d"
         FontSize="14"
         Title="Chaos Recipe Enhancer Settings"
@@ -14,7 +15,8 @@
         MouseDown="Window_MouseDown"
         ResizeMode="CanMinimize"
         ShowActivated="True"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        d:DataContext="{d:DesignInstance Type={x:Type local:MainWindow}}">
    <Border BorderBrush="DarkGray"
            BorderThickness="1">
       <Grid Name="MainGrid"
@@ -104,6 +106,7 @@
                               Grid.Column="3"
                               Grid.Row="5"
                               Width="200"
+                              VerticalContentAlignment="Center"
                               FontFamily="{StaticResource PasswordFont}"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=SessionId, Mode=TwoWay}" />
                      <TextBlock Grid.Column="1"
@@ -112,11 +115,25 @@
                                 Text="League:"
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="The league you are playing in." />
-                     <TextBox x:Name="League"
-                              Grid.Column="3"
-                              Grid.Row="7"
-                              Width="200"
-                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}" />
+                     <Grid Grid.Column="3"
+                           Grid.Row="7"
+                           Height="24"
+                           Width="200">
+                        <Grid.ColumnDefinitions>
+                           <ColumnDefinition Width="*" />
+                           <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="LeagueComboBox"
+                                  Grid.Column="0"
+                                  ItemsSource="{Binding LeagueList, Mode=OneWay}"
+                                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}" />
+                        <Button x:Name="RefreshLeaguesButtons"
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                Padding="4,0"
+                                Content="Refresh"
+                                Click="OnRefreshLeaguesButtonClick" />
+                     </Grid>
                   </Grid>
                   <!-- RECIPES -->
                   <Grid Grid.Column="1"

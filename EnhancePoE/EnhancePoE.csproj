@@ -192,6 +192,7 @@
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\ItemSet.cs" />
+    <Compile Include="Model\LeagueGetter.cs" />
     <Compile Include="Model\MouseHook.cs" />
     <Compile Include="Model\RateLimit.cs" />
     <Compile Include="Model\StashTabList.cs" />

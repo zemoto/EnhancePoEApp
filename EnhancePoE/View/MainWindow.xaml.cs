@@ -10,6 +10,7 @@ using EnhancePoE.View;
 using System.IO;
 using System.Reflection;
 using EnhancePoE.Utils;
+using System.Collections.ObjectModel;
 
 namespace EnhancePoE
 {
@@ -39,6 +40,7 @@ namespace EnhancePoE
             }
          }
       }
+
       private Visibility _nameVisible = Visibility.Hidden;
       public Visibility NameVisible
       {
@@ -53,9 +55,12 @@ namespace EnhancePoE
          }
       }
 
-      private bool _closingFromTrayIcon;
+      public ObservableCollection<string> LeagueList { get; } = new ObservableCollection<string>();
 
+      private bool _closingFromTrayIcon;
       public static MainWindow instance;
+
+      private readonly LeagueGetter _leagueGetter = new LeagueGetter();
 
       public MainWindow()
       {
@@ -75,6 +80,7 @@ namespace EnhancePoE
          InitializeColors();
          InitializeTray();
          LoadModeVisibility();
+         LoadLeagueList();
 
          MouseHook.MouseAction += Coordinates.Event;
          SingleInstance.PingedBySecondProcess += ( s, a ) => Dispatcher.Invoke( Show );
@@ -291,6 +297,27 @@ namespace EnhancePoE
          }
       }
 
+      private async void LoadLeagueList()
+      {
+         var selectedLeague = Properties.Settings.Default.League;
+         LeagueComboBox.IsEnabled = false;
+         LeagueList.Clear();
+
+         var leagues = await _leagueGetter.GetLeaguesAsync();
+         foreach( var league in leagues )
+         {
+            LeagueList.Add( league );
+         }
+
+         if ( LeagueList.Count > 0 )
+         {
+            LeagueComboBox.IsEnabled = true;
+            LeagueComboBox.SelectedIndex = Math.Max( LeagueList.IndexOf( selectedLeague ), 0 );
+         }
+      }
+
+      private void OnRefreshLeaguesButtonClick( object sender, RoutedEventArgs e ) => LoadLeagueList();
+
       private void TabHeaderGapSlider_ValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
       {
          stashTabOverlay.TabHeaderGap = new Thickness( Properties.Settings.Default.TabHeaderGap, 0, Properties.Settings.Default.TabHeaderGap, 0 );
@@ -347,6 +374,7 @@ namespace EnhancePoE
          switch ( MessageBox.Show( "This will reset all of your settings!", "Reset Settings", MessageBoxButton.YesNo ) )
          {
             case MessageBoxResult.Yes:
+               LeagueComboBox.SelectedIndex = 0;
                Properties.Settings.Default.Reset();
                break;
             case MessageBoxResult.No:
