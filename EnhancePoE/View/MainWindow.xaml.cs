@@ -68,7 +68,7 @@ namespace EnhancePoE
          }
          else
          {
-            Data.Player.Open( new Uri( Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), @"Sounds\notificationSound.mp3" ) ) );
+            Data.Player.Open( new Uri( Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), @"Res\notificationSound.mp3" ) ) );
          }
 
          InitializeColors();
@@ -101,7 +101,7 @@ namespace EnhancePoE
          var contextMenu = new System.Windows.Forms.ContextMenu();
          _ = contextMenu.MenuItems.Add( menuItem );
 
-         _trayIcon.Icon = new System.Drawing.Icon( "coin.ico" );
+         _trayIcon.Icon = new System.Drawing.Icon( @"Res\coin.ico" );
          _trayIcon.Visible = true;
          _trayIcon.ContextMenu = contextMenu;
          _trayIcon.MouseClick += ( s, a ) =>

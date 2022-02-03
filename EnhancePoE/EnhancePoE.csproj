@@ -66,7 +66,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>coin.ico</ApplicationIcon>
+    <ApplicationIcon>Res\coin.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -317,13 +317,13 @@
     <None Include="Resources\password.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="coin.ico">
+    <None Include="Res\coin.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Resource Include="Assets\amulet.png" />
     <Resource Include="Assets\belt.png" />
     <Resource Include="Assets\ring.png" />
-    <Content Include="Sounds\notificationSound.mp3">
+    <Content Include="Res\notificationSound.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
