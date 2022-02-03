@@ -193,7 +193,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\AutoFetch.cs" />
     <Compile Include="Model\Cell.cs" />
     <Compile Include="Model\Coordinates.cs" />
     <Compile Include="Model\ItemSet.cs" />

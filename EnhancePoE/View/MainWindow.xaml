@@ -316,19 +316,6 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="5"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="5"></RowDefinition>
-                        <RowDefinition Height="25"></RowDefinition>
-                        <RowDefinition Height="10"></RowDefinition>
                      </Grid.RowDefinitions>
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
@@ -394,74 +381,12 @@
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
-                                Text="Fetch on new Map:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Automatically fetches when you join a new Zone (Hideout excluded). REOPEN the overlay to take effect." />
-                     <CheckBox x:Name="AutoFetchCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="9"
-                               VerticalAlignment="Center"
-                               Checked="AutoFetchCheckBox_Checked"
-                               Unchecked="AutoFetchCheckBox_Unchecked"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=AutoFetch, Mode=TwoWay}" />
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="11"
-                                VerticalAlignment="Center"
-                                Text="Log File Location:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The location of you PoE log file (Client.txt). The standard path is: C:/Programs/Grinding Gear Games/Path of Exile/logs/Client.txt." />
-                     <Button Grid.Column="3"
-                             Grid.Row="11"
-                             x:Name="LogLocationDialog"
-                             Width="200"
-                             Click="LogLocationDialog_Click"
-                             ToolTipService.InitialShowDelay="50"
-                             ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=LogLocation, Mode=TwoWay}"
-                             Content="{Binding Source={x:Static properties:Settings.Default}, Path=LogLocation, Mode=TwoWay}"
-                             HorizontalContentAlignment="Left">
-                        <Button.Style>
-                           <Style TargetType="Button">
-                              <Setter Property="Background"
-                                      Value="Transparent" />
-                              <Style.Triggers>
-                                 <Trigger Property="IsMouseOver"
-                                          Value="True">
-                                    <Setter Property="Background"
-                                            Value="Transparent" />
-                                 </Trigger>
-                              </Style.Triggers>
-                           </Style>
-                        </Button.Style>
-                     </Button>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="13"
-                                VerticalAlignment="Center"
-                                Text="Language:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Fetch on new Map only works in the correct language. Set it to the same as your PoE client." />
-                     <ComboBox Grid.Column="3"
-                               Grid.Row="13"
-                               Width="200"
-                               VerticalContentAlignment="Center"
-                               Name="LanguageComboBox"
-                               SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=Language, Mode=TwoWay}">
-                        <ComboBoxItem Content="English"></ComboBoxItem>
-                        <ComboBoxItem Content="French"></ComboBoxItem>
-                        <ComboBoxItem Content="German"></ComboBoxItem>
-                        <ComboBoxItem Content="Portuguese"></ComboBoxItem>
-                        <ComboBoxItem Content="Russian"></ComboBoxItem>
-                        <ComboBoxItem Content="Spanish"></ComboBoxItem>
-                        <ComboBoxItem Content="Chinese"></ComboBoxItem>
-                     </ComboBox>
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="15"
-                                VerticalAlignment="Center"
                                 Text="Close to Tray:"
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="Minimizes to Tray when closing the application." />
                      <CheckBox x:Name="hideOnClose"
                                Grid.Column="3"
-                               Grid.Row="15"
+                               Grid.Row="9"
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
                   </Grid>
@@ -666,7 +591,7 @@
                                        Width="200"
                                        Name="ColorStashPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorStashPicker_SelectedColorChanged"></xctk:ColorPicker>
+                                       SelectedColorChanged="ColorStashPicker_SelectedColorChanged" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"

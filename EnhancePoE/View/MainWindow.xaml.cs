@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -131,11 +131,6 @@ namespace EnhancePoE
             _trayIcon.Visible = false;
             MouseHook.Stop();
             Properties.Settings.Default.Save();
-
-            if ( LogWatcher.WorkerThread?.IsAlive == true )
-            {
-               LogWatcher.StopWatchingLogFile();
-            }
             Application.Current.Shutdown();
          }
       }
@@ -213,8 +208,6 @@ namespace EnhancePoE
          string accName = Properties.Settings.Default.accName;
          string sessId = Properties.Settings.Default.SessionId;
          string league = Properties.Settings.Default.League;
-         string logLocation = Properties.Settings.Default.LogLocation;
-         bool autoFetch = Properties.Settings.Default.AutoFetch;
 
          var missingSettings = new List<string>();
          string errorMessage = "Please add: \n";
@@ -230,10 +223,6 @@ namespace EnhancePoE
          if ( league == "" )
          {
             missingSettings.Add( "- League \n" );
-         }
-         if ( autoFetch && logLocation == "" )
-         {
-            missingSettings.Add( "- Log File Location \n" );
          }
          if ( Properties.Settings.Default.StashtabMode == 0 )
          {
@@ -368,33 +357,6 @@ namespace EnhancePoE
       private void RegalRecipeCheckBox_Checked( object sender, RoutedEventArgs e )
       {
          Properties.Settings.Default.ChaosRecipe = false;
-      }
-
-      private void LogLocationDialog_Click( object sender, RoutedEventArgs e )
-      {
-         var open = new System.Windows.Forms.OpenFileDialog
-         {
-            Filter = "Text|Client.txt"
-         };
-         var res = open.ShowDialog();
-         if ( res == System.Windows.Forms.DialogResult.OK )
-         {
-            string filename = open.FileName;
-            Properties.Settings.Default.LogLocation = filename;
-            LogLocationDialog.Content = filename;
-         }
-      }
-
-      private void AutoFetchCheckBox_Checked( object sender, RoutedEventArgs e )
-      {
-      }
-
-      private void AutoFetchCheckBox_Unchecked( object sender, RoutedEventArgs e )
-      {
-         if ( LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive )
-         {
-            LogWatcher.WorkerThread.Abort();
-         }
       }
 
       private void ShowNumbersComboBox_SelectionChanged( object sender, SelectionChangedEventArgs e )

@@ -22,8 +22,6 @@ namespace EnhancePoE
 
       private static readonly int fetchCooldown = 30;
 
-      public static LogWatcher Watcher { get; set; }
-
       public bool IsOpen { get; set; }
 
       private string _warningMessage;
@@ -522,21 +520,12 @@ namespace EnhancePoE
       public new virtual void Hide()
       {
          IsOpen = false;
-         if ( LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive )
-         {
-            LogWatcher.StopWatchingLogFile();
-         }
          base.Hide();
       }
 
       public new virtual void Show()
       {
          IsOpen = true;
-         if ( Properties.Settings.Default.AutoFetch )
-         {
-            Watcher = new LogWatcher();
-         }
-
          base.Show();
       }
 
@@ -554,6 +543,5 @@ namespace EnhancePoE
             handler( this, new PropertyChangedEventArgs( propertyName ) );
       }
       #endregion
-
    }
 }
