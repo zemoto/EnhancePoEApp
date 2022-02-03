@@ -107,7 +107,12 @@ namespace EnhancePoE
             Visible = true,
             ContextMenu = contextMenu
          };
-         _trayIcon.MouseClick += ( s, a ) => Show();
+         _trayIcon.MouseClick += ( s, a ) =>
+         {
+            Show();
+            _ = Activate();
+            WindowState = WindowState.Normal;
+         };
       }
 
       private void OnTrayItemMenuClicked( object Sender, EventArgs e )
