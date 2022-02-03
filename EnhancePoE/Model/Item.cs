@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -56,24 +55,24 @@ namespace EnhancePoE
 
    public class PropertiesList
    {
-      public string Name { get; set; }
-      public int DisplayMode { get; set; }
-      public int Type { get; set; }
+      public string name { get; set; }
+      public int displayMode { get; set; }
+      public int type { get; set; }
    }
 
    public class ItemList
    {
-      public List<Item> Items { get; set; }
-      public bool QuadLayout { get; set; }
+      public List<Item> items { get; set; }
+      public bool quadLayout { get; set; }
    }
 
    public class Influence
    {
-      public bool Shaper { get; set; }
-      public bool Elder { get; set; }
-      public bool Crusader { get; set; }
-      public bool Redeemer { get; set; }
-      public bool Hunter { get; set; }
-      public bool Warlord { get; set; }
+      public bool shaper { get; set; }
+      public bool elder { get; set; }
+      public bool crusader { get; set; }
+      public bool redeemer { get; set; }
+      public bool hunter { get; set; }
+      public bool warlord { get; set; }
    }
 }

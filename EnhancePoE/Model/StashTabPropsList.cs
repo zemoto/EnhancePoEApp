@@ -5,11 +5,11 @@ namespace EnhancePoE.Model
    // property names from api
    public class StashTabProps
    {
-      public string N { get; set; }
-      public int I { get; set; }
+      public string n { get; set; }
+      public int i { get; set; }
    }
    public class StashTabPropsList
    {
-      public List<StashTabProps> Tabs { get; set; }
+      public List<StashTabProps> tabs { get; set; }
    }
 }

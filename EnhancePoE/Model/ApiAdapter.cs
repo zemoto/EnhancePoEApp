@@ -54,14 +54,14 @@ namespace EnhancePoE
             StashTabList.GetStashTabIndices();
             if ( PropsList != null )
             {
-               foreach ( var p in PropsList.Tabs )
+               foreach ( var p in PropsList.tabs )
                {
                   for ( int i = StashTabList.StashTabIndices.Count - 1; i > -1; i-- )
                   {
-                     if ( StashTabList.StashTabIndices[i] == p.I )
+                     if ( StashTabList.StashTabIndices[i] == p.i )
                      {
                         StashTabList.StashTabIndices.RemoveAt( i );
-                        ret.Add( new StashTab( p.N, p.I ) );
+                        ret.Add( new StashTab( p.n, p.i ) );
                      }
                   }
                }
@@ -75,11 +75,11 @@ namespace EnhancePoE
             if ( PropsList != null )
             {
                string stashName = Properties.Settings.Default.StashTabName;
-               foreach ( var p in PropsList.Tabs )
+               foreach ( var p in PropsList.tabs )
                {
-                  if ( p.N.StartsWith( stashName ) )
+                  if ( p.n.StartsWith( stashName ) )
                   {
-                     ret.Add( new StashTab( p.N, p.I ) );
+                     ret.Add( new StashTab( p.n, p.i ) );
                   }
                }
                StashTabList.StashTabs = ret;
@@ -101,11 +101,11 @@ namespace EnhancePoE
       {
          foreach ( var s in StashTabList.StashTabs )
          {
-            foreach ( var p in PropsList.Tabs )
+            foreach ( var p in PropsList.tabs )
             {
-               if ( s.TabIndex == p.I )
+               if ( s.TabIndex == p.i )
                {
-                  s.TabName = p.N;
+                  s.TabName = p.n;
                }
             }
          }
@@ -252,8 +252,8 @@ namespace EnhancePoE
                            // deserialize response
                            string resContent = await content.ReadAsStringAsync();
                            var deserializedContent = JsonSerializer.Deserialize<ItemList>( resContent );
-                           i.ItemList = deserializedContent.Items;
-                           i.Quad = deserializedContent.QuadLayout;
+                           i.ItemList = deserializedContent.items;
+                           i.Quad = deserializedContent.quadLayout;
 
                            i.CleanItemList();
                         }

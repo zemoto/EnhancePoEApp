@@ -137,12 +137,12 @@ namespace EnhancePoE.Model
             //exalted recipe every ilvl allowed, same bases, sort in itemlists
             if ( Properties.Settings.Default.ExaltedRecipe && ItemList[i].influences != null )
             {
-               if ( ItemList[i].influences.Shaper ) { ItemListShaper.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.Elder ) { ItemListElder.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.Warlord ) { ItemListWarlord.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.Crusader ) { ItemListCrusader.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.Hunter ) { ItemListHunter.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.Redeemer ) { ItemListRedeemer.Add( ItemList[i] ); }
+               if ( ItemList[i].influences.shaper ) { ItemListShaper.Add( ItemList[i] ); }
+               else if ( ItemList[i].influences.elder ) { ItemListElder.Add( ItemList[i] ); }
+               else if ( ItemList[i].influences.warlord ) { ItemListWarlord.Add( ItemList[i] ); }
+               else if ( ItemList[i].influences.crusader ) { ItemListCrusader.Add( ItemList[i] ); }
+               else if ( ItemList[i].influences.hunter ) { ItemListHunter.Add( ItemList[i] ); }
+               else if ( ItemList[i].influences.redeemer ) { ItemListRedeemer.Add( ItemList[i] ); }
 
                ItemList.RemoveAt( i );
                continue;
