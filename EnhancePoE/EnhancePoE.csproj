@@ -258,14 +258,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\HotkeyEditorControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\HotkeyWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -283,15 +275,6 @@
       <DependentUpon>ChaosRecipeEnhancer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Data.cs" />
-    <Compile Include="Model\GlobalHotkey.cs" />
-    <Compile Include="Model\Hotkey.cs" />
-    <Compile Include="UserControls\HotkeyEditorControl.xaml.cs">
-      <DependentUpon>HotkeyEditorControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Model\HotkeysManager.cs" />
-    <Compile Include="View\HotkeyWindow.xaml.cs">
-      <DependentUpon>HotkeyWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Model\Item.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

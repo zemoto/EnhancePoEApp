@@ -23,12 +23,6 @@
     <Setting Name="Opacity" Type="System.Single" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="HotkeyToggle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
-    </Setting>
-    <Setting Name="HotkeyRefresh" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
-    </Setting>
     <Setting Name="Sets" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -52,9 +46,6 @@
     </Setting>
     <Setting Name="League" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="HotkeyStashTab" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
     <Setting Name="TopStashTabOverlay" Type="System.Double" Scope="User">
       <Value Profile="(Default)">74</Value>
@@ -190,9 +181,6 @@
     </Setting>
     <Setting Name="FilterChangeSoundFileLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)">Default Sound</Value>
-    </Setting>
-    <Setting Name="HotkeyReloadFilter" Type="System.String" Scope="User">
-      <Value Profile="(Default)">&lt; not set &gt;</Value>
     </Setting>
   </Settings>
 </SettingsFile>

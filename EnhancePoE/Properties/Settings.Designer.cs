@@ -12,7 +12,7 @@ namespace EnhancePoE.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -109,30 +109,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
-        public string HotkeyToggle {
-            get {
-                return ((string)(this["HotkeyToggle"]));
-            }
-            set {
-                this["HotkeyToggle"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
-        public string HotkeyRefresh {
-            get {
-                return ((string)(this["HotkeyRefresh"]));
-            }
-            set {
-                this["HotkeyRefresh"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int Sets {
             get {
@@ -224,18 +200,6 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["League"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
-        public string HotkeyStashTab {
-            get {
-                return ((string)(this["HotkeyStashTab"]));
-            }
-            set {
-                this["HotkeyStashTab"] = value;
             }
         }
         
@@ -776,18 +740,6 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["FilterChangeSoundFileLocation"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("< not set >")]
-        public string HotkeyReloadFilter {
-            get {
-                return ((string)(this["HotkeyReloadFilter"]));
-            }
-            set {
-                this["HotkeyReloadFilter"] = value;
             }
         }
     }

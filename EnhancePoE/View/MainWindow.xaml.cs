@@ -19,7 +19,6 @@ namespace EnhancePoE
       public static string AppVersionText { get; set; } = "v." + appVersion;
 
       private System.Windows.Forms.NotifyIcon _trayIcon;
-      private IContainer components;
 
       public static bool SettingsComplete { get; set; }
 
@@ -93,22 +92,12 @@ namespace EnhancePoE
          }
 
          InitializeColors();
-         InitializeHotkeys();
          InitializeTray();
          LoadModeVisibility();
          // add Action to MouseHook
          MouseHook.MouseAction += Coordinates.Event;
 
          SingleInstance.PingedBySecondProcess += ( s, a ) => Dispatcher.Invoke( Show );
-      }
-
-      private void InitializeHotkeys()
-      {
-         HotkeysManager.SetupSystemHook();
-         HotkeysManager.GetRefreshHotkey();
-         HotkeysManager.GetToggleHotkey();
-         HotkeysManager.GetStashTabHotkey();
-         AddAllHotkeys();
       }
 
       private void InitializeColors()
@@ -191,9 +180,9 @@ namespace EnhancePoE
          {
             _trayIcon.Visible = false;
             MouseHook.Stop();
-            HotkeysManager.ShutdownSystemHook();
             Properties.Settings.Default.Save();
-            if ( LogWatcher.WorkerThread != null && LogWatcher.WorkerThread.IsAlive )
+
+            if ( LogWatcher.WorkerThread?.IsAlive == true )
             {
                LogWatcher.StopWatchingLogFile();
             }
@@ -241,29 +230,6 @@ namespace EnhancePoE
                stashTabOverlay.Show();
             }
          }
-      }
-
-      public void AddAllHotkeys()
-      {
-         if ( Properties.Settings.Default.HotkeyRefresh != "< not set >" )
-         {
-            HotkeysManager.AddHotkey( HotkeysManager.refreshModifier, HotkeysManager.refreshKey, overlay.RunFetching );
-         }
-         if ( Properties.Settings.Default.HotkeyToggle != "< not set >" )
-         {
-            HotkeysManager.AddHotkey( HotkeysManager.toggleModifier, HotkeysManager.toggleKey, RunOverlay );
-         }
-         if ( Properties.Settings.Default.HotkeyStashTab != "< not set >" )
-         {
-            HotkeysManager.AddHotkey( HotkeysManager.stashTabModifier, HotkeysManager.stashTabKey, RunStashTabOverlay );
-         }
-      }
-
-      public void RemoveAllHotkeys()
-      {
-         HotkeysManager.RemoveRefreshHotkey();
-         HotkeysManager.RemoveStashTabHotkey();
-         HotkeysManager.RemoveToggleHotkey();
       }
 
       private string GetSoundFilePath()
@@ -416,78 +382,6 @@ namespace EnhancePoE
       private void ColorStashBackgroundPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
       {
          Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
-      }
-
-      private void CustomHotkeyToggle_Click( object sender, RoutedEventArgs e )
-      {
-         bool isWindowOpen = false;
-         foreach ( Window w in Application.Current.Windows )
-         {
-            if ( w is HotkeyWindow )
-            {
-               isWindowOpen = true;
-            }
-         }
-
-         if ( !isWindowOpen )
-         {
-            var hotkeyDialog = new HotkeyWindow( this, "toggle" );
-            hotkeyDialog.Show();
-         }
-      }
-
-      private void RefreshHotkey_Click( object sender, RoutedEventArgs e )
-      {
-         bool isWindowOpen = false;
-         foreach ( Window w in Application.Current.Windows )
-         {
-            if ( w is HotkeyWindow )
-            {
-               isWindowOpen = true;
-            }
-         }
-
-         if ( !isWindowOpen )
-         {
-            var hotkeyDialog = new HotkeyWindow( this, "refresh" );
-            hotkeyDialog.Show();
-         }
-      }
-
-      private void StashTabHotkey_Click( object sender, RoutedEventArgs e )
-      {
-         bool isWindowOpen = false;
-         foreach ( Window w in Application.Current.Windows )
-         {
-            if ( w is HotkeyWindow )
-            {
-               isWindowOpen = true;
-            }
-         }
-
-         if ( !isWindowOpen )
-         {
-            var hotkeyDialog = new HotkeyWindow( this, "stashtab" );
-            hotkeyDialog.Show();
-         }
-      }
-
-      private void ReloadFilterHotkey_Click( object sender, RoutedEventArgs e )
-      {
-         bool isWindowOpen = false;
-         foreach ( Window w in Application.Current.Windows )
-         {
-            if ( w is HotkeyWindow )
-            {
-               isWindowOpen = true;
-            }
-         }
-
-         if ( !isWindowOpen )
-         {
-            var hotkeyDialog = new HotkeyWindow( this, "reloadFilter" );
-            hotkeyDialog.Show();
-         }
       }
 
       private void LootfilterFileDialog_Click( object sender, RoutedEventArgs e )
