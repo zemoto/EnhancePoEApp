@@ -26,8 +26,6 @@ namespace EnhancePoE
 
       public static StashTabWindow stashTabOverlay = new StashTabWindow();
 
-      private static string RunButtonContent { get; set; } = "Run Overlay";
-
       private Visibility _indicesVisible = Visibility.Hidden;
       public Visibility IndicesVisible
       {
@@ -37,7 +35,7 @@ namespace EnhancePoE
             if ( _indicesVisible != value )
             {
                _indicesVisible = value;
-               OnPropertyChanged( "IndicesVisible" );
+               OnPropertyChanged( nameof( IndicesVisible ) );
             }
          }
       }
@@ -50,7 +48,7 @@ namespace EnhancePoE
             if ( _nameVisible != value )
             {
                _nameVisible = value;
-               OnPropertyChanged( "NameVisible" );
+               OnPropertyChanged( nameof( NameVisible ) );
             }
          }
       }

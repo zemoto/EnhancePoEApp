@@ -24,7 +24,7 @@ namespace EnhancePoE.View
             if ( value != _tabHeaderGap )
             {
                _tabHeaderGap = value;
-               OnPropertyChanged( "TabHeaderGap" );
+               OnPropertyChanged( nameof( TabHeaderGap ) );
             }
          }
       }
@@ -38,7 +38,7 @@ namespace EnhancePoE.View
             if ( value != _tabMargin )
             {
                _tabMargin = value;
-               OnPropertyChanged( "TabMargin" );
+               OnPropertyChanged( nameof( TabMargin ) );
             }
          }
       }
@@ -50,7 +50,7 @@ namespace EnhancePoE.View
          set
          {
             _stashBorderVisibility = value;
-            OnPropertyChanged( "StashBorderVisibility" );
+            OnPropertyChanged( nameof( StashBorderVisibility ) );
          }
       }
 
@@ -192,7 +192,7 @@ namespace EnhancePoE.View
          // Get this window's handle
          var hwnd = new WindowInteropHelper( this ).Handle;
 
-         Win32.makeTransparent( hwnd );
+         Win32.MakeTransparent( hwnd );
       }
 
       public void Transparentize()
@@ -200,7 +200,7 @@ namespace EnhancePoE.View
          Trace.WriteLine( "make transparent" );
          var hwnd = new WindowInteropHelper( this ).Handle;
 
-         Win32.makeTransparent( hwnd );
+         Win32.MakeTransparent( hwnd );
       }
 
       public void Normalize()
@@ -208,7 +208,7 @@ namespace EnhancePoE.View
          Trace.WriteLine( "make normal" );
          var hwnd = new WindowInteropHelper( this ).Handle;
 
-         Win32.makeNormal( hwnd );
+         Win32.MakeNormal( hwnd );
       }
 
       protected override void OnClosing( CancelEventArgs e )

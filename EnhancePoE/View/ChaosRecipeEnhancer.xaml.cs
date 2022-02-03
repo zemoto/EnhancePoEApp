@@ -31,7 +31,7 @@ namespace EnhancePoE
          set
          {
             _warningMessage = value;
-            OnPropertyChanged( "WarningMessage" );
+            OnPropertyChanged( nameof( WarningMessage ) );
          }
       }
 
@@ -42,7 +42,7 @@ namespace EnhancePoE
          set
          {
             _warningMessageVisibility = value;
-            OnPropertyChanged( "WarningMessageVisibility" );
+            OnPropertyChanged( nameof( WarningMessageVisibility ) );
          }
       }
       private double _shadowOpacity;
@@ -52,7 +52,7 @@ namespace EnhancePoE
          set
          {
             _shadowOpacity = value;
-            OnPropertyChanged( "ShadowOpacity" );
+            OnPropertyChanged( nameof( ShadowOpacity ) );
          }
       }
 
@@ -63,7 +63,7 @@ namespace EnhancePoE
          set
          {
             _fullSetsText = value;
-            OnPropertyChanged( "FullSetsText" );
+            OnPropertyChanged( nameof( FullSetsText ) );
          }
       }
 
@@ -74,7 +74,7 @@ namespace EnhancePoE
          set
          {
             _isIndeterminate = value;
-            OnPropertyChanged( "IsIndeterminate" );
+            OnPropertyChanged( nameof( IsIndeterminate ) );
          }
       }
 
@@ -85,7 +85,7 @@ namespace EnhancePoE
          set
          {
             _openStashOverlayButtonContent = value;
-            OnPropertyChanged( "OpenStashOverlayButtonContent" );
+            OnPropertyChanged( nameof( OpenStashOverlayButtonContent ) );
          }
       }
 
@@ -96,7 +96,7 @@ namespace EnhancePoE
          set
          {
             _helmetOpacity = value;
-            OnPropertyChanged( "HelmetOpacity" );
+            OnPropertyChanged( nameof( HelmetOpacity ) );
          }
       }
       private double _bootsOpacity = activatedOpacity;
@@ -106,7 +106,7 @@ namespace EnhancePoE
          set
          {
             _bootsOpacity = value;
-            OnPropertyChanged( "BootsOpacity" );
+            OnPropertyChanged( nameof( BootsOpacity ) );
          }
       }
       private double _glovesOpacity = activatedOpacity;
@@ -116,7 +116,7 @@ namespace EnhancePoE
          set
          {
             _glovesOpacity = value;
-            OnPropertyChanged( "GlovesOpacity" );
+            OnPropertyChanged( nameof( GlovesOpacity ) );
          }
       }
       private double _chestsOpacity = activatedOpacity;
@@ -126,7 +126,7 @@ namespace EnhancePoE
          set
          {
             _chestsOpacity = value;
-            OnPropertyChanged( "ChestsOpacity" );
+            OnPropertyChanged( nameof( ChestsOpacity ) );
          }
       }
       private double _weaponsOpacity = activatedOpacity;
@@ -136,7 +136,7 @@ namespace EnhancePoE
          set
          {
             _weaponsOpacity = value;
-            OnPropertyChanged( "WeaponsOpacity" );
+            OnPropertyChanged( nameof( WeaponsOpacity ) );
          }
       }
       private double _ringsOpacity = activatedOpacity;
@@ -146,7 +146,7 @@ namespace EnhancePoE
          set
          {
             _ringsOpacity = value;
-            OnPropertyChanged( "RingsOpacity" );
+            OnPropertyChanged( nameof( RingsOpacity ) );
          }
       }
       private double _amuletsOpacity = activatedOpacity;
@@ -156,7 +156,7 @@ namespace EnhancePoE
          set
          {
             _amuletsOpacity = value;
-            OnPropertyChanged( "AmuletsOpacity" );
+            OnPropertyChanged( nameof( AmuletsOpacity ) );
          }
       }
       private double _beltsOpacity = activatedOpacity;
@@ -166,7 +166,7 @@ namespace EnhancePoE
          set
          {
             _beltsOpacity = value;
-            OnPropertyChanged( "BeltsOpacity" );
+            OnPropertyChanged( nameof( BeltsOpacity ) );
          }
       }
 
@@ -177,7 +177,7 @@ namespace EnhancePoE
          set
          {
             _mainOverlayContent = value;
-            OnPropertyChanged( "MainOverlayContent" );
+            OnPropertyChanged( nameof( MainOverlayContent ) );
          }
       }
 
@@ -188,7 +188,7 @@ namespace EnhancePoE
          set
          {
             _fetchButtonColor = value;
-            OnPropertyChanged( "FetchButtonColor" );
+            OnPropertyChanged( nameof( FetchButtonColor ) );
          }
       }
 
@@ -199,7 +199,7 @@ namespace EnhancePoE
          set
          {
             _ringsAmount = value;
-            OnPropertyChanged( "RingsAmount" );
+            OnPropertyChanged( nameof( RingsAmount ) );
          }
       }
       private int _amuletsAmount;
@@ -209,7 +209,7 @@ namespace EnhancePoE
          set
          {
             _amuletsAmount = value;
-            OnPropertyChanged( "AmuletsAmount" );
+            OnPropertyChanged( nameof( AmuletsAmount ) );
          }
       }
       private int _beltsAmount;
@@ -219,7 +219,7 @@ namespace EnhancePoE
          set
          {
             _beltsAmount = value;
-            OnPropertyChanged( "BeltsAmount" );
+            OnPropertyChanged( nameof( BeltsAmount ) );
          }
       }
       private int _chestsAmount;
@@ -229,7 +229,7 @@ namespace EnhancePoE
          set
          {
             _chestsAmount = value;
-            OnPropertyChanged( "ChestsAmount" );
+            OnPropertyChanged( nameof( ChestsAmount ) );
          }
       }
       private int _weaponsAmount;
@@ -239,7 +239,7 @@ namespace EnhancePoE
          set
          {
             _weaponsAmount = value;
-            OnPropertyChanged( "WeaponsAmount" );
+            OnPropertyChanged( nameof( WeaponsAmount ) );
          }
       }
       private int _glovesAmount;
@@ -249,7 +249,7 @@ namespace EnhancePoE
          set
          {
             _glovesAmount = value;
-            OnPropertyChanged( "GlovesAmount" );
+            OnPropertyChanged( nameof( GlovesAmount ) );
          }
       }
       private int _helmetsAmount;
@@ -259,7 +259,7 @@ namespace EnhancePoE
          set
          {
             _helmetsAmount = value;
-            OnPropertyChanged( "HelmetsAmount" );
+            OnPropertyChanged( nameof( HelmetsAmount ) );
          }
       }
       private int _bootsAmount;
@@ -269,7 +269,7 @@ namespace EnhancePoE
          set
          {
             _bootsAmount = value;
-            OnPropertyChanged( "BootsAmount" );
+            OnPropertyChanged( nameof( BootsAmount ) );
          }
       }
 
@@ -280,7 +280,7 @@ namespace EnhancePoE
          set
          {
             _amountsVisibility = value;
-            OnPropertyChanged( "AmountsVisibility" );
+            OnPropertyChanged( nameof( AmountsVisibility ) );
          }
       }
 
@@ -291,7 +291,7 @@ namespace EnhancePoE
          set
          {
             _fetchButtonEnabled = value;
-            OnPropertyChanged( "FetchButtonEnabled" );
+            OnPropertyChanged( nameof( FetchButtonEnabled ) );
          }
       }
 

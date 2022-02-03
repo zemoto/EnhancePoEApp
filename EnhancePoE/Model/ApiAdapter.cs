@@ -12,7 +12,7 @@ using System.Text.Json;
 
 namespace EnhancePoE
 {
-   public class ApiAdapter
+   public static class ApiAdapter
    {
       public static bool IsFetching { get; set; }
       private static StashTabPropsList PropsList { get; set; }
@@ -26,10 +26,6 @@ namespace EnhancePoE
          if ( Properties.Settings.Default.accName != ""
              && Properties.Settings.Default.League != "" )
          {
-            //ChaosRecipeEnhancer.aTimer.Enabled = false;
-            //Trace.WriteLine("stopping timer");
-            //Trace.WriteLine(ChaosRecipeEnhancer.aTimer.Interval);
-            //Trace.WriteLine(ChaosRecipeEnhancer.aTimer.)
             string accName = Properties.Settings.Default.accName.Trim();
             string league = Properties.Settings.Default.League.Trim();
 
@@ -39,8 +35,6 @@ namespace EnhancePoE
                GenerateStashtabUris( accName, league );
                return true;
             }
-
-            // https://www.pathofexile.com/character-window/get-stash-items?accountName=kosace&tabIndex=0&league=Heist
          }
          else
          {
