@@ -80,7 +80,7 @@ namespace EnhancePoE.View
 
          IsOpen = false;
          IsEditing = false;
-         MainWindow.overlay.OpenStashOverlayButtonContent = "Stash";
+         MainWindow.Overlay.OpenStashOverlayButtonContent = "Stash";
 
          base.Hide();
       }
@@ -148,7 +148,7 @@ namespace EnhancePoE.View
                }
             }
 
-            MainWindow.overlay.OpenStashOverlayButtonContent = "Hide";
+            MainWindow.Overlay.OpenStashOverlayButtonContent = "Hide";
 
             MouseHook.Start();
             base.Show();
@@ -217,7 +217,7 @@ namespace EnhancePoE.View
 
       public void HandleEditButton()
       {
-         if ( MainWindow.stashTabOverlay.IsEditing )
+         if ( MainWindow.StashTabOverlay.IsEditing )
          {
             StopEditMode();
          }

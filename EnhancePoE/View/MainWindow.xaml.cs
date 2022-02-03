@@ -16,16 +16,11 @@ namespace EnhancePoE
 {
    public partial class MainWindow : Window, INotifyPropertyChanged
    {
-      private static readonly string appVersion = "1.2.6.0";
-      public static string AppVersionText { get; set; } = "v." + appVersion;
+      public static MainWindow Instance { get; private set; }
+      public static ChaosRecipeEnhancer Overlay { get; private set; } = new ChaosRecipeEnhancer();
+      public static StashTabWindow StashTabOverlay { get; private set; } = new StashTabWindow();
 
-      private System.Windows.Forms.NotifyIcon _trayIcon;
-
-      public static bool SettingsComplete { get; set; }
-
-      public static ChaosRecipeEnhancer overlay = new ChaosRecipeEnhancer();
-
-      public static StashTabWindow stashTabOverlay = new StashTabWindow();
+      public string AppVersionText { get; } = "v.1.2.6.0";
 
       private Visibility _indicesVisible = Visibility.Hidden;
       public Visibility IndicesVisible
@@ -58,23 +53,23 @@ namespace EnhancePoE
       public ObservableCollection<string> LeagueList { get; } = new ObservableCollection<string>();
 
       private bool _closingFromTrayIcon;
-      public static MainWindow instance;
 
       private readonly LeagueGetter _leagueGetter = new LeagueGetter();
+      private readonly System.Windows.Forms.NotifyIcon _trayIcon = new System.Windows.Forms.NotifyIcon();
 
       public MainWindow()
       {
-         instance = this;
+         Instance = this;
          InitializeComponent();
          DataContext = this;
 
-         if ( !string.IsNullOrEmpty( Properties.Settings.Default.ItemPickupSoundFileLocation ) && !ItemPickupLocationDialog.Content.Equals( "Default Sound" ) )
+         if ( !string.IsNullOrEmpty( Properties.Settings.Default.ItemPickupSoundFileLocation ) && !ItemPickupLocationButton.Content.Equals( "Default Sound" ) )
          {
-            Data.PlayerSet.Open( new Uri( Properties.Settings.Default.ItemPickupSoundFileLocation ) );
+            Data.Player.Open( new Uri( Properties.Settings.Default.ItemPickupSoundFileLocation ) );
          }
          else
          {
-            Data.PlayerSet.Open( new Uri( Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), @"Sounds\itemsPickedUp.mp3" ) ) );
+            Data.Player.Open( new Uri( Path.Combine( Path.GetDirectoryName( Assembly.GetExecutingAssembly().Location ), @"Sounds\notificationSound.mp3" ) ) );
          }
 
          InitializeColors();
@@ -107,12 +102,9 @@ namespace EnhancePoE
          var contextMenu = new System.Windows.Forms.ContextMenu();
          _ = contextMenu.MenuItems.Add( menuItem );
 
-         _trayIcon = new System.Windows.Forms.NotifyIcon
-         {
-            Icon = Properties.Resources.coin,
-            Visible = true,
-            ContextMenu = contextMenu
-         };
+         _trayIcon.Icon = new System.Drawing.Icon( "coin.ico" );
+         _trayIcon.Visible = true;
+         _trayIcon.ContextMenu = contextMenu;
          _trayIcon.MouseClick += ( s, a ) =>
          {
             Show();
@@ -148,42 +140,38 @@ namespace EnhancePoE
 
       public void RunOverlay()
       {
-         if ( overlay.IsOpen )
+         if ( Overlay.IsOpen )
          {
-            overlay.Hide();
-            if ( stashTabOverlay.IsOpen )
+            Overlay.Hide();
+            if ( StashTabOverlay.IsOpen )
             {
-               stashTabOverlay.Hide();
+               StashTabOverlay.Hide();
             }
-            RunButton.Content = "Run Overlay";
+            RunOverlayButton.Content = "Run Overlay";
          }
          else
          {
             if ( CheckAllSettings() )
             {
-               overlay.Show();
-               RunButton.Content = "Stop Overlay";
+               Overlay.Show();
+               RunOverlayButton.Content = "Stop Overlay";
             }
          }
       }
 
-      private void RunButton_Click( object sender, RoutedEventArgs e )
-      {
-         RunOverlay();
-      }
+      private void OnRunOverlayButtonClicked( object sender, RoutedEventArgs e ) => RunOverlay();
 
       public static void RunStashTabOverlay()
       {
-         bool ready = CheckAllSettings();
-         if ( ready )
+         if ( CheckAllSettings() )
          {
-            if ( stashTabOverlay.IsOpen )
+            if ( StashTabOverlay.IsOpen )
             {
-               stashTabOverlay.Hide();
+               StashTabOverlay.Hide();
             }
             else
             {
-               stashTabOverlay.Show();
+               StashTabOverlay.Show();
             }
          }
       }
@@ -196,12 +184,7 @@ namespace EnhancePoE
          };
          var res = open.ShowDialog();
 
-         if ( res == System.Windows.Forms.DialogResult.OK )
-         {
-            return open.FileName;
-         }
-
-         return null;
+         return res == System.Windows.Forms.DialogResult.OK ? open.FileName : null;
       }
 
       private void ColorStashPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
@@ -209,54 +192,43 @@ namespace EnhancePoE
          Properties.Settings.Default.ColorStash = ColorStashPicker.SelectedColor.ToString();
       }
 
-      private void Window_MouseDown( object sender, MouseButtonEventArgs e )
-      {
-         _ = MainGrid.Focus();
-      }
+      private void OnWindowMouseDown( object sender, MouseButtonEventArgs e ) => _ = MainGrid.Focus();
 
       public static bool CheckAllSettings()
       {
-         string accName = Properties.Settings.Default.accName;
-         string sessId = Properties.Settings.Default.SessionId;
-         string league = Properties.Settings.Default.League;
 
          var missingSettings = new List<string>();
          string errorMessage = "Please add: \n";
 
-         if ( accName == "" )
+         if ( string.IsNullOrEmpty( Properties.Settings.Default.accName ) )
          {
             missingSettings.Add( "- Account Name \n" );
          }
-         if ( sessId == "" )
+         if ( string.IsNullOrEmpty( Properties.Settings.Default.SessionId ) )
          {
             missingSettings.Add( "- PoE Session ID \n" );
          }
-         if ( league == "" )
+         if ( string.IsNullOrEmpty( Properties.Settings.Default.League ) )
          {
             missingSettings.Add( "- League \n" );
          }
          if ( Properties.Settings.Default.StashtabMode == 0 )
          {
-            if ( Properties.Settings.Default.StashTabIndices == "" )
+            if ( string.IsNullOrEmpty( Properties.Settings.Default.StashTabIndices ) )
             {
                missingSettings.Add( "- StashTab Index" );
             }
          }
          else if ( Properties.Settings.Default.StashtabMode == 1 )
          {
-            if ( Properties.Settings.Default.StashTabName == "" )
+            if ( string.IsNullOrEmpty( Properties.Settings.Default.StashTabName ) )
             {
                missingSettings.Add( "- StashTab Name" );
             }
          }
 
-         if ( missingSettings.Count > 0 )
+         if ( missingSettings.Count == 0 )
          {
-            SettingsComplete = false;
-         }
-         else
-         {
-            SettingsComplete = true;
             return true;
          }
 
@@ -269,19 +241,14 @@ namespace EnhancePoE
          return false;
       }
 
-      private void VolumeSlider_PreviewMouseUp( object sender, MouseButtonEventArgs e )
-      {
-         Data.PlayNotificationSound();
-      }
-      private void ColorStashBackgroundPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
+      private void OnVolumeSliderPreviewMouseUp( object sender, MouseButtonEventArgs e ) => Data.PlayNotificationSound();
+
+      private void OnColorStashBackgroundColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
       {
          Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
       }
 
-      private void ComboBox_SelectionChanged( object sender, SelectionChangedEventArgs e )
-      {
-         LoadModeVisibility();
-      }
+      private void ComboBox_SelectionChanged( object sender, SelectionChangedEventArgs e ) => LoadModeVisibility();
 
       private void LoadModeVisibility()
       {
@@ -316,14 +283,14 @@ namespace EnhancePoE
          }
       }
 
-      private void OnRefreshLeaguesButtonClick( object sender, RoutedEventArgs e ) => LoadLeagueList();
+      private void OnRefreshLeaguesButtonClicked( object sender, RoutedEventArgs e ) => LoadLeagueList();
 
-      private void TabHeaderGapSlider_ValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
+      private void OnTabHeaderGapSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
       {
-         stashTabOverlay.TabHeaderGap = new Thickness( Properties.Settings.Default.TabHeaderGap, 0, Properties.Settings.Default.TabHeaderGap, 0 );
+         StashTabOverlay.TabHeaderGap = new Thickness( Properties.Settings.Default.TabHeaderGap, 0, Properties.Settings.Default.TabHeaderGap, 0 );
       }
 
-      private void TabHeaderWidthSlider_ValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
+      private void OnTabHeaderWidthSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
       {
          if ( StashTabList.StashTabs.Count > 0 )
          {
@@ -334,42 +301,43 @@ namespace EnhancePoE
          }
       }
 
-      private void TabHeaderMarginSlider_ValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
+      private void OnTabHeaderMarginSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
       {
-         stashTabOverlay.TabMargin = new Thickness( Properties.Settings.Default.TabMargin, 0, 0, 0 );
+         StashTabOverlay.TabMargin = new Thickness( Properties.Settings.Default.TabMargin, 0, 0, 0 );
       }
 
       public static void GenerateNewOverlay()
       {
-         overlay = new ChaosRecipeEnhancer();
-      }
-      public static void GenerateNewStashtabOverlay()
-      {
-         stashTabOverlay = new StashTabWindow();
+         Overlay = new ChaosRecipeEnhancer();
       }
 
-      private void SaveButton_Click_1( object sender, RoutedEventArgs e )
+      public static void GenerateNewStashtabOverlay()
+      {
+         StashTabOverlay = new StashTabWindow();
+      }
+
+      private void OnSaveButtonClicked( object sender, RoutedEventArgs e )
       {
          Properties.Settings.Default.Save();
       }
 
-      private void OverlayModeComboBox_SelectionChanged( object sender, SelectionChangedEventArgs e )
+      private void OnOverlayModeComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e )
       {
          if ( Properties.Settings.Default.OverlayMode == 0 )
          {
-            overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContent();
+            Overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContent();
          }
          else if ( Properties.Settings.Default.OverlayMode == 1 )
          {
-            overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContentMinified();
+            Overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContentMinified();
          }
          else if ( Properties.Settings.Default.OverlayMode == 2 )
          {
-            overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayOnlyButtons();
+            Overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayOnlyButtons();
          }
       }
 
-      private void ResetButton_Click( object sender, RoutedEventArgs e )
+      private void OnResetButtonClicked( object sender, RoutedEventArgs e )
       {
          switch ( MessageBox.Show( "This will reset all of your settings!", "Reset Settings", MessageBoxButton.YesNo ) )
          {
@@ -382,53 +350,32 @@ namespace EnhancePoE
          }
       }
 
-      private void ChaosRecipeCheckBox_Checked( object sender, RoutedEventArgs e )
+      private void OnChaosRecipeCheckBoxChecked( object sender, RoutedEventArgs e )
       {
          Properties.Settings.Default.RegalRecipe = false;
       }
 
-      private void RegalRecipeCheckBox_Checked( object sender, RoutedEventArgs e )
+      private void OnRegalRecipeCheckBoxChecked( object sender, RoutedEventArgs e )
       {
          Properties.Settings.Default.ChaosRecipe = false;
       }
 
-      private void ShowNumbersComboBox_SelectionChanged( object sender, SelectionChangedEventArgs e )
+      private void OnShowNumbersComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e )
       {
-         if ( Properties.Settings.Default.ShowItemAmount != 0 )
-         {
-            overlay.AmountsVisibility = Visibility.Visible;
-         }
-         else
-         {
-            overlay.AmountsVisibility = Visibility.Hidden;
-         }
+         Overlay.AmountsVisibility = Properties.Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
       }
 
-      private void Hyperlink_RequestNavigateByAccName( object sender, RequestNavigateEventArgs e )
-      {
-         if ( string.IsNullOrWhiteSpace( Properties.Settings.Default.accName ) )
-         {
-            const string messageBoxText = "You first need enter your account name";
-            _ = MessageBox.Show( messageBoxText, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error );
-         }
-         else
-         {
-            string url = string.Format( e.Uri.ToString(), Properties.Settings.Default.accName );
-            _ = System.Diagnostics.Process.Start( url );
-         }
-      }
-
-      private void ItemPickupLocationDialog_OnClick( object sender, RoutedEventArgs e )
+      private void OnItemPickupLocationButtonClicked( object sender, RoutedEventArgs e )
       {
          var soundFilePath = GetSoundFilePath();
 
          if ( soundFilePath != null )
          {
             Properties.Settings.Default.ItemPickupSoundFileLocation = soundFilePath;
-            ItemPickupLocationDialog.Content = soundFilePath;
-            Data.PlayerSet.Open( new Uri( soundFilePath ) );
+            ItemPickupLocationButton.Content = soundFilePath;
+            Data.Player.Open( new Uri( soundFilePath ) );
 
-            Data.PlayNotificationSoundSetPicked();
+            Data.PlayNotificationSound();
          }
       }
 

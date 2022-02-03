@@ -12,11 +12,12 @@
         FontFamily="Segoe UI Light"
         SizeToContent="WidthAndHeight"
         WindowStyle="SingleBorderWindow"
-        MouseDown="Window_MouseDown"
+        MouseDown="OnWindowMouseDown"
         ResizeMode="CanMinimize"
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
         d:DataContext="{d:DesignInstance Type={x:Type local:MainWindow}}">
+   
    <Border BorderBrush="DarkGray"
            BorderThickness="1">
       <Grid Name="MainGrid"
@@ -29,7 +30,7 @@
             <ColumnDefinition Width="20" />
          </Grid.ColumnDefinitions>
          <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="20" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
@@ -79,12 +80,14 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                      </Grid.RowDefinitions>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
                                 Text="Path of Exile"
                                 FontSize="24"
                                 FontWeight="Bold" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -96,6 +99,7 @@
                               Grid.Row="3"
                               Width="200"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=accName, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -109,6 +113,7 @@
                               VerticalContentAlignment="Center"
                               FontFamily="{StaticResource PasswordFont}"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=SessionId, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -132,7 +137,7 @@
                                 Margin="4,0,0,0"
                                 Padding="4,0"
                                 Content="Refresh"
-                                Click="OnRefreshLeaguesButtonClick" />
+                                Click="OnRefreshLeaguesButtonClicked" />
                      </Grid>
                   </Grid>
                   <!-- RECIPES -->
@@ -160,6 +165,7 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                      </Grid.RowDefinitions>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 VerticalAlignment="Center"
@@ -167,6 +173,7 @@
                                 Text="Recipes"
                                 FontSize="24"
                                 FontWeight="Bold" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -177,8 +184,9 @@
                                Grid.Column="3"
                                Grid.Row="3"
                                VerticalAlignment="Center"
-                               Checked="ChaosRecipeCheckBox_Checked"
+                               Checked="OnChaosRecipeCheckBoxChecked"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ChaosRecipe, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -189,8 +197,9 @@
                                Grid.Column="3"
                                Grid.Row="5"
                                VerticalAlignment="Center"
-                               Checked="RegalRecipeCheckBox_Checked"
+                               Checked="OnRegalRecipeCheckBoxChecked"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RegalRecipe, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -202,6 +211,7 @@
                                Grid.Row="7"
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -213,6 +223,7 @@
                                Grid.Row="9"
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=FillWithChaos, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="11"
                                 VerticalAlignment="Center"
@@ -245,6 +256,7 @@
                         <RowDefinition Height="5"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
                      </Grid.RowDefinitions>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 VerticalAlignment="Center"
@@ -252,6 +264,7 @@
                                 Text="Sound"
                                 FontSize="24"
                                 FontWeight="Bold" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -262,6 +275,7 @@
                                Grid.Row="3"
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=Sound, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -278,7 +292,7 @@
                              AutoToolTipPlacement="TopLeft"
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="0"
-                             PreviewMouseUp="VolumeSlider_PreviewMouseUp"
+                             PreviewMouseUp="OnVolumeSliderPreviewMouseUp"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=Volume, Mode=TwoWay}" />
 
                      <TextBlock Grid.Column="1"
@@ -289,9 +303,9 @@
                                 ToolTip="The location of your Item Set Sound mp3 file (*.mp3). If you don't choose a file the default sound will be used" />
                      <Button Grid.Column="3"
                              Grid.Row="7"
-                             x:Name="ItemPickupLocationDialog"
+                             x:Name="ItemPickupLocationButton"
                              Width="200"
-                             Click="ItemPickupLocationDialog_OnClick"
+                             Click="OnItemPickupLocationButtonClicked"
                              ToolTipService.InitialShowDelay="50"
                              ToolTip="{Binding Source={x:Static properties:Settings.Default}, Path=ItemPickupSoundFileLocation, Mode=TwoWay}"
                              Content="{Binding Source={x:Static properties:Settings.Default}, Path=ItemPickupSoundFileLocation, Mode=TwoWay}"
@@ -334,6 +348,7 @@
                         <RowDefinition Height="5"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
                      </Grid.RowDefinitions>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 VerticalAlignment="Center"
@@ -341,6 +356,7 @@
                                 Text="General"
                                 FontSize="24"
                                 FontWeight="Bold" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -352,6 +368,7 @@
                               Grid.Row="3"
                               Width="200"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=Sets, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -364,9 +381,10 @@
                                VerticalContentAlignment="Center"
                                SelectionChanged="ComboBox_SelectionChanged"
                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=StashtabMode, Mode=TwoWay}">
-                        <ComboBoxItem Content="ID"></ComboBoxItem>
-                        <ComboBoxItem Content="Prefix"></ComboBoxItem>
+                        <ComboBoxItem Content="ID" />
+                        <ComboBoxItem Content="Prefix" />
                      </ComboBox>
+                     
                      <TextBlock Name="StashTabNameTextBlock"
                                 Grid.Column="1"
                                 Grid.Row="7"
@@ -381,6 +399,7 @@
                               Width="200"
                               Visibility="{Binding NameVisible}"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabName, Mode=TwoWay}" />
+                     
                      <TextBlock Name="StashTabIndicesTextBlock"
                                 Grid.Column="1"
                                 Grid.Row="7"
@@ -395,6 +414,7 @@
                               Width="200"
                               Visibility="{Binding IndicesVisible}"
                               Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -462,6 +482,7 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                      </Grid.RowDefinitions>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
@@ -469,6 +490,7 @@
                                 FontSize="24"
                                 VerticalAlignment="Center"
                                 FontWeight="Bold" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -486,6 +508,7 @@
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="2"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=Opacity, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -497,12 +520,13 @@
                                Width="200"
                                VerticalContentAlignment="Center"
                                Name="ShowNumbersComboBox"
-                               SelectionChanged="ShowNumbersComboBox_SelectionChanged"
+                               SelectionChanged="OnShowNumbersComboBoxSelectionChanged"
                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=ShowItemAmount, Mode=TwoWay}">
                         <ComboBoxItem Content="None"></ComboBoxItem>
                         <ComboBoxItem Content="Total Items"></ComboBoxItem>
                         <ComboBoxItem Content="Items Missing"></ComboBoxItem>
                      </ComboBox>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -514,12 +538,13 @@
                                Width="200"
                                VerticalContentAlignment="Center"
                                Name="OverlayModeComboBox"
-                               SelectionChanged="OverlayModeComboBox_SelectionChanged"
+                               SelectionChanged="OnOverlayModeComboBoxSelectionChanged"
                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=OverlayMode, Mode=TwoWay}">
                         <ComboBoxItem Content="Standard"></ComboBoxItem>
                         <ComboBoxItem Content="Minified"></ComboBoxItem>
                         <ComboBoxItem Content="Only Buttons"></ComboBoxItem>
                      </ComboBox>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -532,7 +557,7 @@
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LockOverlayPosition, Mode=TwoWay}" />
                   </Grid>
-                  <!-- Stashtab Overlay   -->
+                  <!-- Stashtab Overlay -->
                   <Grid Grid.Column="2"
                         Grid.Row="1">
                      <Grid.ColumnDefinitions>
@@ -561,6 +586,7 @@
                         <RowDefinition Height="25"></RowDefinition>
                         <RowDefinition Height="10"></RowDefinition>
                      </Grid.RowDefinitions>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="1"
                                 Grid.ColumnSpan="2"
@@ -568,6 +594,7 @@
                                 FontSize="24"
                                 VerticalAlignment="Center"
                                 FontWeight="Bold" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="3"
                                 VerticalAlignment="Center"
@@ -585,6 +612,7 @@
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="2"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -596,7 +624,8 @@
                                        Width="200"
                                        Name="ColorStashBackgroundPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorStashBackgroundPicker_SelectedColorChanged"></xctk:ColorPicker>
+                                       SelectedColorChanged="OnColorStashBackgroundColorChanged" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -609,6 +638,7 @@
                                        Name="ColorStashPicker"
                                        ColorMode="ColorCanvas"
                                        SelectedColorChanged="ColorStashPicker_SelectedColorChanged" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -621,10 +651,11 @@
                                Width="200"
                                VerticalContentAlignment="Center"
                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=HighlightMode, Mode=TwoWay}">
-                        <ComboBoxItem Content="Item by Item"></ComboBoxItem>
-                        <ComboBoxItem Content="Set by Set"></ComboBoxItem>
-                        <ComboBoxItem Content="All Items"></ComboBoxItem>
+                        <ComboBoxItem Content="Item by Item" />
+                        <ComboBoxItem Content="Set by Set" />
+                        <ComboBoxItem Content="All Items" />
                      </ComboBox>
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="11"
                                 VerticalAlignment="Center"
@@ -641,8 +672,9 @@
                              AutoToolTipPlacement="TopLeft"
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="1"
-                             ValueChanged="TabHeaderMarginSlider_ValueChanged"
+                             ValueChanged="OnTabHeaderMarginSliderValueChanged"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabMargin, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="13"
                                 VerticalAlignment="Center"
@@ -659,8 +691,9 @@
                              AutoToolTipPlacement="TopLeft"
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="1"
-                             ValueChanged="TabHeaderWidthSlider_ValueChanged"
+                             ValueChanged="OnTabHeaderWidthSliderValueChanged"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderWidth, Mode=TwoWay}" />
+                     
                      <TextBlock Grid.Column="1"
                                 Grid.Row="15"
                                 VerticalAlignment="Center"
@@ -677,7 +710,7 @@
                              AutoToolTipPlacement="TopLeft"
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="1"
-                             ValueChanged="TabHeaderGapSlider_ValueChanged"
+                             ValueChanged="OnTabHeaderGapSliderValueChanged"
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderGap, Mode=TwoWay}" />
                   </Grid>
                </Grid>
@@ -686,11 +719,11 @@
          <Grid Grid.Column="1"
                Grid.Row="2">
             <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="20"></ColumnDefinition>
-               <ColumnDefinition Width="1*"></ColumnDefinition>
-               <ColumnDefinition Width="1*"></ColumnDefinition>
-               <ColumnDefinition Width="1*"></ColumnDefinition>
-               <ColumnDefinition Width="20"></ColumnDefinition>
+               <ColumnDefinition Width="20" />
+               <ColumnDefinition Width="1*" />
+               <ColumnDefinition Width="1*" />
+               <ColumnDefinition Width="1*" />
+               <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                <RowDefinition Height="20" />
@@ -709,7 +742,8 @@
                   <Run FontFamily="Segoe UI"
                        FontSize="12"
                        Text="by kosace " />
-               </TextBlock.Inlines></TextBlock>
+               </TextBlock.Inlines>
+            </TextBlock>
             <TextBlock Grid.Column="1"
                        Grid.Row="3"
                        FontSize="10"
@@ -717,18 +751,18 @@
                        TextAlignment="Center"
                        Text="This product isn't affiliated with or endorsed by Grinding Gear Games in any way." />
 
-            <Button x:Name="RunButton"
-                    Click="RunButton_Click"
+            <Button x:Name="RunOverlayButton"
+                    Click="OnRunOverlayButtonClicked"
                     Content="Run Overlay"
                     Grid.Column="3"
                     Grid.Row="2" />
             <Button x:Name="SaveButton"
-                    Click="SaveButton_Click_1"
+                    Click="OnSaveButtonClicked"
                     Content="Save Settings"
                     Grid.Column="1"
                     Grid.Row="2" />
             <Button x:Name="ResetButton"
-                    Click="ResetButton_Click"
+                    Click="OnResetButtonClicked"
                     Width="100"
                     Content="Reset Settings"
                     Grid.Column="2"
@@ -738,7 +772,7 @@
                        Text="{Binding AppVersionText}"
                        FontSize="12"
                        HorizontalAlignment="Right"
-                       VerticalAlignment="Center"></TextBlock>
+                       VerticalAlignment="Center" />
          </Grid>
       </Grid>
    </Border>

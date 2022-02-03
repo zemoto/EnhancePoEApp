@@ -113,7 +113,6 @@ namespace EnhancePoE
 
       private static async Task<bool> GetProps( string accName, string league )
       {
-         //Trace.WriteLine(IsFetching, "isfetching props");
          if ( IsFetching )
          {
             return false;
@@ -145,25 +144,20 @@ namespace EnhancePoE
          using ( var handler = new HttpClientHandler() { CookieContainer = cC } )
          using ( var client = new HttpClient( handler ) )
          {
-            //Trace.WriteLine("is here");
             // add user agent
             client.DefaultRequestHeaders.Add( "User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}" );
             using ( var res = await client.GetAsync( propsUri ) )
             {
-               //Trace.WriteLine("is NOT here");
                if ( res.IsSuccessStatusCode )
                {
-                  //Trace.WriteLine("is not herre");
                   using ( var content = res.Content )
                   {
                      string resContent = await content.ReadAsStringAsync();
-                     //Trace.Write(resContent);
                      PropsList = JsonSerializer.Deserialize<StashTabPropsList>( resContent );
 
                      Trace.WriteLine( res.Headers, "res headers" );
 
                      // get new rate limit values
-                     //RateLimit.IncreaseRequestCounter();
                      string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
                      string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
                      string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
@@ -187,7 +181,6 @@ namespace EnhancePoE
             }
          }
 
-         //await Task.Delay(1000);
          IsFetching = false;
          return true;
       }

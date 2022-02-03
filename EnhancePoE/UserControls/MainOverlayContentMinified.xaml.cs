@@ -17,7 +17,7 @@ namespace EnhancePoE.UserControls
 
       private void RefreshButton_Click_1( object sender, RoutedEventArgs e )
       {
-         MainWindow.overlay.RunFetching();
+         MainWindow.Overlay.RunFetching();
       }
 
       private void Border_MouseDown( object sender, MouseButtonEventArgs e )

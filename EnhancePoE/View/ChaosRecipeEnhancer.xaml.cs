@@ -305,9 +305,9 @@ namespace EnhancePoE
 
       private void DisableWarnings()
       {
-         MainWindow.overlay.WarningMessage = "";
-         MainWindow.overlay.ShadowOpacity = 0;
-         MainWindow.overlay.WarningMessageVisibility = Visibility.Hidden;
+         MainWindow.Overlay.WarningMessage = "";
+         MainWindow.Overlay.ShadowOpacity = 0;
+         MainWindow.Overlay.WarningMessageVisibility = Visibility.Hidden;
       }
 
       private async void FetchData()
@@ -358,18 +358,18 @@ namespace EnhancePoE
              }
              if ( RateLimit.RateLimitExceeded )
              {
-                MainWindow.overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
-                MainWindow.overlay.ShadowOpacity = 1;
-                MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                MainWindow.Overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
+                MainWindow.Overlay.ShadowOpacity = 1;
+                MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                 await Task.Delay( RateLimit.GetSecondsToWait() * 1000 );
                 RateLimit.RequestCounter = 0;
                 RateLimit.RateLimitExceeded = false;
              }
              if ( RateLimit.BanTime > 0 )
              {
-                MainWindow.overlay.WarningMessage = "Temporary Ban! Waiting...";
-                MainWindow.overlay.ShadowOpacity = 1;
-                MainWindow.overlay.WarningMessageVisibility = Visibility.Visible;
+                MainWindow.Overlay.WarningMessage = "Temporary Ban! Waiting...";
+                MainWindow.Overlay.ShadowOpacity = 1;
+                MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
                 await Task.Delay( RateLimit.BanTime * 1000 );
                 RateLimit.BanTime = 0;
              }
@@ -389,46 +389,43 @@ namespace EnhancePoE
 
       public void RunFetching()
       {
-         if ( MainWindow.SettingsComplete )
+         if ( !IsOpen )
          {
-            if ( !IsOpen )
+            return;
+         }
+         if ( Properties.Settings.Default.StashtabMode == 0 )
+         {
+            if ( Properties.Settings.Default.StashTabIndices == "" )
             {
+               _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set Stashtab Indices." );
                return;
             }
-            if ( Properties.Settings.Default.StashtabMode == 0 )
+         }
+         else if ( Properties.Settings.Default.StashtabMode == 1 )
+         {
+            if ( Properties.Settings.Default.StashTabName == "" )
             {
-               if ( Properties.Settings.Default.StashTabIndices == "" )
-               {
-                  _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set Stashtab Indices." );
-                  return;
-               }
+               _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set Stashtab Prefix." );
+               return;
             }
-            else if ( Properties.Settings.Default.StashtabMode == 1 )
+         }
+         if ( CalculationActive )
+         {
+            Data.cs.Cancel();
+            FetchingActive = false;
+         }
+         else
+         {
+            if ( !ApiAdapter.IsFetching )
             {
-               if ( Properties.Settings.Default.StashTabName == "" )
+               Data.cs = new System.Threading.CancellationTokenSource();
+               Data.ct = Data.cs.Token;
+               if ( MainWindow.StashTabOverlay.IsOpen )
                {
-                  _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set Stashtab Prefix." );
-                  return;
+                  MainWindow.StashTabOverlay.Hide();
                }
-            }
-            if ( CalculationActive )
-            {
-               Data.cs.Cancel();
-               FetchingActive = false;
-            }
-            else
-            {
-               if ( !ApiAdapter.IsFetching )
-               {
-                  Data.cs = new System.Threading.CancellationTokenSource();
-                  Data.ct = Data.cs.Token;
-                  if ( MainWindow.stashTabOverlay.IsOpen )
-                  {
-                     MainWindow.stashTabOverlay.Hide();
-                  }
-                  FetchData();
-                  FetchingActive = true;
-               }
+               FetchData();
+               FetchingActive = true;
             }
          }
       }

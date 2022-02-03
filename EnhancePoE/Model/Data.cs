@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using EnhancePoE.Model;
 
@@ -13,8 +12,6 @@ namespace EnhancePoE
       public static ActiveItemTypes ActiveItems { get; set; } = new ActiveItemTypes();
       public static ActiveItemTypes PreviousActiveItems { get; set; }
       public static MediaPlayer Player { get; set; } = new MediaPlayer();
-
-      public static MediaPlayer PlayerSet { get; set; } = new MediaPlayer();
 
       public static int SetAmount { get; set; }
       public static int SetTargetAmount { get; set; }
@@ -271,16 +268,16 @@ namespace EnhancePoE
          {
             if ( ApiAdapter.FetchError )
             {
-               MainWindow.overlay.WarningMessage = "Fetching Error...";
-               MainWindow.overlay.ShadowOpacity = 1;
-               MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.Overlay.WarningMessage = "Fetching Error...";
+               MainWindow.Overlay.ShadowOpacity = 1;
+               MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                return;
             }
             if ( StashTabList.StashTabs.Count == 0 )
             {
-               MainWindow.overlay.WarningMessage = "No Stashtabs found...";
-               MainWindow.overlay.ShadowOpacity = 1;
-               MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.Overlay.WarningMessage = "No Stashtabs found...";
+               MainWindow.Overlay.ShadowOpacity = 1;
+               MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                return;
             }
             if ( Properties.Settings.Default.Sound )
@@ -459,14 +456,14 @@ namespace EnhancePoE
                Trace.WriteLine( "section list cleared" );
             }
 
-            _ = MainWindow.overlay.Dispatcher.Invoke( () => MainWindow.overlay.FullSetsText = fullSets.ToString() );
+            _ = MainWindow.Overlay.Dispatcher.Invoke( () => MainWindow.Overlay.FullSetsText = fullSets.ToString() );
 
             // invoke chaos missing
             if ( missingChaos && !Properties.Settings.Default.RegalRecipe )
             {
-               MainWindow.overlay.WarningMessage = "Need lower level items!";
-               MainWindow.overlay.ShadowOpacity = 1;
-               MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.Overlay.WarningMessage = "Need lower level items!";
+               MainWindow.Overlay.ShadowOpacity = 1;
+               MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
             }
 
             // invoke exalted recipe ready
@@ -479,18 +476,18 @@ namespace EnhancePoE
                    || ItemSetHunter.EmptyItemSlots.Count == 0
                    || ItemSetRedeemer.EmptyItemSlots.Count == 0 )
                {
-                  MainWindow.overlay.WarningMessage = "Exalted Recipe ready!";
-                  MainWindow.overlay.ShadowOpacity = 1;
-                  MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                  MainWindow.Overlay.WarningMessage = "Exalted Recipe ready!";
+                  MainWindow.Overlay.ShadowOpacity = 1;
+                  MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                }
             }
 
             // invoke set full
             if ( fullSets == SetTargetAmount && !missingChaos )
             {
-               MainWindow.overlay.WarningMessage = "Sets full!";
-               MainWindow.overlay.ShadowOpacity = 1;
-               MainWindow.overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.Overlay.WarningMessage = "Sets full!";
+               MainWindow.Overlay.ShadowOpacity = 1;
+               MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
             }
 
             Trace.WriteLine( fullSets, "full sets" );
@@ -632,26 +629,26 @@ namespace EnhancePoE
                   Trace.WriteLine( a );
                }
                amounts[4] = weaponsSmall + weaponBig;
-               MainWindow.overlay.RingsAmount = amounts[0];
-               MainWindow.overlay.AmuletsAmount = amounts[1];
-               MainWindow.overlay.BeltsAmount = amounts[2];
-               MainWindow.overlay.ChestsAmount = amounts[3];
-               MainWindow.overlay.WeaponsAmount = amounts[4];
-               MainWindow.overlay.GlovesAmount = amounts[5];
-               MainWindow.overlay.HelmetsAmount = amounts[6];
-               MainWindow.overlay.BootsAmount = amounts[7];
+               MainWindow.Overlay.RingsAmount = amounts[0];
+               MainWindow.Overlay.AmuletsAmount = amounts[1];
+               MainWindow.Overlay.BeltsAmount = amounts[2];
+               MainWindow.Overlay.ChestsAmount = amounts[3];
+               MainWindow.Overlay.WeaponsAmount = amounts[4];
+               MainWindow.Overlay.GlovesAmount = amounts[5];
+               MainWindow.Overlay.HelmetsAmount = amounts[6];
+               MainWindow.Overlay.BootsAmount = amounts[7];
             }
             else if ( Properties.Settings.Default.ShowItemAmount == 2 )
             {
                amounts[4] = weaponsSmall + weaponBig;
-               MainWindow.overlay.RingsAmount = Math.Max( ( SetTargetAmount * 2 ) - amounts[0], 0 );
-               MainWindow.overlay.AmuletsAmount = Math.Max( SetTargetAmount - amounts[1], 0 );
-               MainWindow.overlay.BeltsAmount = Math.Max( SetTargetAmount - amounts[2], 0 );
-               MainWindow.overlay.ChestsAmount = Math.Max( SetTargetAmount - amounts[3], 0 );
-               MainWindow.overlay.WeaponsAmount = Math.Max( ( SetTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ), 0 );
-               MainWindow.overlay.GlovesAmount = Math.Max( SetTargetAmount - amounts[5], 0 );
-               MainWindow.overlay.HelmetsAmount = Math.Max( SetTargetAmount - amounts[6], 0 );
-               MainWindow.overlay.BootsAmount = Math.Max( SetTargetAmount - amounts[7], 0 );
+               MainWindow.Overlay.RingsAmount = Math.Max( ( SetTargetAmount * 2 ) - amounts[0], 0 );
+               MainWindow.Overlay.AmuletsAmount = Math.Max( SetTargetAmount - amounts[1], 0 );
+               MainWindow.Overlay.BeltsAmount = Math.Max( SetTargetAmount - amounts[2], 0 );
+               MainWindow.Overlay.ChestsAmount = Math.Max( SetTargetAmount - amounts[3], 0 );
+               MainWindow.Overlay.WeaponsAmount = Math.Max( ( SetTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ), 0 );
+               MainWindow.Overlay.GlovesAmount = Math.Max( SetTargetAmount - amounts[5], 0 );
+               MainWindow.Overlay.HelmetsAmount = Math.Max( SetTargetAmount - amounts[6], 0 );
+               MainWindow.Overlay.BootsAmount = Math.Max( SetTargetAmount - amounts[7], 0 );
             }
          }
       }
@@ -661,13 +658,6 @@ namespace EnhancePoE
          Player.Volume = (double)( Properties.Settings.Default.Volume / 100.0 );
          Player.Position = TimeSpan.Zero;
          Player.Play();
-      }
-
-      public static void PlayNotificationSoundSetPicked()
-      {
-         PlayerSet.Volume = (double)( Properties.Settings.Default.Volume / 100.0 );
-         PlayerSet.Position = TimeSpan.Zero;
-         PlayerSet.Play();
       }
 
       public static StashTab GetStashTabFromItem( Item item )
@@ -701,14 +691,14 @@ namespace EnhancePoE
                   if ( ItemSetListHighlight[0].ItemList.Count == 0 )
                   {
                      ItemSetListHighlight.RemoveAt( 0 );
-                     PlayerSet.Dispatcher.Invoke( () => PlayNotificationSoundSetPicked() );
+                     Player.Dispatcher.Invoke( () => PlayNotificationSound() );
                   }
                }
                else
                {
                   if ( ItemSetListHighlight.Count > 0 )
                   {
-                     PlayerSet.Dispatcher.Invoke( () => PlayNotificationSoundSetPicked() );
+                     Player.Dispatcher.Invoke( () => PlayNotificationSound() );
                   }
                }
 
@@ -784,7 +774,7 @@ namespace EnhancePoE
 
                         // activate next set
                         ActivateNextCell( true, null );
-                        PlayerSet.Dispatcher.Invoke( () => PlayNotificationSoundSetPicked() );
+                        Player.Dispatcher.Invoke( () => PlayNotificationSound() );
                      }
                   }
                }
