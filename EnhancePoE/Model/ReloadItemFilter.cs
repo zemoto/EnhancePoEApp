@@ -7,77 +7,71 @@ using System.Windows;
 
 namespace EnhancePoE.Model
 {
-    public static class ReloadItemFilter
-    {
+   public static class ReloadItemFilter
+   {
+      [DllImport( "user32.dll", SetLastError = true )]
+      private static extern IntPtr FindWindow( string lpClassName, string lpWindowName );
 
+      [DllImport( "user32.dll", SetLastError = true )]
+      private static extern uint GetWindowThreadProcessId( IntPtr hWnd, out uint lpdwProcessId );
 
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+      // When you don't want the ProcessId, use this overload and pass IntPtr.Zero for the second parameter
+      [DllImport( "user32.dll" )]
+      private static extern uint GetWindowThreadProcessId( IntPtr hWnd, IntPtr ProcessId );
 
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+      [DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
+      public static extern bool SetForegroundWindow( IntPtr hWnd );
 
-        // When you don't want the ProcessId, use this overload and pass IntPtr.Zero for the second parameter
-        [DllImport("user32.dll")]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
+      public static void ReloadItemfilter()
+      {
+         // store current clipboard
+         string oldClipboard = Clipboard.GetText();
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern bool SetForegroundWindow(IntPtr hWnd);
+         string chatCommand = BuildChatCommand();
+         if ( chatCommand is null )
+         {
+            return;
+         }
 
+         Clipboard.SetText( BuildChatCommand() );
 
+         var poeWindow = FindWindow( null, "Path of Exile" );
+         if ( poeWindow == IntPtr.Zero )
+         {
+            UserWarning.WarnUser( "Could not find Window! Please make sure Path of Exile is running.", "Window not found" );
+            return;
+         }
+         // get Path of Exile in the foreground to actually sendKeys to it
+         _ = SetForegroundWindow( poeWindow );
 
-        public static void ReloadItemfilter()
-        {
-            // store current clipboard
-            string oldClipboard = Clipboard.GetText();
+         // send the chat commands
+         System.Windows.Forms.SendKeys.SendWait( "{ENTER}" );
+         System.Windows.Forms.SendKeys.SendWait( "^(v)" );
+         System.Windows.Forms.SendKeys.SendWait( "{ENTER}" );
 
-            string chatCommand = BuildChatCommand();
-            if(chatCommand is null)
-            {
-                return;
-            }
+         // restore clipboard
+         Clipboard.SetText( oldClipboard );
+      }
 
-            Clipboard.SetText(BuildChatCommand());
+      private static string BuildChatCommand()
+      {
+         string filterName = GetFilterName().Trim();
+         Trace.WriteLine( "filtername", filterName );
+         if ( string.IsNullOrEmpty( filterName ) )
+         {
+            UserWarning.WarnUser( "No filter found. Please set your filter in settings", "No filter found" );
+            return null;
+         }
+         return "/itemfilter " + filterName;
+      }
 
-            var poeWindow = FindWindow(null, "Path of Exile");
-            if(poeWindow == IntPtr.Zero)
-            {
-                UserWarning.WarnUser("Could not find Window! Please make sure Path of Exile is running.", "Window not found");
-                return;
-            }
-            // get Path of Exile in the foreground to actually sendKeys to it
-            SetForegroundWindow(poeWindow);
-
-            // send the chat commands
-            System.Windows.Forms.SendKeys.SendWait("{ENTER}");
-            System.Windows.Forms.SendKeys.SendWait("^(v)");
-            System.Windows.Forms.SendKeys.SendWait("{ENTER}");
-
-            // restore clipboard
-            Clipboard.SetText(oldClipboard);
-
-        }
-
-        private static string BuildChatCommand()
-        {
-
-            string filterName = GetFilterName().Trim();
-            Trace.WriteLine("filtername", filterName);
-            if(String.IsNullOrEmpty(filterName))
-            {
-                UserWarning.WarnUser("No filter found. Please set your filter in settings", "No filter found");
-                return null;
-            }
-            return "/itemfilter " + filterName;
-        }
-
-        private static string GetFilterName()
-        {
-            if (Properties.Settings.Default.LootfilterOnline)
-            {
-                return Properties.Settings.Default.LootfilterOnlineName.Trim();
-            }
-            return System.IO.Path.GetFileName(Properties.Settings.Default.LootfilterLocation).Replace(".filter", "");
-        }
-    }
+      private static string GetFilterName()
+      {
+         if ( Properties.Settings.Default.LootfilterOnline )
+         {
+            return Properties.Settings.Default.LootfilterOnlineName.Trim();
+         }
+         return Path.GetFileName( Properties.Settings.Default.LootfilterLocation ).Replace( ".filter", "" );
+      }
+   }
 }

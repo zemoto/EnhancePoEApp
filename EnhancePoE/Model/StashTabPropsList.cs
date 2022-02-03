@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EnhancePoE.Model
 {
-    // property names from api
-    public class StashTabProps
-    {
-        public string n { get; set; }
-        public int i { get; set; }
-    }
-    public class StashTabPropsList
-    {
-        public List<StashTabProps> tabs { get; set; }
-    }
+   // property names from api
+   public class StashTabProps
+   {
+      public string N { get; set; }
+      public int I { get; set; }
+   }
+   public class StashTabPropsList
+   {
+      public List<StashTabProps> Tabs { get; set; }
+   }
 }

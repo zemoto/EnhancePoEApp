@@ -3,36 +3,36 @@ using System.Threading.Tasks;
 
 namespace EnhancePoE.Model.Storage
 {
-    internal class FileFilterStorage : IFilterStorage
-    {
-        private readonly string _fileLocation;
+   internal class FileFilterStorage : IFilterStorage
+   {
+      private readonly string _fileLocation;
 
-        public FileFilterStorage(string fileLocation)
-        {
-            _fileLocation = fileLocation;
-        }
+      public FileFilterStorage( string fileLocation )
+      {
+         _fileLocation = fileLocation;
+      }
 
-        public async Task<string> ReadLootFilterAsync()
-        {
-            if (_fileLocation != "")
+      public async Task<string> ReadLootFilterAsync()
+      {
+         if ( _fileLocation != "" )
+         {
+            using ( var reader = new StreamReader( _fileLocation ) )
             {
-                using (StreamReader reader = new StreamReader(_fileLocation))
-                {
-                    return await reader.ReadToEndAsync();
-                }
+               return await reader.ReadToEndAsync();
             }
-            return null;
-        }
+         }
+         return null;
+      }
 
-        public async Task WriteLootFilterAsync(string filter)
-        {
-            if (_fileLocation != "" && filter != "")
+      public async Task WriteLootFilterAsync( string filter )
+      {
+         if ( _fileLocation != "" && filter != "" )
+         {
+            using ( var writer = new StreamWriter( _fileLocation ) )
             {
-                using (StreamWriter writer = new StreamWriter(_fileLocation))
-                {
-                    await writer.WriteAsync(filter);
-                }
+               await writer.WriteAsync( filter );
             }
-        }
-    }
+         }
+      }
+   }
 }
