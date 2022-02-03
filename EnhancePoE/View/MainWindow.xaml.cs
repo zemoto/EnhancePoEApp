@@ -111,6 +111,7 @@ namespace EnhancePoE
          {
             Show();
             _ = Activate();
+            ShowInTaskbar = true;
             WindowState = WindowState.Normal;
          };
       }
@@ -127,6 +128,7 @@ namespace EnhancePoE
          {
             e.Cancel = true;
             Hide();
+            ShowInTaskbar = false;
             base.OnClosing( e );
          }
          else if ( !Properties.Settings.Default.hideOnClose || _closingFromTrayIcon )
