@@ -89,7 +89,7 @@ namespace EnhancePoE
          _trayIcon.Visible = true;
          _trayIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
          _ = _trayIcon.ContextMenuStrip.Items.Add( "Close", null, OnTrayItemMenuClicked );
-         _trayIcon.MouseClick += ( s, a ) =>
+         _trayIcon.DoubleClick += ( s, a ) =>
          {
             Show();
             _ = Activate();
