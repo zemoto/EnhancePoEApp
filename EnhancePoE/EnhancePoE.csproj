@@ -10,9 +10,11 @@
 	<RootNamespace>EnhancePoE</RootNamespace>
 	<ApplicationIcon>Assets\coin.ico</ApplicationIcon>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.2.0" />
+    <Reference Include="WpfToolkit">
+      <HintPath>WpfToolkit\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
