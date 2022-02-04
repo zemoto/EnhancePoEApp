@@ -117,7 +117,7 @@ namespace EnhancePoE
          {
             return false;
          }
-         if ( Properties.Settings.Default.SessionId == "" )
+         if ( string.IsNullOrEmpty( Properties.Settings.Default.SessionId ) )
          {
             _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set PoE Session Id." );
             return false;
@@ -146,38 +146,29 @@ namespace EnhancePoE
          {
             // add user agent
             client.DefaultRequestHeaders.Add( "User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}" );
-            using ( var res = await client.GetAsync( propsUri ) )
+            using var res = await client.GetAsync( propsUri );
+            if ( res.IsSuccessStatusCode )
             {
-               if ( res.IsSuccessStatusCode )
-               {
-                  using ( var content = res.Content )
-                  {
-                     string resContent = await content.ReadAsStringAsync();
-                     PropsList = JsonSerializer.Deserialize<StashTabPropsList>( resContent );
+               using var content = res.Content;
+               string resContent = await content.ReadAsStringAsync();
+               PropsList = JsonSerializer.Deserialize<StashTabPropsList>( resContent );
 
-                     Trace.WriteLine( res.Headers, "res headers" );
+               Trace.WriteLine( res.Headers, "res headers" );
 
-                     // get new rate limit values
-                     string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
-                     string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
-                     string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
-                     RateLimit.DeserializeRateLimits( rateLimit, rateLimitState );
-                     RateLimit.DeserializeResponseSeconds( responseTime );
-                  }
-               }
-               else
-               {
-                  if ( res.StatusCode == HttpStatusCode.Forbidden )
-                  {
-                     _ = MessageBox.Show( "Connection forbidden. Please check your Accountname and POE Session ID. You may have to refresh your POE Session ID sometimes.", "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
-                  }
-                  else
-                  {
-                     _ = MessageBox.Show( res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
-                  }
-                  FetchError = true;
-                  return false;
-               }
+               // get new rate limit values
+               string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
+               string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
+               string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
+               RateLimit.DeserializeRateLimits( rateLimit, rateLimitState );
+               RateLimit.DeserializeResponseSeconds( responseTime );
+            }
+            else
+            {
+               _ = MessageBox.Show( res.StatusCode == HttpStatusCode.Forbidden ?
+                  "Connection forbidden. Please check your Accountname and POE Session ID. You may have to refresh your POE Session ID sometimes." :
+                  res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
+               FetchError = true;
+               return false;
             }
          }
 
@@ -185,14 +176,14 @@ namespace EnhancePoE
          return true;
       }
 
-      public async static Task<bool> GetItems()
+      public static async Task<bool> GetItems()
       {
          if ( IsFetching )
          {
             Trace.WriteLine( "already fetching" );
             return false;
          }
-         if ( Properties.Settings.Default.SessionId == "" )
+         if ( string.IsNullOrEmpty( Properties.Settings.Default.SessionId ) )
          {
             _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set PoE Session Id." );
             return false;
@@ -228,35 +219,31 @@ namespace EnhancePoE
                if ( !usedUris.Contains( i.StashTabUri ) )
                {
                   cookieContainer.Add( i.StashTabUri, new Cookie( "POESESSID", sessionId ) );
-                  using ( var res = await client.GetAsync( i.StashTabUri ) )
+                  using var res = await client.GetAsync( i.StashTabUri );
+                  usedUris.Add( i.StashTabUri );
+                  if ( res.IsSuccessStatusCode )
                   {
-                     usedUris.Add( i.StashTabUri );
-                     if ( res.IsSuccessStatusCode )
-                     {
-                        using ( var content = res.Content )
-                        {
-                           // get new rate limit values
-                           string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
-                           string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
-                           string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
-                           RateLimit.DeserializeRateLimits( rateLimit, rateLimitState );
-                           RateLimit.DeserializeResponseSeconds( responseTime );
+                     using var content = res.Content;
+                     // get new rate limit values
+                     string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
+                     string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
+                     string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
+                     RateLimit.DeserializeRateLimits( rateLimit, rateLimitState );
+                     RateLimit.DeserializeResponseSeconds( responseTime );
 
-                           // deserialize response
-                           string resContent = await content.ReadAsStringAsync();
-                           var deserializedContent = JsonSerializer.Deserialize<ItemList>( resContent );
-                           i.ItemList = deserializedContent.items;
-                           i.Quad = deserializedContent.quadLayout;
+                     // deserialize response
+                     string resContent = await content.ReadAsStringAsync();
+                     var deserializedContent = JsonSerializer.Deserialize<ItemList>( resContent );
+                     i.ItemList = deserializedContent.items;
+                     i.Quad = deserializedContent.quadLayout;
 
-                           i.CleanItemList();
-                        }
-                     }
-                     else
-                     {
-                        FetchError = true;
-                        _ = MessageBox.Show( res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
-                        return false;
-                     }
+                     i.CleanItemList();
+                  }
+                  else
+                  {
+                     FetchError = true;
+                     _ = MessageBox.Show( res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
+                     return false;
                   }
                }
             }

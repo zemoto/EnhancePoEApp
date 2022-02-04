@@ -26,16 +26,14 @@ namespace EnhancePoE.Utils
       private static void PingSingleInstance()
       {
          // The act of connecting indicates to the single instance that another process tried to run
-         using ( var client = new NamedPipeClientStream( ".", SingleInstanceName, PipeDirection.Out ) )
+         using var client = new NamedPipeClientStream( ".", SingleInstanceName, PipeDirection.Out );
+         try
          {
-            try
-            {
-               client.Connect( 0 );
-            }
-            catch
-            {
-               // ignore
-            }
+            client.Connect( 0 );
+         }
+         catch
+         {
+            // ignore
          }
       }
 

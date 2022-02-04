@@ -14,7 +14,7 @@ namespace EnhancePoE
    public partial class MainWindow : Window, INotifyPropertyChanged
    {
       private static MainWindow _instance;
-      public static MainWindow Instance => _instance ?? ( _instance = new MainWindow() );
+      public static MainWindow Instance => _instance ??= new MainWindow() ;
 
       public static ChaosRecipeEnhancer Overlay { get; } = new ChaosRecipeEnhancer();
       public static StashTabWindow StashTabOverlay { get; } = new StashTabWindow();
@@ -85,15 +85,10 @@ namespace EnhancePoE
       // creates tray icon with menu
       private void InitializeTray()
       {
-         var menuItem = new System.Windows.Forms.MenuItem { Text = "Close" };
-         menuItem.Click += OnTrayItemMenuClicked;
-
-         var contextMenu = new System.Windows.Forms.ContextMenu();
-         _ = contextMenu.MenuItems.Add( menuItem );
-
-         _trayIcon.Icon = new System.Drawing.Icon( @"Res\coin.ico" );
+         _trayIcon.Icon = new System.Drawing.Icon( @"Assets\coin.ico" );
          _trayIcon.Visible = true;
-         _trayIcon.ContextMenu = contextMenu;
+         _trayIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+         _ = _trayIcon.ContextMenuStrip.Items.Add( "Close", null, OnTrayItemMenuClicked );
          _trayIcon.MouseClick += ( s, a ) =>
          {
             Show();

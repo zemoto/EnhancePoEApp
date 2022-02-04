@@ -94,7 +94,7 @@ namespace EnhancePoE
          // TODO: crashes here after some time
          foreach ( var s in StashTabList.StashTabs )
          {
-            foreach ( var i in ( (List<Item>)Utility.GetPropertyValue( s, listName ) ) )
+            foreach ( var i in (List<Item>)Utility.GetPropertyValue( s, listName ) )
             {
                if ( set.GetNextItemClass() == i.ItemType || ( !honorOrder && set.IsValidItem( i ) ) )
                {
@@ -124,7 +124,7 @@ namespace EnhancePoE
                   nextItemType = "OneHandWeapons";
                   foreach ( var s in StashTabList.StashTabs )
                   {
-                     foreach ( var i in ( (List<Item>)Utility.GetPropertyValue( s, listName ) ) )
+                     foreach ( var i in (List<Item>)Utility.GetPropertyValue( s, listName ) )
                      {
                         if ( nextItemType == i.ItemType && set.GetItemDistance( i ) < minDistance )
                         {

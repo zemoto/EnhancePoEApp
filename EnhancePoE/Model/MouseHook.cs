@@ -19,11 +19,7 @@ namespace EnhancePoE.Model
       private static IntPtr SetHook( LowLevelMouseProc proc )
       {
          var hook = SetWindowsHookEx( WH_MOUSE_LL, proc, GetModuleHandle( "user32" ), 0 );
-         if ( hook == IntPtr.Zero )
-         {
-            throw new System.ComponentModel.Win32Exception();
-         }
-         return hook;
+         return hook == IntPtr.Zero ? throw new System.ComponentModel.Win32Exception() : hook;
       }
 
       private delegate IntPtr LowLevelMouseProc( int nCode, IntPtr wParam, IntPtr lParam );

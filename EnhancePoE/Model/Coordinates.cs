@@ -17,23 +17,15 @@ namespace EnhancePoE.Model
          int btnX = Convert.ToInt32( Math.Ceiling( pt.X + btn.ActualWidth + 1 ) );
          int btnY = Convert.ToInt32( Math.Ceiling( pt.Y + btn.ActualHeight + 1 ) );
 
-         if ( clickX > pt.X
+         return clickX > pt.X
              && clickY > pt.Y
              && clickX < btnX
-             && clickY < btnY )
-         {
-            return true;
-         }
-         return false;
+             && clickY < btnY;
       }
 
       private static System.Windows.Point GetCoordinates( System.Windows.Controls.Button item )
       {
-         if ( item != null )
-         {
-            return item.PointToScreen( new System.Windows.Point( 0, 0 ) );
-         }
-         return new System.Windows.Point( 0, 0 );
+         return item != null ? item.PointToScreen( new System.Windows.Point( 0, 0 ) ) : new System.Windows.Point( 0, 0 );
       }
 
       private static bool CheckForHeaderHit( StashTab s )
@@ -49,14 +41,10 @@ namespace EnhancePoE.Model
 
          int tabX = Convert.ToInt32( Math.Floor( pt.X + s.TabHeader.ActualWidth + 1 ) );
          int tabY = Convert.ToInt32( Math.Floor( pt.Y + s.TabHeader.ActualHeight + 1 ) );
-         if ( clickX > pt.X
+         return clickX > pt.X
              && clickY > pt.Y
              && clickX < tabX
-             && clickY < tabY )
-         {
-            return true;
-         }
-         return false;
+             && clickY < tabY;
       }
 
       private static bool CheckForEditButtonHit( System.Windows.Controls.Button btn )
@@ -72,32 +60,20 @@ namespace EnhancePoE.Model
 
          int btnX = Convert.ToInt32( Math.Floor( pt.X + btn.ActualWidth + 1 ) );
          int btnY = Convert.ToInt32( Math.Floor( pt.Y + btn.ActualHeight + 1 ) );
-         if ( clickX > pt.X
+         return clickX > pt.X
              && clickY > pt.Y
              && clickX < btnX
-             && clickY < btnY )
-         {
-            return true;
-         }
-         return false;
+             && clickY < btnY;
       }
 
       private static System.Windows.Point GetTabHeaderCoordinates( System.Windows.Controls.TextBlock item )
       {
-         if ( item != null )
-         {
-            return item.PointToScreen( new System.Windows.Point( 0, 0 ) );
-         }
-         return new System.Windows.Point( 0, 0 );
+         return item != null ? item.PointToScreen( new System.Windows.Point( 0, 0 ) ) : new System.Windows.Point( 0, 0 );
       }
 
       private static System.Windows.Point GetEditButtonCoordinates( System.Windows.Controls.Button button )
       {
-         if ( button != null )
-         {
-            return button.PointToScreen( new System.Windows.Point( 0, 0 ) );
-         }
-         return new System.Windows.Point( 0, 0 );
+         return button != null ? button.PointToScreen( new System.Windows.Point( 0, 0 ) ) : new System.Windows.Point( 0, 0 );
       }
 
       private static List<Cell> GetAllActiveCells( int index )

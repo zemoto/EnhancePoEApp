@@ -10,11 +10,12 @@ namespace EnhancePoE
    {
       public App()
       {
-         SetupUnhandledExceptionHandling();
          if ( !SingleInstance.Claim() )
          {
             Shutdown();
          }
+
+         SetupUnhandledExceptionHandling();
       }
 
       private void SetupUnhandledExceptionHandling()
