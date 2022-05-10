@@ -181,17 +181,6 @@ namespace EnhancePoE
          }
       }
 
-      private SolidColorBrush _fetchButtonColor = Brushes.Green;
-      public SolidColorBrush FetchButtonColor
-      {
-         get => _fetchButtonColor;
-         set
-         {
-            _fetchButtonColor = value;
-            OnPropertyChanged( nameof( FetchButtonColor ) );
-         }
-      }
-
       private int _ringsAmount;
       public int RingsAmount
       {
@@ -330,7 +319,6 @@ namespace EnhancePoE
           {
              IsIndeterminate = true;
              FetchButtonEnabled = false;
-             FetchButtonColor = Brushes.DimGray;
           } );
          await Dispatcher.Invoke( async () =>
           {
@@ -381,7 +369,6 @@ namespace EnhancePoE
           {
              IsIndeterminate = false;
              FetchButtonEnabled = true;
-             FetchButtonColor = Brushes.Green;
              FetchingActive = false;
           } );
          Trace.WriteLine( "end of fetch function reached" );

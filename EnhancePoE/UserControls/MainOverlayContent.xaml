@@ -291,7 +291,7 @@
          </Grid>
       </Border>
       <Button x:Name="RefreshButton"
-              Click="RefreshButton_Click_1"
+              Click="OnFetchButtonClicked"
               Width="50"
               IsEnabled="{Binding FetchButtonEnabled}"
               Grid.Column="11"

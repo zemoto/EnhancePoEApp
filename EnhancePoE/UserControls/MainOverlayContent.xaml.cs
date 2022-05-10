@@ -15,7 +15,7 @@ namespace EnhancePoE.UserControls
          MainWindow.RunStashTabOverlay();
       }
 
-      private void RefreshButton_Click_1( object sender, RoutedEventArgs e )
+      private void OnFetchButtonClicked( object sender, RoutedEventArgs e )
       {
          MainWindow.Overlay.RunFetching();
       }
