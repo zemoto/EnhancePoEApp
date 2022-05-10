@@ -365,10 +365,6 @@ namespace EnhancePoE
          {
             Overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContentMinified();
          }
-         else if ( Properties.Settings.Default.OverlayMode == 2 )
-         {
-            Overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayOnlyButtons();
-         }
       }
 
       private void OnResetButtonClicked( object sender, RoutedEventArgs e )

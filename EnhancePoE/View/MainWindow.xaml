@@ -395,9 +395,8 @@
                                Name="OverlayModeComboBox"
                                SelectionChanged="OnOverlayModeComboBoxSelectionChanged"
                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=OverlayMode, Mode=TwoWay}">
-                        <ComboBoxItem Content="Standard"></ComboBoxItem>
-                        <ComboBoxItem Content="Minified"></ComboBoxItem>
-                        <ComboBoxItem Content="Only Buttons"></ComboBoxItem>
+                        <ComboBoxItem Content="Standard" />
+                        <ComboBoxItem Content="Minified" />
                      </ComboBox>
 
                      <TextBlock Grid.Column="1"
