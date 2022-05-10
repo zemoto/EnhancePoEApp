@@ -35,7 +35,7 @@ namespace EnhancePoE
          }
       }
 
-      private Visibility _warningMessageVisibility = Visibility.Hidden;
+      private Visibility _warningMessageVisibility = Visibility.Collapsed;
       public Visibility WarningMessageVisibility
       {
          get => _warningMessageVisibility;
@@ -307,7 +307,7 @@ namespace EnhancePoE
       {
          MainWindow.Overlay.WarningMessage = "";
          MainWindow.Overlay.ShadowOpacity = 0;
-         MainWindow.Overlay.WarningMessageVisibility = Visibility.Hidden;
+         MainWindow.Overlay.WarningMessageVisibility = Visibility.Collapsed;
       }
 
       private async void FetchData()
