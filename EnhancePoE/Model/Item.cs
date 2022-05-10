@@ -40,13 +40,13 @@ namespace EnhancePoE
          string itemClass = iconParts[1];
          switch ( itemClass )
          {
+            case "Armours" when iconParts[2] == "Shields":
+            case "Quivers":
+               itemClass = "OneHandWeapons";
+               break;
             case "Weapons":
             case "Armours":
                itemClass = iconParts[2];
-               break;
-            case "Rings":
-            case "Amulets":
-            case "Belts":
                break;
          }
          ItemType = itemClass;
