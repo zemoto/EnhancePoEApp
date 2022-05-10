@@ -8,13 +8,14 @@ using EnhancePoE.Model;
 using EnhancePoE.View;
 using EnhancePoE.Utils;
 using System.Collections.ObjectModel;
+using Color = System.Windows.Media.Color;
 
 namespace EnhancePoE
 {
    public partial class MainWindow : Window, INotifyPropertyChanged
    {
       private static MainWindow _instance;
-      public static MainWindow Instance => _instance ??= new MainWindow() ;
+      public static MainWindow Instance => _instance ??= new MainWindow();
 
       public static ChaosRecipeEnhancer Overlay { get; } = new ChaosRecipeEnhancer();
       public static StashTabWindow StashTabOverlay { get; } = new StashTabWindow();
@@ -74,11 +75,43 @@ namespace EnhancePoE
       {
          if ( Properties.Settings.Default.ColorStash != "" )
          {
-            ColorStashPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash );
+            ColorStashPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash );
          }
          if ( Properties.Settings.Default.StashTabBackgroundColor != "" )
          {
-            ColorStashBackgroundPicker.SelectedColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.StashTabBackgroundColor );
+            ColorStashBackgroundPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.StashTabBackgroundColor );
+         }
+         if ( Properties.Settings.Default.ColorBoots != "" )
+         {
+            ColorBootsPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorBoots );
+         }
+         if ( Properties.Settings.Default.ColorChest != "" )
+         {
+            ColorChestPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorChest );
+         }
+         if ( Properties.Settings.Default.ColorWeapon != "" )
+         {
+            ColorWeaponsPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorWeapon );
+         }
+         if ( Properties.Settings.Default.ColorGloves != "" )
+         {
+            ColorGlovesPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorGloves );
+         }
+         if ( Properties.Settings.Default.ColorHelmet != "" )
+         {
+            ColorHelmetPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorHelmet );
+         }
+         if ( Properties.Settings.Default.ColorRing != "" )
+         {
+            ColorRingPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorRing );
+         }
+         if ( Properties.Settings.Default.ColorAmulet != "" )
+         {
+            ColorAmuletPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorAmulet );
+         }
+         if ( Properties.Settings.Default.ColorBelt != "" )
+         {
+            ColorBeltPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorBelt );
          }
       }
 
@@ -160,7 +193,52 @@ namespace EnhancePoE
          }
       }
 
-      private void ColorStashPicker_SelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
+      private void OnColorGlovesPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.ColorGloves = ColorGlovesPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorBootsPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.ColorBoots = ColorBootsPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorHelmetPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.ColorHelmet = ColorHelmetPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorChestPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.ColorChest = ColorChestPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorWeaponsPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.ColorWeapon = ColorWeaponsPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorStashBackgroundColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorRingPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.ColorRing = ColorRingPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorAmuletPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.ColorAmulet = ColorAmuletPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorBeltPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
+      {
+         Properties.Settings.Default.ColorBelt = ColorBeltPicker.SelectedColor.ToString();
+      }
+
+      private void OnColorStashPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
       {
          Properties.Settings.Default.ColorStash = ColorStashPicker.SelectedColor.ToString();
       }
@@ -214,11 +292,6 @@ namespace EnhancePoE
          return false;
       }
 
-      private void OnColorStashBackgroundColorChanged( object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e )
-      {
-         Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
-      }
-
       private void OnStashtabModeComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e ) => LoadModeVisibility();
 
       private void LoadModeVisibility()
@@ -242,7 +315,7 @@ namespace EnhancePoE
          LeagueList.Clear();
 
          var leagues = await _leagueGetter.GetLeaguesAsync();
-         foreach( var league in leagues )
+         foreach ( var league in leagues )
          {
             LeagueList.Add( league );
          }

@@ -16,6 +16,7 @@
         ResizeMode="CanMinimize"
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
+        MinWidth="700"
         d:DataContext="{d:DesignInstance Type={x:Type local:MainWindow}}">
 
    <Border BorderBrush="DarkGray"
@@ -490,7 +491,7 @@
                                        Width="200"
                                        Name="ColorStashPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="ColorStashPicker_SelectedColorChanged" />
+                                       SelectedColorChanged="OnColorStashPickerSelectedColorChanged" />
 
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
@@ -567,6 +568,127 @@
                              Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderGap, Mode=TwoWay}" />
                   </Grid>
                </StackPanel>
+            </TabItem>
+            <TabItem Header="Colors">
+               <Grid>
+                  <Grid HorizontalAlignment="Left">
+                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                     </Grid.ColumnDefinitions>
+                     <Grid.RowDefinitions>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="10" />
+                     </Grid.RowDefinitions>
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Text="Colors"
+                                FontSize="24"
+                                VerticalAlignment="Center"
+                                FontWeight="Bold" />
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="3"
+                                VerticalAlignment="Center"
+                                Text="Gloves Color:" />
+                     <xctk:ColorPicker Grid.Column="3"
+                                       Grid.Row="3"
+                                       Width="200"
+                                       Name="ColorGlovesPicker"
+                                       ColorMode="ColorCanvas"
+                                       SelectedColorChanged="OnColorGlovesPickerSelectedColorChanged" />
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="5"
+                                VerticalAlignment="Center"
+                                Text="Boots Color:" />
+                     <xctk:ColorPicker Grid.Column="3"
+                                       Grid.Row="5"
+                                       Width="200"
+                                       Name="ColorBootsPicker"
+                                       ColorMode="ColorCanvas"
+                                       SelectedColorChanged="OnColorBootsPickerSelectedColorChanged" />
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="7"
+                                VerticalAlignment="Center"
+                                Text="Helmet Color:" />
+                     <xctk:ColorPicker Grid.Column="3"
+                                       Grid.Row="7"
+                                       Width="200"
+                                       Name="ColorHelmetPicker"
+                                       ColorMode="ColorCanvas"
+                                       SelectedColorChanged="OnColorHelmetPickerSelectedColorChanged" />
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="9"
+                                VerticalAlignment="Center"
+                                Text="Body Armour Color:" />
+                     <xctk:ColorPicker Grid.Column="3"
+                                       Grid.Row="9"
+                                       Width="200"
+                                       Name="ColorChestPicker"
+                                       ColorMode="ColorCanvas"
+                                       SelectedColorChanged="OnColorChestPickerSelectedColorChanged" />
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="11"
+                                VerticalAlignment="Center"
+                                Text="Weapons Color:" />
+                     <xctk:ColorPicker Grid.Column="3"
+                                       Grid.Row="11"
+                                       Width="200"
+                                       Name="ColorWeaponsPicker"
+                                       ColorMode="ColorCanvas"
+                                       SelectedColorChanged="OnColorWeaponsPickerSelectedColorChanged" />
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="13"
+                                Text="Ring Color:"
+                                VerticalAlignment="Center" />
+                     <xctk:ColorPicker Grid.Column="3"
+                                       Grid.Row="13"
+                                       Width="200"
+                                       Name="ColorRingPicker"
+                                       ColorMode="ColorCanvas"
+                                       SelectedColorChanged="OnColorRingPickerSelectedColorChanged" />
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="15"
+                                VerticalAlignment="Center"
+                                Text="Amulet Color:" />
+                     <xctk:ColorPicker Grid.Column="3"
+                                       Grid.Row="15"
+                                       Width="200"
+                                       Name="ColorAmuletPicker"
+                                       ColorMode="ColorCanvas"
+                                       SelectedColorChanged="OnColorAmuletPickerSelectedColorChanged" />
+                     <TextBlock Grid.Column="1"
+                                Grid.Row="17"
+                                VerticalAlignment="Center"
+                                Text="Belt Color:" />
+                     <xctk:ColorPicker Grid.Column="3"
+                                       Grid.Row="17"
+                                       Width="200"
+                                       Name="ColorBeltPicker"
+                                       ColorMode="ColorCanvas"
+                                       SelectedColorChanged="OnColorBeltPickerSelectedColorChanged" />
+                  </Grid>
+               </Grid>
             </TabItem>
          </TabControl>
          <Grid Grid.Column="1"
