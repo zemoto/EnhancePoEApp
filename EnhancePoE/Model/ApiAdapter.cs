@@ -18,6 +18,9 @@ namespace EnhancePoE
       private static StashTabPropsList PropsList { get; set; }
       public static bool FetchError { get; set; }
       public static bool FetchingDone { get; set; }
+
+      public static List<StashTab> StashTabList { get; private set; }
+
       public static async Task<bool> GenerateUri()
       {
          FetchError = false;
@@ -31,7 +34,7 @@ namespace EnhancePoE
 
             if ( await GetProps( accName, league ) && !FetchError )
             {
-               GenerateStashTabs();
+               StashTabList = PropsList.tabs.ConvertAll( x => new StashTab( x.n, x.i ) );
                GenerateStashtabUris( accName, league );
                return true;
             }
@@ -44,70 +47,16 @@ namespace EnhancePoE
          return false;
       }
 
-      private static void GenerateStashTabs()
-      {
-         var ret = new List<StashTab>();
-
-         // mode = ID
-         if ( Properties.Settings.Default.StashtabMode == 0 )
-         {
-            StashTabList.GetStashTabIndices();
-            if ( PropsList != null )
-            {
-               foreach ( var p in PropsList.tabs )
-               {
-                  for ( int i = StashTabList.StashTabIndices.Count - 1; i > -1; i-- )
-                  {
-                     if ( StashTabList.StashTabIndices[i] == p.i )
-                     {
-                        StashTabList.StashTabIndices.RemoveAt( i );
-                        ret.Add( new StashTab( p.n, p.i ) );
-                     }
-                  }
-               }
-               StashTabList.StashTabs = ret;
-               GetAllTabNames();
-            }
-         }
-         // mode = Name
-         else
-         {
-            if ( PropsList != null )
-            {
-               string stashName = Properties.Settings.Default.StashTabName;
-               foreach ( var p in PropsList.tabs )
-               {
-                  if ( p.n.StartsWith( stashName ) )
-                  {
-                     ret.Add( new StashTab( p.n, p.i ) );
-                  }
-               }
-               StashTabList.StashTabs = ret;
-            }
-         }
-         Trace.WriteLine( StashTabList.StashTabs.Count, "stash tab count" );
-      }
-
       private static void GenerateStashtabUris( string accName, string league )
       {
-         foreach ( var i in StashTabList.StashTabs )
+         if ( StashTabList is null )
          {
-            string stashTab = i.TabIndex.ToString();
-            i.StashTabUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={stashTab}&league={league}" );
+            return;
          }
-      }
 
-      private static void GetAllTabNames()
-      {
-         foreach ( var s in StashTabList.StashTabs )
+         for ( int i = 0; i < StashTabList.Count; i++ )
          {
-            foreach ( var p in PropsList.tabs )
-            {
-               if ( s.TabIndex == p.i )
-               {
-                  s.TabName = p.n;
-               }
-            }
+            StashTabList[i].StashTabUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={i}&league={league}" );
          }
       }
 
@@ -193,7 +142,7 @@ namespace EnhancePoE
             return false;
          }
          // check rate limit
-         if ( RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - StashTabList.StashTabs.Count - 4 )
+         if ( RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 5 )
          {
             RateLimit.RateLimitExceeded = true;
             return false;
@@ -209,42 +158,42 @@ namespace EnhancePoE
          {
             // add user agent
             client.DefaultRequestHeaders.Add( "User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}" );
-            foreach ( var i in StashTabList.StashTabs )
+
+            // check rate limit ban
+            if ( RateLimit.CheckForBan() )
             {
-               // check rate limit ban
-               if ( RateLimit.CheckForBan() )
+               return false;
+            }
+
+            var stashTab = MainWindow.Instance.SelectedStashTab;
+            if ( !usedUris.Contains( stashTab.StashTabUri ) )
+            {
+               cookieContainer.Add( stashTab.StashTabUri, new Cookie( "POESESSID", sessionId ) );
+               using var res = await client.GetAsync( stashTab.StashTabUri );
+               usedUris.Add( stashTab.StashTabUri );
+               if ( res.IsSuccessStatusCode )
                {
-                  return false;
+                  using var content = res.Content;
+                  // get new rate limit values
+                  string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
+                  string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
+                  string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
+                  RateLimit.DeserializeRateLimits( rateLimit, rateLimitState );
+                  RateLimit.DeserializeResponseSeconds( responseTime );
+
+                  // deserialize response
+                  string resContent = await content.ReadAsStringAsync();
+                  var deserializedContent = JsonSerializer.Deserialize<ItemList>( resContent );
+                  stashTab.ItemList = deserializedContent.items;
+                  stashTab.Quad = deserializedContent.quadLayout;
+
+                  stashTab.CleanItemList();
                }
-               if ( !usedUris.Contains( i.StashTabUri ) )
+               else
                {
-                  cookieContainer.Add( i.StashTabUri, new Cookie( "POESESSID", sessionId ) );
-                  using var res = await client.GetAsync( i.StashTabUri );
-                  usedUris.Add( i.StashTabUri );
-                  if ( res.IsSuccessStatusCode )
-                  {
-                     using var content = res.Content;
-                     // get new rate limit values
-                     string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
-                     string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
-                     string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
-                     RateLimit.DeserializeRateLimits( rateLimit, rateLimitState );
-                     RateLimit.DeserializeResponseSeconds( responseTime );
-
-                     // deserialize response
-                     string resContent = await content.ReadAsStringAsync();
-                     var deserializedContent = JsonSerializer.Deserialize<ItemList>( resContent );
-                     i.ItemList = deserializedContent.items;
-                     i.Quad = deserializedContent.quadLayout;
-
-                     i.CleanItemList();
-                  }
-                  else
-                  {
-                     FetchError = true;
-                     _ = MessageBox.Show( res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
-                     return false;
-                  }
+                  FetchError = true;
+                  _ = MessageBox.Show( res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
+                  return false;
                }
             }
          }

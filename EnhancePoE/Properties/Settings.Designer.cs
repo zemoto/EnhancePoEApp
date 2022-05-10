@@ -313,42 +313,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int StashtabMode {
-            get {
-                return ((int)(this["StashtabMode"]));
-            }
-            set {
-                this["StashtabMode"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashTabName {
-            get {
-                return ((string)(this["StashTabName"]));
-            }
-            set {
-                this["StashTabName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string StashTabIndices {
-            get {
-                return ((string)(this["StashTabIndices"]));
-            }
-            set {
-                this["StashTabIndices"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("20.4")]
         public double TabHeaderWidth {
             get {
@@ -476,6 +440,18 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["LockOverlayPosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SelectedStashTabName {
+            get {
+                return ((string)(this["SelectedStashTabName"]));
+            }
+            set {
+                this["SelectedStashTabName"] = value;
             }
         }
     }

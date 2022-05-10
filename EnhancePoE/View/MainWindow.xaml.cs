@@ -8,6 +8,8 @@ using EnhancePoE.Model;
 using EnhancePoE.View;
 using EnhancePoE.Utils;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using Color = System.Windows.Media.Color;
 
 namespace EnhancePoE
@@ -22,35 +24,27 @@ namespace EnhancePoE
 
       public string AppVersionText { get; } = "v.1.2.8-zemoto";
 
-      private Visibility _indicesVisible = Visibility.Hidden;
-      public Visibility IndicesVisible
+      private StashTab _selectedStashTab;
+      public StashTab SelectedStashTab
       {
-         get => _indicesVisible;
+         get => _selectedStashTab;
          set
          {
-            if ( _indicesVisible != value )
+            if ( _selectedStashTab != value )
             {
-               _indicesVisible = value;
-               OnPropertyChanged( nameof( IndicesVisible ) );
-            }
-         }
-      }
+               _selectedStashTab = value;
+               if ( _selectedStashTab is not null )
+               {
+                  Properties.Settings.Default.SelectedStashTabName = _selectedStashTab.TabName;
+               }
 
-      private Visibility _nameVisible = Visibility.Hidden;
-      public Visibility NameVisible
-      {
-         get => _nameVisible;
-         set
-         {
-            if ( _nameVisible != value )
-            {
-               _nameVisible = value;
-               OnPropertyChanged( nameof( NameVisible ) );
+               OnPropertyChanged( nameof( SelectedStashTab ) );
             }
          }
       }
 
       public ObservableCollection<string> LeagueList { get; } = new ObservableCollection<string>();
+      public ObservableCollection<StashTab> StashTabList { get; } = new ObservableCollection<StashTab>();
 
       private bool _closingFromTrayIcon;
 
@@ -64,11 +58,15 @@ namespace EnhancePoE
 
          InitializeColors();
          InitializeTray();
-         LoadModeVisibility();
          LoadLeagueList();
 
          MouseHook.MouseAction += Coordinates.Event;
          SingleInstance.PingedBySecondProcess += ( s, a ) => Dispatcher.Invoke( Show );
+      }
+
+      private async void OnWindowLoaded( object sender, RoutedEventArgs e )
+      {
+         await LoadStashTabsAsync();
       }
 
       private void InitializeColors()
@@ -247,7 +245,6 @@ namespace EnhancePoE
 
       public static bool CheckAllSettings()
       {
-
          var missingSettings = new List<string>();
          string errorMessage = "Please add: \n";
 
@@ -263,20 +260,6 @@ namespace EnhancePoE
          {
             missingSettings.Add( "- League \n" );
          }
-         if ( Properties.Settings.Default.StashtabMode == 0 )
-         {
-            if ( string.IsNullOrEmpty( Properties.Settings.Default.StashTabIndices ) )
-            {
-               missingSettings.Add( "- StashTab Index" );
-            }
-         }
-         else if ( Properties.Settings.Default.StashtabMode == 1 )
-         {
-            if ( string.IsNullOrEmpty( Properties.Settings.Default.StashTabName ) )
-            {
-               missingSettings.Add( "- StashTab Name" );
-            }
-         }
 
          if ( missingSettings.Count == 0 )
          {
@@ -290,22 +273,6 @@ namespace EnhancePoE
 
          _ = MessageBox.Show( errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error );
          return false;
-      }
-
-      private void OnStashtabModeComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e ) => LoadModeVisibility();
-
-      private void LoadModeVisibility()
-      {
-         if ( Properties.Settings.Default.StashtabMode == 0 )
-         {
-            IndicesVisible = Visibility.Visible;
-            NameVisible = Visibility.Hidden;
-         }
-         else
-         {
-            NameVisible = Visibility.Visible;
-            IndicesVisible = Visibility.Hidden;
-         }
       }
 
       private async void LoadLeagueList()
@@ -327,7 +294,56 @@ namespace EnhancePoE
          }
       }
 
+      private async Task LoadStashTabsAsync()
+      {
+         if ( !CheckAllSettings() )
+         {
+            return;
+         }
+
+         FetchStashTabsButton.IsEnabled = false;
+         StashTabComboBox.IsEnabled = false;
+
+         SelectedStashTab = null;
+         if ( await ApiAdapter.GenerateUri() )
+         {
+            foreach ( var stashTab in ApiAdapter.StashTabList )
+            {
+               StashTabList.Add( stashTab );
+            }
+         }
+
+         if ( StashTabList.Count > 0 )
+         {
+            var selectedStashTabName = Properties.Settings.Default.SelectedStashTabName;
+            if ( !string.IsNullOrEmpty( selectedStashTabName ) )
+            {
+               var previouslySelectedStashTab = StashTabList.FirstOrDefault( x => x.TabName == selectedStashTabName );
+               if ( previouslySelectedStashTab is not null )
+               {
+                  SelectedStashTab = previouslySelectedStashTab;
+               }
+            }
+
+            if ( SelectedStashTab is null )
+            {
+               SelectedStashTab = StashTabList[0];
+            }
+         }
+
+         FetchStashTabsButton.IsEnabled = true;
+         StashTabComboBox.IsEnabled = true;
+      }
+
       private void OnRefreshLeaguesButtonClicked( object sender, RoutedEventArgs e ) => LoadLeagueList();
+
+      private async void OnFetchStashTabsButtonClicked( object sender, RoutedEventArgs e )
+      {
+         if ( CheckAllSettings() )
+         {
+            await LoadStashTabsAsync();
+         }
+      }
 
       private void OnTabHeaderGapSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
       {
@@ -336,12 +352,9 @@ namespace EnhancePoE
 
       private void OnTabHeaderWidthSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
       {
-         if ( StashTabList.StashTabs.Count > 0 )
+         if ( SelectedStashTab is not null )
          {
-            foreach ( var s in StashTabList.StashTabs )
-            {
-               s.TabHeaderWidth = new Thickness( Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2 );
-            }
+            SelectedStashTab.TabHeaderWidth = new Thickness( Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2 );
          }
       }
 

@@ -74,15 +74,6 @@
     <Setting Name="ColorAmulet" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFFF0303</Value>
     </Setting>
-    <Setting Name="StashtabMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="StashTabName" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="StashTabIndices" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="TabHeaderWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">20.4</Value>
     </Setting>
@@ -115,6 +106,9 @@
     </Setting>
     <Setting Name="LockOverlayPosition" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SelectedStashTabName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

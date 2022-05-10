@@ -67,16 +67,13 @@ namespace EnhancePoE.View
       public new virtual void Hide()
       {
          Transparentize();
-         //MainWindow.overlay.EditStashTabOverlay.Content = "Edit";
          EditModeButton.Content = "Edit";
          IsEditing = false;
          MouseHook.Stop();
 
-         foreach ( var i in StashTabList.StashTabs )
-         {
-            i.OverlayCellsList.Clear();
-            i.TabHeader = null;
-         }
+         var stashTab = MainWindow.Instance.SelectedStashTab;
+         stashTab.OverlayCellsList.Clear();
+         stashTab.TabHeader = null;
 
          IsOpen = false;
          IsEditing = false;
@@ -87,7 +84,8 @@ namespace EnhancePoE.View
 
       public new virtual void Show()
       {
-         if ( StashTabList.StashTabs.Count != 0 )
+         var tab = MainWindow.Instance.SelectedStashTab;
+         if ( tab is not null )
          {
             IsOpen = true;
             OverlayStashTabList.Clear();
@@ -95,42 +93,39 @@ namespace EnhancePoE.View
             _tabHeaderGap.Left = Properties.Settings.Default.TabHeaderGap;
             TabMargin = new Thickness( Properties.Settings.Default.TabMargin, 0, 0, 0 );
 
-            foreach ( var i in StashTabList.StashTabs )
+            TabItem newStashTabItem;
+            var tbk = new TextBlock() { Text = tab.TabName };
+
+            tbk.DataContext = tab;
+            _ = tbk.SetBinding( TextBlock.BackgroundProperty, new System.Windows.Data.Binding( "TabHeaderColor" ) );
+            _ = tbk.SetBinding( TextBlock.PaddingProperty, new System.Windows.Data.Binding( "TabHeaderWidth" ) );
+            tbk.FontSize = 16;
+            tab.TabHeader = tbk;
+
+            if ( tab.Quad )
             {
-               TabItem newStashTabItem;
-               var tbk = new TextBlock() { Text = i.TabName };
-
-               tbk.DataContext = i;
-               _ = tbk.SetBinding( TextBlock.BackgroundProperty, new System.Windows.Data.Binding( "TabHeaderColor" ) );
-               _ = tbk.SetBinding( TextBlock.PaddingProperty, new System.Windows.Data.Binding( "TabHeaderWidth" ) );
-               tbk.FontSize = 16;
-               i.TabHeader = tbk;
-
-               if ( i.Quad )
+               newStashTabItem = new TabItem
                {
-                  newStashTabItem = new TabItem
+                  Header = tbk,
+                  Content = new UserControls.DynamicGridControlQuad
                   {
-                     Header = tbk,
-                     Content = new UserControls.DynamicGridControlQuad
-                     {
-                        ItemsSource = i.OverlayCellsList,
-                     }
-                  };
-               }
-               else
-               {
-                  newStashTabItem = new TabItem
-                  {
-                     Header = tbk,
-                     Content = new UserControls.DynamicGridControl
-                     {
-                        ItemsSource = i.OverlayCellsList
-                     }
-                  };
-               }
-
-               OverlayStashTabList.Add( newStashTabItem );
+                     ItemsSource = tab.OverlayCellsList,
+                  }
+               };
             }
+            else
+            {
+               newStashTabItem = new TabItem
+               {
+                  Header = tbk,
+                  Content = new UserControls.DynamicGridControl
+                  {
+                     ItemsSource = tab.OverlayCellsList
+                  }
+               };
+            }
+
+            OverlayStashTabList.Add( newStashTabItem );
 
             StashTabOverlayTabControl.SelectedIndex = 0;
 
@@ -140,10 +135,9 @@ namespace EnhancePoE.View
             {
                foreach ( var set in Data.ItemSetListHighlight )
                {
-                  foreach ( var i in set.ItemList )
+                  foreach ( var item in set.ItemList )
                   {
-                     var currTab = Data.GetStashTabFromItem( i );
-                     currTab.ActivateItemCells( i );
+                     tab.ActivateItemCells( item );
                   }
                }
             }

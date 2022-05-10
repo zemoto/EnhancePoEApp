@@ -92,25 +92,23 @@ namespace EnhancePoE
          double minDistance = double.PositiveInfinity;
 
          // TODO: crashes here after some time
-         foreach ( var s in StashTabList.StashTabs )
+         var stashTab = MainWindow.Instance.SelectedStashTab;
+         foreach ( var i in (List<Item>)Utility.GetPropertyValue( stashTab, listName ) )
          {
-            foreach ( var i in (List<Item>)Utility.GetPropertyValue( s, listName ) )
+            if ( set.GetNextItemClass() == i.ItemType || ( !honorOrder && set.IsValidItem( i ) ) )
             {
-               if ( set.GetNextItemClass() == i.ItemType || ( !honorOrder && set.IsValidItem( i ) ) )
+               if ( set.GetItemDistance( i ) < minDistance )
                {
-                  if ( set.GetItemDistance( i ) < minDistance )
-                  {
-                     minDistance = set.GetItemDistance( i );
-                     minItem = i;
-                  }
+                  minDistance = set.GetItemDistance( i );
+                  minItem = i;
                }
             }
          }
+
          if ( minItem != null )
          {
             _ = set.AddItem( minItem );
-            var tab = GetStashTabFromItem( minItem );
-            _ = ( (List<Item>)Utility.GetPropertyValue( tab, listName ) ).Remove( minItem );
+            _ = ( (List<Item>)Utility.GetPropertyValue( stashTab, listName ) ).Remove( minItem );
             return true;
          }
          else
@@ -122,22 +120,18 @@ namespace EnhancePoE
                if ( nextItemType == "TwoHandWeapons" )
                {
                   nextItemType = "OneHandWeapons";
-                  foreach ( var s in StashTabList.StashTabs )
+                  foreach ( var i in (List<Item>)Utility.GetPropertyValue( stashTab, listName ) )
                   {
-                     foreach ( var i in (List<Item>)Utility.GetPropertyValue( s, listName ) )
+                     if ( nextItemType == i.ItemType && set.GetItemDistance( i ) < minDistance )
                      {
-                        if ( nextItemType == i.ItemType && set.GetItemDistance( i ) < minDistance )
-                        {
-                           minDistance = set.GetItemDistance( i );
-                           minItem = i;
-                        }
+                        minDistance = set.GetItemDistance( i );
+                        minItem = i;
                      }
                   }
                   if ( minItem != null )
                   {
                      _ = set.AddItem( minItem );
-                     var tab = GetStashTabFromItem( minItem );
-                     _ = ( (List<Item>)Utility.GetPropertyValue( tab, listName ) ).Remove( minItem );
+                     _ = ( (List<Item>)Utility.GetPropertyValue( stashTab, listName ) ).Remove( minItem );
                      return true;
                   }
                }
@@ -208,56 +202,54 @@ namespace EnhancePoE
 
       private static void FillItemSetsInfluenced()
       {
-         foreach ( var tab in StashTabList.StashTabs )
+         var tab = MainWindow.Instance.SelectedStashTab;
+         foreach ( var i in tab.ItemListShaper )
          {
-            foreach ( var i in tab.ItemListShaper )
+            if ( ItemSetShaper.EmptyItemSlots.Count == 0 )
             {
-               if ( ItemSetShaper.EmptyItemSlots.Count == 0 )
-               {
-                  break;
-               }
-               _ = ItemSetShaper.AddItem( i );
+               break;
             }
-            foreach ( var i in tab.ItemListElder )
+            _ = ItemSetShaper.AddItem( i );
+         }
+         foreach ( var i in tab.ItemListElder )
+         {
+            if ( ItemSetElder.EmptyItemSlots.Count == 0 )
             {
-               if ( ItemSetElder.EmptyItemSlots.Count == 0 )
-               {
-                  break;
-               }
-               _ = ItemSetElder.AddItem( i );
+               break;
             }
-            foreach ( var i in tab.ItemListCrusader )
+            _ = ItemSetElder.AddItem( i );
+         }
+         foreach ( var i in tab.ItemListCrusader )
+         {
+            if ( ItemSetCrusader.EmptyItemSlots.Count == 0 )
             {
-               if ( ItemSetCrusader.EmptyItemSlots.Count == 0 )
-               {
-                  break;
-               }
-               _ = ItemSetCrusader.AddItem( i );
+               break;
             }
-            foreach ( var i in tab.ItemListWarlord )
+            _ = ItemSetCrusader.AddItem( i );
+         }
+         foreach ( var i in tab.ItemListWarlord )
+         {
+            if ( ItemSetWarlord.EmptyItemSlots.Count == 0 )
             {
-               if ( ItemSetWarlord.EmptyItemSlots.Count == 0 )
-               {
-                  break;
-               }
-               _ = ItemSetWarlord.AddItem( i );
+               break;
             }
-            foreach ( var i in tab.ItemListRedeemer )
+            _ = ItemSetWarlord.AddItem( i );
+         }
+         foreach ( var i in tab.ItemListRedeemer )
+         {
+            if ( ItemSetRedeemer.EmptyItemSlots.Count == 0 )
             {
-               if ( ItemSetRedeemer.EmptyItemSlots.Count == 0 )
-               {
-                  break;
-               }
-               _ = ItemSetRedeemer.AddItem( i );
+               break;
             }
-            foreach ( var i in tab.ItemListHunter )
+            _ = ItemSetRedeemer.AddItem( i );
+         }
+         foreach ( var i in tab.ItemListHunter )
+         {
+            if ( ItemSetHunter.EmptyItemSlots.Count == 0 )
             {
-               if ( ItemSetHunter.EmptyItemSlots.Count == 0 )
-               {
-                  break;
-               }
-               _ = ItemSetHunter.AddItem( i );
+               break;
             }
+            _ = ItemSetHunter.AddItem( i );
          }
       }
 
@@ -272,24 +264,11 @@ namespace EnhancePoE
                MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                return;
             }
-            if ( StashTabList.StashTabs.Count == 0 )
-            {
-               MainWindow.Overlay.WarningMessage = "No Stashtabs found...";
-               MainWindow.Overlay.ShadowOpacity = 1;
-               MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
-               return;
-            }
 
             bool exaltedActive = Properties.Settings.Default.ExaltedRecipe;
 
             SetTargetAmount = 0;
-            if ( StashTabList.StashTabs.Count > 0 )
-            {
-               foreach ( var s in StashTabList.StashTabs )
-               {
-                  GetSetTargetAmount( s );
-               }
-            }
+            GetSetTargetAmount( MainWindow.Instance.SelectedStashTab );
 
             if ( Properties.Settings.Default.ShowItemAmount != 0 )
             {
@@ -485,271 +464,232 @@ namespace EnhancePoE
 
       public static void CalculateItemAmounts()
       {
-         if ( StashTabList.StashTabs != null )
+         var tab = MainWindow.Instance.SelectedStashTab;
+         if ( tab is null )
          {
-            Trace.WriteLine( "calculating items amount" );
-            // 0: rings
-            // 1: amulets
-            // 2: belts
-            // 3: chests
-            // 4: weapons
-            // 5: gloves
-            // 6: helmets
-            // 7: boots
-            int[] amounts = new int[8];
-            int weaponsSmall = 0;
-            int weaponBig = 0;
-            foreach ( var tab in StashTabList.StashTabs )
-            {
-               Trace.WriteLine( "tab amount " + tab.ItemList.Count );
-               Trace.WriteLine( "tab amount " + tab.ItemListChaos.Count );
-               if ( tab.ItemList.Count > 0 )
-               {
-                  foreach ( var i in tab.ItemList )
-                  {
-                     Trace.WriteLine( i.ItemType );
-                     if ( i.ItemType == "Rings" )
-                     {
-                        amounts[0]++;
-                     }
-                     else if ( i.ItemType == "Amulets" )
-                     {
-                        amounts[1]++;
-                     }
-                     else if ( i.ItemType == "Belts" )
-                     {
-                        amounts[2]++;
-                     }
-                     else if ( i.ItemType == "BodyArmours" )
-                     {
-                        amounts[3]++;
-                     }
-                     else if ( i.ItemType == "TwoHandWeapons" )
-                     {
-                        weaponBig++;
-                     }
-                     else if ( i.ItemType == "OneHandWeapons" )
-                     {
-                        weaponsSmall++;
-                     }
-                     else if ( i.ItemType == "Gloves" )
-                     {
-                        amounts[5]++;
-                     }
-                     else if ( i.ItemType == "Helmets" )
-                     {
-                        amounts[6]++;
-                     }
-                     else if ( i.ItemType == "Boots" )
-                     {
-                        amounts[7]++;
-                     }
-                  }
-               }
-               if ( tab.ItemListChaos.Count > 0 )
-               {
-                  foreach ( var i in tab.ItemListChaos )
-                  {
-                     Trace.WriteLine( i.ItemType );
-                     if ( i.ItemType == "Rings" )
-                     {
-                        amounts[0]++;
-                     }
-                     else if ( i.ItemType == "Amulets" )
-                     {
-                        amounts[1]++;
-                     }
-                     else if ( i.ItemType == "Belts" )
-                     {
-                        amounts[2]++;
-                     }
-                     else if ( i.ItemType == "BodyArmours" )
-                     {
-                        amounts[3]++;
-                     }
-                     else if ( i.ItemType == "TwoHandWeapons" )
-                     {
-                        weaponBig++;
-                     }
-                     else if ( i.ItemType == "OneHandWeapons" )
-                     {
-                        weaponsSmall++;
-                     }
-                     else if ( i.ItemType == "Gloves" )
-                     {
-                        amounts[5]++;
-                     }
-                     else if ( i.ItemType == "Helmets" )
-                     {
-                        amounts[6]++;
-                     }
-                     else if ( i.ItemType == "Boots" )
-                     {
-                        amounts[7]++;
-                     }
-                  }
-               }
-            }
+            return;
+         }
 
-            if ( Properties.Settings.Default.ShowItemAmount == 1 )
+         Trace.WriteLine( "calculating items amount" );
+         // 0: rings
+         // 1: amulets
+         // 2: belts
+         // 3: chests
+         // 4: weapons
+         // 5: gloves
+         // 6: helmets
+         // 7: boots
+         int[] amounts = new int[8];
+         int weaponsSmall = 0;
+         int weaponBig = 0;
+         Trace.WriteLine( "tab amount " + tab.ItemList.Count );
+         Trace.WriteLine( "tab amount " + tab.ItemListChaos.Count );
+         if ( tab.ItemList.Count > 0 )
+         {
+            foreach ( var i in tab.ItemList )
             {
-               Trace.WriteLine( "we are here" );
-
-               // calculate amounts needed for full sets
-               foreach ( int a in amounts )
+               Trace.WriteLine( i.ItemType );
+               if ( i.ItemType == "Rings" )
                {
-                  Trace.WriteLine( a );
+                  amounts[0]++;
                }
-               amounts[4] = weaponsSmall + weaponBig;
-               MainWindow.Overlay.RingsAmount = amounts[0];
-               MainWindow.Overlay.AmuletsAmount = amounts[1];
-               MainWindow.Overlay.BeltsAmount = amounts[2];
-               MainWindow.Overlay.ChestsAmount = amounts[3];
-               MainWindow.Overlay.WeaponsAmount = amounts[4];
-               MainWindow.Overlay.GlovesAmount = amounts[5];
-               MainWindow.Overlay.HelmetsAmount = amounts[6];
-               MainWindow.Overlay.BootsAmount = amounts[7];
-            }
-            else if ( Properties.Settings.Default.ShowItemAmount == 2 )
-            {
-               amounts[4] = weaponsSmall + weaponBig;
-               MainWindow.Overlay.RingsAmount = Math.Max( ( SetTargetAmount * 2 ) - amounts[0], 0 );
-               MainWindow.Overlay.AmuletsAmount = Math.Max( SetTargetAmount - amounts[1], 0 );
-               MainWindow.Overlay.BeltsAmount = Math.Max( SetTargetAmount - amounts[2], 0 );
-               MainWindow.Overlay.ChestsAmount = Math.Max( SetTargetAmount - amounts[3], 0 );
-               MainWindow.Overlay.WeaponsAmount = Math.Max( ( SetTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ), 0 );
-               MainWindow.Overlay.GlovesAmount = Math.Max( SetTargetAmount - amounts[5], 0 );
-               MainWindow.Overlay.HelmetsAmount = Math.Max( SetTargetAmount - amounts[6], 0 );
-               MainWindow.Overlay.BootsAmount = Math.Max( SetTargetAmount - amounts[7], 0 );
+               else if ( i.ItemType == "Amulets" )
+               {
+                  amounts[1]++;
+               }
+               else if ( i.ItemType == "Belts" )
+               {
+                  amounts[2]++;
+               }
+               else if ( i.ItemType == "BodyArmours" )
+               {
+                  amounts[3]++;
+               }
+               else if ( i.ItemType == "TwoHandWeapons" )
+               {
+                  weaponBig++;
+               }
+               else if ( i.ItemType == "OneHandWeapons" )
+               {
+                  weaponsSmall++;
+               }
+               else if ( i.ItemType == "Gloves" )
+               {
+                  amounts[5]++;
+               }
+               else if ( i.ItemType == "Helmets" )
+               {
+                  amounts[6]++;
+               }
+               else if ( i.ItemType == "Boots" )
+               {
+                  amounts[7]++;
+               }
             }
          }
-      }
-
-      public static StashTab GetStashTabFromItem( Item item )
-      {
-         foreach ( var s in StashTabList.StashTabs )
+         if ( tab.ItemListChaos.Count > 0 )
          {
-            if ( item.StashTabIndex == s.TabIndex )
+            foreach ( var i in tab.ItemListChaos )
             {
-               return s;
+               Trace.WriteLine( i.ItemType );
+               if ( i.ItemType == "Rings" )
+               {
+                  amounts[0]++;
+               }
+               else if ( i.ItemType == "Amulets" )
+               {
+                  amounts[1]++;
+               }
+               else if ( i.ItemType == "Belts" )
+               {
+                  amounts[2]++;
+               }
+               else if ( i.ItemType == "BodyArmours" )
+               {
+                  amounts[3]++;
+               }
+               else if ( i.ItemType == "TwoHandWeapons" )
+               {
+                  weaponBig++;
+               }
+               else if ( i.ItemType == "OneHandWeapons" )
+               {
+                  weaponsSmall++;
+               }
+               else if ( i.ItemType == "Gloves" )
+               {
+                  amounts[5]++;
+               }
+               else if ( i.ItemType == "Helmets" )
+               {
+                  amounts[6]++;
+               }
+               else if ( i.ItemType == "Boots" )
+               {
+                  amounts[7]++;
+               }
             }
          }
-         return null;
+
+         if ( Properties.Settings.Default.ShowItemAmount == 1 )
+         {
+            Trace.WriteLine( "we are here" );
+
+            // calculate amounts needed for full sets
+            foreach ( int a in amounts )
+            {
+               Trace.WriteLine( a );
+            }
+            amounts[4] = weaponsSmall + weaponBig;
+            MainWindow.Overlay.RingsAmount = amounts[0];
+            MainWindow.Overlay.AmuletsAmount = amounts[1];
+            MainWindow.Overlay.BeltsAmount = amounts[2];
+            MainWindow.Overlay.ChestsAmount = amounts[3];
+            MainWindow.Overlay.WeaponsAmount = amounts[4];
+            MainWindow.Overlay.GlovesAmount = amounts[5];
+            MainWindow.Overlay.HelmetsAmount = amounts[6];
+            MainWindow.Overlay.BootsAmount = amounts[7];
+         }
+         else if ( Properties.Settings.Default.ShowItemAmount == 2 )
+         {
+            amounts[4] = weaponsSmall + weaponBig;
+            MainWindow.Overlay.RingsAmount = Math.Max( ( SetTargetAmount * 2 ) - amounts[0], 0 );
+            MainWindow.Overlay.AmuletsAmount = Math.Max( SetTargetAmount - amounts[1], 0 );
+            MainWindow.Overlay.BeltsAmount = Math.Max( SetTargetAmount - amounts[2], 0 );
+            MainWindow.Overlay.ChestsAmount = Math.Max( SetTargetAmount - amounts[3], 0 );
+            MainWindow.Overlay.WeaponsAmount = Math.Max( ( SetTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ), 0 );
+            MainWindow.Overlay.GlovesAmount = Math.Max( SetTargetAmount - amounts[5], 0 );
+            MainWindow.Overlay.HelmetsAmount = Math.Max( SetTargetAmount - amounts[6], 0 );
+            MainWindow.Overlay.BootsAmount = Math.Max( SetTargetAmount - amounts[7], 0 );
+         }
       }
 
       public static void ActivateNextCell( bool active, Cell cell )
       {
-         if ( active )
+         if ( !active )
          {
-            if ( Properties.Settings.Default.HighlightMode == 0 )
+            return;
+         }
+
+         var stashTab = MainWindow.Instance.SelectedStashTab;
+         if ( Properties.Settings.Default.HighlightMode == 0 )
+         {
+            //activate cell by cell
+            stashTab.DeactivateItemCells();
+            stashTab.TabHeaderColor = Brushes.Transparent;
+
+            // remove if itemlist empty
+            if ( ItemSetListHighlight.Count > 0 && ItemSetListHighlight[0].ItemList.Count == 0 )
             {
-               //activate cell by cell
-               foreach ( var s in StashTabList.StashTabs )
-               {
-                  s.DeactivateItemCells();
-                  s.TabHeaderColor = Brushes.Transparent;
-               }
+               ItemSetListHighlight.RemoveAt( 0 );
+            }
 
-               // remove if itemlist empty
-               if ( ItemSetListHighlight.Count > 0 && ItemSetListHighlight[0].ItemList.Count == 0 )
-               {
-                  ItemSetListHighlight.RemoveAt( 0 );
-               }
+            // next item if itemlist not empty
+            if ( ItemSetListHighlight.Count > 0 && ItemSetListHighlight[0].ItemList.Count > 0 && ItemSetListHighlight[0].EmptyItemSlots.Count == 0 )
+            {
+               var highlightItem = ItemSetListHighlight[0].ItemList[0];
+               stashTab.ActivateItemCells( highlightItem );
+               stashTab.TabHeaderColor = Properties.Settings.Default.ColorStash != ""
+                   ? new SolidColorBrush( (Color)ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash ) )
+                   : Brushes.Red;
+               ItemSetListHighlight[0].ItemList.RemoveAt( 0 );
+            }
+         }
+         else if ( Properties.Settings.Default.HighlightMode == 1 )
+         {
+            // activate whole set 
+            if ( ItemSetListHighlight.Count > 0 )
+            {
+               Trace.WriteLine( ItemSetListHighlight[0].ItemList.Count, "item list count" );
+               Trace.WriteLine( ItemSetListHighlight.Count, "itemset list ocunt" );
+               // check for full sets
 
-               // next item if itemlist not empty
-               if ( ItemSetListHighlight.Count > 0 )
+               if ( ItemSetListHighlight[0].EmptyItemSlots.Count == 0 )
                {
-                  if ( ItemSetListHighlight[0].ItemList.Count > 0 && ItemSetListHighlight[0].EmptyItemSlots.Count == 0 )
+                  if ( cell != null )
                   {
-                     var highlightItem = ItemSetListHighlight[0].ItemList[0];
-                     var currentTab = GetStashTabFromItem( highlightItem );
-                     if ( currentTab != null )
-                     {
-                        currentTab.ActivateItemCells( highlightItem );
-                        if ( Properties.Settings.Default.ColorStash != "" )
-                        {
-                           currentTab.TabHeaderColor = new SolidColorBrush( (Color)ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash ) );
-                        }
-                        else
-                        {
-                           currentTab.TabHeaderColor = Brushes.Red;
-                        }
-                        ItemSetListHighlight[0].ItemList.RemoveAt( 0 );
-                     }
+                     var highlightItem = cell.CellItem;
+                     stashTab.DeactivateSingleItemCells( cell.CellItem );
+                     stashTab.TabHeaderColor = Brushes.Transparent;
+                     _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
+                  }
+
+                  foreach ( var i in ItemSetListHighlight[0].ItemList )
+                  {
+                     stashTab.ActivateItemCells( i );
+                     stashTab.TabHeaderColor = Properties.Settings.Default.ColorStash != ""
+                         ? new SolidColorBrush( (Color)ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash ) )
+                         : Brushes.Red;
+                  }
+
+                  // mark item order
+                  if ( ItemSetListHighlight[0] != null && ItemSetListHighlight[0].ItemList.Count > 0 )
+                  {
+                     stashTab.MarkNextItem( ItemSetListHighlight[0].ItemList[0] );
+                  }
+                  if ( ItemSetListHighlight[0].ItemList.Count == 0 )
+                  {
+                     ItemSetListHighlight.RemoveAt( 0 );
+
+                     // activate next set
+                     ActivateNextCell( true, null );
                   }
                }
             }
-            else if ( Properties.Settings.Default.HighlightMode == 1 )
+         }
+         else if ( Properties.Settings.Default.HighlightMode == 2 )
+         {
+            //activate all cells at once
+            if ( ItemSetListHighlight.Count > 0 )
             {
-               // activate whole set 
-               if ( ItemSetListHighlight.Count > 0 )
+               foreach ( var set in ItemSetListHighlight )
                {
-                  Trace.WriteLine( ItemSetListHighlight[0].ItemList.Count, "item list count" );
-                  Trace.WriteLine( ItemSetListHighlight.Count, "itemset list ocunt" );
-                  // check for full sets
-
-                  if ( ItemSetListHighlight[0].EmptyItemSlots.Count == 0 )
+                  if ( set.EmptyItemSlots.Count == 0 && cell != null )
                   {
-                     if ( cell != null )
-                     {
-                        var highlightItem = cell.CellItem;
-                        var currentTab = GetStashTabFromItem( highlightItem );
-                        if ( currentTab != null )
-                        {
-                           currentTab.DeactivateSingleItemCells( cell.CellItem );
-                           currentTab.TabHeaderColor = Brushes.Transparent;
-                           _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
-                        }
-                     }
-
-                     foreach ( var i in ItemSetListHighlight[0].ItemList )
-                     {
-                        var currTab = GetStashTabFromItem( i );
-                        currTab.ActivateItemCells( i );
-                        if ( Properties.Settings.Default.ColorStash != "" )
-                        {
-                           currTab.TabHeaderColor = new SolidColorBrush( (Color)ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash ) );
-                        }
-                        else
-                        {
-                           currTab.TabHeaderColor = Brushes.Red;
-                        }
-                     }
-
-                     // mark item order
-                     if ( ItemSetListHighlight[0] != null && ItemSetListHighlight[0].ItemList.Count > 0 )
-                     {
-                        var cTab = GetStashTabFromItem( ItemSetListHighlight[0].ItemList[0] );
-                        cTab.MarkNextItem( ItemSetListHighlight[0].ItemList[0] );
-                     }
-                     if ( ItemSetListHighlight[0].ItemList.Count == 0 )
-                     {
-                        ItemSetListHighlight.RemoveAt( 0 );
-
-                        // activate next set
-                        ActivateNextCell( true, null );
-                     }
-                  }
-               }
-            }
-            else if ( Properties.Settings.Default.HighlightMode == 2 )
-            {
-               //activate all cells at once
-               if ( ItemSetListHighlight.Count > 0 )
-               {
-                  foreach ( var set in ItemSetListHighlight )
-                  {
-                     if ( set.EmptyItemSlots.Count == 0 && cell != null )
-                     {
-                        var highlightItem = cell.CellItem;
-                        var currentTab = GetStashTabFromItem( highlightItem );
-                        if ( currentTab != null )
-                        {
-                           currentTab.DeactivateSingleItemCells( cell.CellItem );
-                           currentTab.TabHeaderColor = Brushes.Transparent;
-                           _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
-                        }
-                     }
+                     var highlightItem = cell.CellItem;
+                     stashTab.DeactivateSingleItemCells( cell.CellItem );
+                     stashTab.TabHeaderColor = Brushes.Transparent;
+                     _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
                   }
                }
             }
@@ -767,10 +707,8 @@ namespace EnhancePoE
          {
             return;
          }
-         foreach ( var s in StashTabList.StashTabs )
-         {
-            s.PrepareOverlayList();
-         }
+
+         MainWindow.Instance.SelectedStashTab.PrepareOverlayList();
          foreach ( var itemSet in ItemSetList )
          {
             itemSet.OrderItems();

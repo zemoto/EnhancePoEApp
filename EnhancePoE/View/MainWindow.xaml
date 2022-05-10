@@ -17,6 +17,7 @@
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
         MinWidth="700"
+        Loaded="OnWindowLoaded"
         d:DataContext="{d:DesignInstance Type={x:Type local:MainWindow}}">
 
    <Border BorderBrush="DarkGray"
@@ -136,8 +137,6 @@
                         <RowDefinition Height="25" />
                         <RowDefinition Height="5" />
                         <RowDefinition Height="25" />
-                        <RowDefinition Height="5" />
-                        <RowDefinition Height="25" />
                      </Grid.RowDefinitions>
 
                      <TextBlock Grid.Column="1"
@@ -163,59 +162,37 @@
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
-                                Text="Stashtab Mode:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The stashtab fetching mode. Stashtabs will automatically be added." />
-                     <ComboBox x:Name="StashtabModeComboBox"
-                               Grid.Column="3"
-                               Grid.Row="5"
-                               Width="200"
-                               VerticalContentAlignment="Center"
-                               SelectionChanged="OnStashtabModeComboBoxSelectionChanged"
-                               SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=StashtabMode, Mode=TwoWay}">
-                        <ComboBoxItem Content="ID" />
-                        <ComboBoxItem Content="Prefix" />
-                     </ComboBox>
-
-                     <TextBlock Name="StashTabNameTextBlock"
-                                Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="StashTab Prefix:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Every stashtab which name starts with this prefix will be added."
-                                Visibility="{Binding NameVisible}" />
-                     <TextBox Name="StashTabNameTextBox"
-                              Grid.Column="3"
-                              Grid.Row="7"
-                              Width="200"
-                              Visibility="{Binding NameVisible}"
-                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabName, Mode=TwoWay}" />
-
-                     <TextBlock Name="StashTabIndicesTextBlock"
-                                Grid.Column="1"
-                                Grid.Row="7"
-                                VerticalAlignment="Center"
-                                Text="StashTab Indices:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Every stashtab with this indices will be added. Seperate them by ',' e.g. '0,1,2,3,4,5' will fetch first 6 stashtabs."
-                                Visibility="{Binding IndicesVisible}" />
-                     <TextBox Name="StashTabIndicesTextBox"
-                              Grid.Column="3"
-                              Grid.Row="7"
-                              Width="200"
-                              Visibility="{Binding IndicesVisible}"
-                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabIndices, Mode=TwoWay}" />
+                                Text="Stashtab:" />
+                     <Grid Grid.Column="3"
+                           Grid.Row="5"
+                           Width="200">
+                        <Grid.ColumnDefinitions>
+                           <ColumnDefinition Width="auto" />
+                           <ColumnDefinition Width="4"/>
+                           <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="StashTabComboBox"
+                                  Grid.Column="0"
+                                  Width="140"
+                                  ItemsSource="{Binding StashTabList}"
+                                  SelectedItem="{Binding SelectedStashTab, Mode=TwoWay}"
+                                  DisplayMemberPath="TabName"
+                                  VerticalContentAlignment="Center" />
+                        <Button x:Name="FetchStashTabsButton" 
+                                Content="Fetch"
+                                Grid.Column="2" 
+                                Click="OnFetchStashTabsButtonClicked" />
+                     </Grid>
 
                      <TextBlock Grid.Column="1"
-                                Grid.Row="9"
+                                Grid.Row="7"
                                 VerticalAlignment="Center"
                                 Text="Close to Tray:"
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="Minimizes to Tray when closing the application." />
                      <CheckBox x:Name="hideOnClose"
                                Grid.Column="3"
-                               Grid.Row="9"
+                               Grid.Row="7"
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
                   </Grid>

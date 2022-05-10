@@ -76,10 +76,10 @@ namespace EnhancePoE.Model
          return button != null ? button.PointToScreen( new System.Windows.Point( 0, 0 ) ) : new System.Windows.Point( 0, 0 );
       }
 
-      private static List<Cell> GetAllActiveCells( int index )
+      private static List<Cell> GetAllActiveCells()
       {
          var activeCells = new List<Cell>();
-         foreach ( var cell in StashTabList.StashTabs[index].OverlayCellsList )
+         foreach ( var cell in MainWindow.Instance.SelectedStashTab.OverlayCellsList )
          {
             if ( cell.Active )
             {
@@ -96,11 +96,10 @@ namespace EnhancePoE.Model
       {
          if ( MainWindow.StashTabOverlay.IsOpen )
          {
-            int selectedIndex = MainWindow.StashTabOverlay.StashTabOverlayTabControl.SelectedIndex;
             bool isHit = false;
             int hitIndex = -1;
 
-            var activeCells = GetAllActiveCells( selectedIndex );
+            var activeCells = GetAllActiveCells();
 
             var buttonList = new List<ButtonAndCell>();
 
@@ -109,7 +108,7 @@ namespace EnhancePoE.Model
                MainWindow.StashTabOverlay.HandleEditButton();
             }
 
-            if ( StashTabList.StashTabs[selectedIndex].Quad )
+            if ( MainWindow.Instance.SelectedStashTab.Quad )
             {
                var ctrl = MainWindow.StashTabOverlay.StashTabOverlayTabControl.SelectedContent as UserControls.DynamicGridControlQuad;
                foreach ( var cell in activeCells )
@@ -134,12 +133,9 @@ namespace EnhancePoE.Model
                   Data.ActivateNextCell( true, buttonList[hitIndex].Cell );
                }
 
-               for ( int stash = 0; stash < StashTabList.StashTabs.Count; stash++ )
+               if ( CheckForHeaderHit( MainWindow.Instance.SelectedStashTab ) )
                {
-                  if ( CheckForHeaderHit( StashTabList.StashTabs[stash] ) )
-                  {
-                     MainWindow.StashTabOverlay.StashTabOverlayTabControl.SelectedIndex = stash;
-                  }
+                  MainWindow.StashTabOverlay.StashTabOverlayTabControl.SelectedIndex = 0;
                }
             }
             else
@@ -166,12 +162,9 @@ namespace EnhancePoE.Model
                {
                   Data.ActivateNextCell( true, buttonList[hitIndex].Cell );
                }
-               for ( int stash = 0; stash < StashTabList.StashTabs.Count; stash++ )
+               if ( CheckForHeaderHit( MainWindow.Instance.SelectedStashTab ) )
                {
-                  if ( CheckForHeaderHit( StashTabList.StashTabs[stash] ) )
-                  {
-                     MainWindow.StashTabOverlay.StashTabOverlayTabControl.SelectedIndex = stash;
-                  }
+                  MainWindow.StashTabOverlay.StashTabOverlayTabControl.SelectedIndex = 0;
                }
             }
          }

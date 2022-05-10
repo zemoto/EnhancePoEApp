@@ -322,7 +322,7 @@ namespace EnhancePoE
           } );
          await Dispatcher.Invoke( async () =>
           {
-             if ( await ApiAdapter.GenerateUri() && await ApiAdapter.GetItems() )
+             if ( await ApiAdapter.GetItems() )
              {
                 try
                 {
@@ -380,21 +380,10 @@ namespace EnhancePoE
          {
             return;
          }
-         if ( Properties.Settings.Default.StashtabMode == 0 )
+         if ( MainWindow.Instance.SelectedStashTab is null )
          {
-            if ( Properties.Settings.Default.StashTabIndices == "" )
-            {
-               _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set Stashtab Indices." );
-               return;
-            }
-         }
-         else if ( Properties.Settings.Default.StashtabMode == 1 )
-         {
-            if ( Properties.Settings.Default.StashTabName == "" )
-            {
-               _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set Stashtab Prefix." );
-               return;
-            }
+            _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please select a Stash Tab." );
+            return;
          }
          if ( CalculationActive )
          {
