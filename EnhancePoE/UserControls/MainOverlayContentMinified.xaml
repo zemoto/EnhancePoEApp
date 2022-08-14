@@ -319,11 +319,8 @@
               Margin="3,0"
               PreviewMouseDown="OnFetchButtonClicked"
               BorderThickness="3"
-              BorderBrush="Green">
-         <Border.Background>
-            <SolidColorBrush Color="LawnGreen"
-                             Opacity="0.3" />
-         </Border.Background>
+              BorderBrush="Green"
+              Background="White">
          <Border.Style>
             <Style TargetType="{x:Type Border}">
                <Style.Triggers>
