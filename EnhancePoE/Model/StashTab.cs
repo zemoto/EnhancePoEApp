@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,23 +11,17 @@ namespace EnhancePoE.Model
    public class StashTab : INotifyPropertyChanged
    {
       public event PropertyChangedEventHandler PropertyChanged;
-
-      // Create the OnPropertyChanged method to raise the event
-      // The calling member's name will be used as the parameter.
-      protected void OnPropertyChanged( string name = null )
-      {
-         PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( name ) );
-      }
+      protected void OnPropertyChanged( string name = null ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( name ) );
 
       public Uri StashTabUri { get; set; }
       public List<Item> ItemList { get; set; }
-      public List<Item> ItemListChaos { get; set; } = new List<Item>();
-      public List<Item> ItemListShaper { get; set; } = new List<Item>();
-      public List<Item> ItemListElder { get; set; } = new List<Item>();
-      public List<Item> ItemListWarlord { get; set; } = new List<Item>();
-      public List<Item> ItemListCrusader { get; set; } = new List<Item>();
-      public List<Item> ItemListHunter { get; set; } = new List<Item>();
-      public List<Item> ItemListRedeemer { get; set; } = new List<Item>();
+      public List<Item> ItemListChaos { get; } = new List<Item>();
+      public List<Item> ItemListShaper { get; } = new List<Item>();
+      public List<Item> ItemListElder { get; } = new List<Item>();
+      public List<Item> ItemListWarlord { get; } = new List<Item>();
+      public List<Item> ItemListCrusader { get; } = new List<Item>();
+      public List<Item> ItemListHunter { get; } = new List<Item>();
+      public List<Item> ItemListRedeemer { get; } = new List<Item>();
 
       public ObservableCollection<Cell> OverlayCellsList { get; set; } = new ObservableCollection<Cell>();
 
@@ -37,7 +31,7 @@ namespace EnhancePoE.Model
       public bool Quad { get; set; }
       public int TabIndex { get; set; }
 
-      private SolidColorBrush _tabHeaderColor;
+      private SolidColorBrush _tabHeaderColor = Brushes.Transparent;
       public SolidColorBrush TabHeaderColor
       {
          get => _tabHeaderColor;
@@ -48,7 +42,7 @@ namespace EnhancePoE.Model
          }
       }
 
-      private Thickness _tabHeaderWidth;
+      private Thickness _tabHeaderWidth = new( Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2 );
       public Thickness TabHeaderWidth
       {
          get => _tabHeaderWidth;
@@ -57,7 +51,7 @@ namespace EnhancePoE.Model
             if ( value != _tabHeaderWidth )
             {
                _tabHeaderWidth = value;
-               OnPropertyChanged( "TabHeaderWidth" );
+               OnPropertyChanged( nameof( TabHeaderWidth ) );
             }
          }
       }
@@ -66,8 +60,6 @@ namespace EnhancePoE.Model
       {
          TabName = name;
          TabIndex = index;
-         TabHeaderColor = Brushes.Transparent;
-         TabHeaderWidth = new Thickness( Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2 );
       }
 
       private void Generate2dArr( int size )
@@ -88,15 +80,7 @@ namespace EnhancePoE.Model
 
       public void PrepareOverlayList()
       {
-         int size;
-         if ( Quad )
-         {
-            size = 24;
-         }
-         else
-         {
-            size = 12;
-         }
+         int size = Quad ? 24 : 12;
          Generate2dArr( size );
       }
 

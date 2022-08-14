@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
@@ -132,21 +132,25 @@ namespace EnhancePoE
             Trace.WriteLine( "already fetching" );
             return false;
          }
+
          if ( string.IsNullOrEmpty( Properties.Settings.Default.SessionId ) )
          {
             _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set PoE Session Id." );
             return false;
          }
+
          if ( FetchError )
          {
             return false;
          }
+
          // check rate limit
          if ( RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 5 )
          {
             RateLimit.RateLimitExceeded = true;
             return false;
          }
+
          IsFetching = true;
          var usedUris = new List<Uri>();
 
@@ -166,6 +170,7 @@ namespace EnhancePoE
             }
 
             var stashTab = MainWindow.Instance.SelectedStashTab;
+
             if ( !usedUris.Contains( stashTab.StashTabUri ) )
             {
                cookieContainer.Add( stashTab.StashTabUri, new Cookie( "POESESSID", sessionId ) );

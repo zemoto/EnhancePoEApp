@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace EnhancePoE
 {
@@ -17,10 +16,10 @@ namespace EnhancePoE
       public static bool CalculationActive { get; set; }
       //public static System.Timers.Timer aTimer;
 
-      private static readonly double deactivatedOpacity = .1;
-      private static readonly double activatedOpacity = 1;
+      private const double deactivatedOpacity = .1;
+      private const double activatedOpacity = 1;
 
-      private static readonly int fetchCooldown = 30;
+      private const int fetchCooldown = 30;
 
       public bool IsOpen { get; set; }
 
@@ -305,6 +304,7 @@ namespace EnhancePoE
          {
             return;
          }
+
          if ( !Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe && !Properties.Settings.Default.ExaltedRecipe )
          {
             _ = MessageBox.Show( "No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK, MessageBoxImage.Error );
