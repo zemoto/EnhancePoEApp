@@ -41,7 +41,6 @@ namespace EnhancePoE
          switch ( itemClass )
          {
             case "Armours" when iconParts[2] == "Shields":
-            case "Quivers":
                itemClass = "OneHandWeapons";
                break;
             case "Weapons":
