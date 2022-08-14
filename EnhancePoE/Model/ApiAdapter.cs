@@ -83,7 +83,7 @@ namespace EnhancePoE
             return false;
          }
          IsFetching = true;
-         var propsUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}" );
+         var propsUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}&tabIndex=" );
 
          string sessionId = Properties.Settings.Default.SessionId;
 
