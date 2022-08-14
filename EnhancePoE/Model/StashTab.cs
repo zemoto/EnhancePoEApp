@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -86,15 +86,13 @@ namespace EnhancePoE.Model
 
       public void CleanItemList()
       {
-         if ( Properties.Settings.Default.ExaltedRecipe )
-         {
-            ItemListShaper.Clear();
-            ItemListElder.Clear();
-            ItemListCrusader.Clear();
-            ItemListWarlord.Clear();
-            ItemListHunter.Clear();
-            ItemListRedeemer.Clear();
-         }
+         ItemListChaos.Clear();
+         ItemListShaper.Clear();
+         ItemListElder.Clear();
+         ItemListCrusader.Clear();
+         ItemListWarlord.Clear();
+         ItemListHunter.Clear();
+         ItemListRedeemer.Clear();
 
          // for loop backwards for deleting from list 
          for ( int i = ItemList.Count - 1; i > -1; i-- )
