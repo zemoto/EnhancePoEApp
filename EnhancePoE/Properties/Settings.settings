@@ -74,9 +74,6 @@
     <Setting Name="ColorAmulet" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFFF0303</Value>
     </Setting>
-    <Setting Name="HighlightMode" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="FillWithChaos" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>

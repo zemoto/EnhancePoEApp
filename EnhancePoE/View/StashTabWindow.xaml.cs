@@ -89,16 +89,6 @@ namespace EnhancePoE.View
 
          Data.PrepareSelling();
          Data.ActivateNextCell( true, null );
-         if ( Properties.Settings.Default.HighlightMode == 2 )
-         {
-            foreach ( var set in Data.ItemSetListHighlight )
-            {
-               foreach ( var item in set.ItemList )
-               {
-                  tab.ActivateItemCells( item );
-               }
-            }
-         }
 
          MainWindow.Overlay.OpenStashOverlayButtonContent = "Hide";
 

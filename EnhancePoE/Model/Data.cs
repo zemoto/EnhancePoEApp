@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -606,83 +606,43 @@ namespace EnhancePoE
 
       public static void ActivateNextCell( bool active, Cell cell )
       {
-         if ( !active )
+         if ( !active || ItemSetListHighlight.Count == 0 )
          {
             return;
          }
 
          var stashTab = MainWindow.Instance.SelectedStashTab;
-         if ( Properties.Settings.Default.HighlightMode == 0 )
-         {
-            //activate cell by cell
-            stashTab.DeactivateItemCells();
 
-            // remove if itemlist empty
-            if ( ItemSetListHighlight.Count > 0 && ItemSetListHighlight[0].ItemList.Count == 0 )
+         Trace.WriteLine( ItemSetListHighlight[0].ItemList.Count, "item list count" );
+         Trace.WriteLine( ItemSetListHighlight.Count, "itemset list ocunt" );
+
+         // check for full sets
+         if ( ItemSetListHighlight[0].EmptyItemSlots.Count == 0 )
+         {
+            if ( cell != null )
+            {
+               var highlightItem = cell.CellItem;
+               stashTab.DeactivateSingleItemCells( cell.CellItem );
+               _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
+            }
+
+            foreach ( var i in ItemSetListHighlight[0].ItemList )
+            {
+               stashTab.ActivateItemCells( i );
+            }
+
+            // mark item order
+            if ( ItemSetListHighlight[0]?.ItemList.Count > 0 )
+            {
+               stashTab.MarkNextItem( ItemSetListHighlight[0].ItemList[0] );
+            }
+
+            if ( ItemSetListHighlight[0].ItemList.Count == 0 )
             {
                ItemSetListHighlight.RemoveAt( 0 );
-            }
 
-            // next item if itemlist not empty
-            if ( ItemSetListHighlight.Count > 0 && ItemSetListHighlight[0].ItemList.Count > 0 && ItemSetListHighlight[0].EmptyItemSlots.Count == 0 )
-            {
-               var highlightItem = ItemSetListHighlight[0].ItemList[0];
-               stashTab.ActivateItemCells( highlightItem );
-               ItemSetListHighlight[0].ItemList.RemoveAt( 0 );
-            }
-         }
-         else if ( Properties.Settings.Default.HighlightMode == 1 )
-         {
-            // activate whole set 
-            if ( ItemSetListHighlight.Count > 0 )
-            {
-               Trace.WriteLine( ItemSetListHighlight[0].ItemList.Count, "item list count" );
-               Trace.WriteLine( ItemSetListHighlight.Count, "itemset list ocunt" );
-               // check for full sets
-
-               if ( ItemSetListHighlight[0].EmptyItemSlots.Count == 0 )
-               {
-                  if ( cell != null )
-                  {
-                     var highlightItem = cell.CellItem;
-                     stashTab.DeactivateSingleItemCells( cell.CellItem );
-                     _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
-                  }
-
-                  foreach ( var i in ItemSetListHighlight[0].ItemList )
-                  {
-                     stashTab.ActivateItemCells( i );
-                  }
-
-                  // mark item order
-                  if ( ItemSetListHighlight[0] != null && ItemSetListHighlight[0].ItemList.Count > 0 )
-                  {
-                     stashTab.MarkNextItem( ItemSetListHighlight[0].ItemList[0] );
-                  }
-                  if ( ItemSetListHighlight[0].ItemList.Count == 0 )
-                  {
-                     ItemSetListHighlight.RemoveAt( 0 );
-
-                     // activate next set
-                     ActivateNextCell( true, null );
-                  }
-               }
-            }
-         }
-         else if ( Properties.Settings.Default.HighlightMode == 2 )
-         {
-            //activate all cells at once
-            if ( ItemSetListHighlight.Count > 0 )
-            {
-               foreach ( var set in ItemSetListHighlight )
-               {
-                  if ( set.EmptyItemSlots.Count == 0 && cell != null )
-                  {
-                     var highlightItem = cell.CellItem;
-                     stashTab.DeactivateSingleItemCells( cell.CellItem );
-                     _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
-                  }
-               }
+               // activate next set
+               ActivateNextCell( true, null );
             }
          }
       }

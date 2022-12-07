@@ -406,8 +406,6 @@
                         <RowDefinition Height="25" />
                         <RowDefinition Height="5" />
                         <RowDefinition Height="25" />
-                        <RowDefinition Height="5" />
-                        <RowDefinition Height="25" />
                         <RowDefinition Height="10" />
                      </Grid.RowDefinitions>
 
@@ -462,23 +460,6 @@
                                        Name="ColorStashPicker"
                                        ColorMode="ColorCanvas"
                                        SelectedColorChanged="OnColorStashPickerSelectedColorChanged" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="9"
-                                VerticalAlignment="Center"
-                                Text="Highlight Mode:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Item by Item: highlights each item after another. &#x0a;Set by Set: highlights a full set at once, each after another. &#x0a;All Items: highlights all items at once." />
-                     <ComboBox Grid.Column="3"
-                               Grid.Row="9"
-                               Name="HighlightModeComboBox"
-                               Width="200"
-                               VerticalContentAlignment="Center"
-                               SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=HighlightMode, Mode=TwoWay}">
-                        <ComboBoxItem Content="Item by Item" />
-                        <ComboBoxItem Content="Set by Set" />
-                        <ComboBoxItem Content="All Items" />
-                     </ComboBox>
                   </Grid>
                </StackPanel>
             </TabItem>

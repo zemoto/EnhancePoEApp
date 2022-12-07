@@ -187,17 +187,5 @@ namespace EnhancePoE.Model
             }
          }
       }
-
-      public void ShowNumbersOnActiveCells( int index )
-      {
-         index++;
-         foreach ( var cell in OverlayCellsList )
-         {
-            if ( cell.Active )
-            {
-               cell.ButtonName = index.ToString();
-            }
-         }
-      }
    }
 }
