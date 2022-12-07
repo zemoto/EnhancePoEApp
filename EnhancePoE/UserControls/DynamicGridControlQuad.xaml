@@ -4,9 +4,7 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:properties="clr-namespace:EnhancePoE.Properties"
-              mc:Ignorable="d"
-              d:DesignHeight="450"
-              d:DesignWidth="800">
+              mc:Ignorable="d">
    <ItemsControl.Background>
       <SolidColorBrush Opacity="0"
                        Color="Transparent" />
@@ -21,7 +19,7 @@
       <DataTemplate>
          <Button>
             <Button.Style>
-               <Style TargetType="Button">
+               <Style TargetType="{x:Type Button}">
                   <Setter Property="Template">
                      <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
@@ -34,8 +32,6 @@
                         </ControlTemplate>
                      </Setter.Value>
                   </Setter>
-                  <!-- Set the default value here (if any) 
-                 if you set it directly on the button that will override the trigger -->
                   <Setter Property="Background"
                           Value="Transparent" />
                   <Setter Property="Opacity"
@@ -53,11 +49,11 @@
                         <Setter Property="Opacity"
                                 Value="1" />
                         <Setter Property="Content"
-                                Value="{Binding ButtonName}"></Setter>
+                                Value="{Binding ButtonName}" />
                         <Setter Property="Foreground"
-                                Value="White"></Setter>
+                                Value="White" />
                         <Setter Property="FontSize"
-                                Value="20"></Setter>
+                                Value="20" />
                      </DataTrigger>
                   </Style.Triggers>
                </Style>

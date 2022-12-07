@@ -84,37 +84,12 @@
                   <Setter.Value>
                      <ControlTemplate TargetType="{x:Type TabControl}">
                         <Grid KeyboardNavigation.TabNavigation="Local">
-                           <VisualStateManager.VisualStateGroups>
-                              <VisualStateGroup x:Name="CommonStates">
-                                 <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                       <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
-                                                                     Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
-                                          <EasingColorKeyFrame KeyTime="0"
-                                                               Value="#FFAAAAAA" />
-                                       </ColorAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                 </VisualState>
-                              </VisualStateGroup>
-                           </VisualStateManager.VisualStateGroups>
                            <Border x:Name="Border"
                                    BorderThickness="1"
                                    CornerRadius="2"
                                    KeyboardNavigation.TabNavigation="Local"
                                    KeyboardNavigation.DirectionalNavigation="Contained"
                                    KeyboardNavigation.TabIndex="2">
-                              <Border.Background>
-                                 <LinearGradientBrush EndPoint="0.5,1"
-                                                      StartPoint="0.5,0">
-                                    <GradientStop Color="{DynamicResource ContentAreaColorLight}"
-                                                  Offset="0" />
-                                    <GradientStop Color="{DynamicResource ContentAreaColorDark}"
-                                                  Offset="1" />
-                                 </LinearGradientBrush>
-                              </Border.Background>
-                              <Border.BorderBrush>
-                                 <SolidColorBrush Color="{DynamicResource BorderMediumColor}" />
-                              </Border.BorderBrush>
                               <ContentPresenter x:Name="PART_SelectedContentHost"
                                                 Margin="4"
                                                 ContentSource="SelectedContent" />
