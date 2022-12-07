@@ -1,55 +1,43 @@
 ﻿using System.ComponentModel;
-using System.Windows.Controls;
 
 namespace EnhancePoE.Model
 {
    public class Cell : INotifyPropertyChanged
    {
+      public event PropertyChangedEventHandler PropertyChanged;
+      protected virtual void OnPropertyChanged( string propertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+
+      public int XIndex { get; }
+      public int YIndex { get; }
+      public Item Item { get; private set; }
+
       private bool _active;
       public bool Active
       {
          get => _active;
-         set
+         private set
          {
             _active = value;
             OnPropertyChanged( nameof( Active ) );
          }
       }
 
-      public event PropertyChangedEventHandler PropertyChanged;
-
-      protected virtual void OnPropertyChanged( string propertyName )
+      public Cell( int x, int y )
       {
-         PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+         XIndex = x;
+         YIndex = y;
       }
 
-      public int XIndex { get; set; }
-      public int YIndex { get; set; }
-      public string ItemID { get; set; }
-
-      public string CellName { get; set; }
-
-      private string _buttonName { get; set; }
-      public string ButtonName
+      public void Activate( ref Item item )
       {
-         get => _buttonName;
-         set
-         {
-            _buttonName = value;
-            OnPropertyChanged( nameof( ButtonName ) );
-         }
+         Active = true;
+         Item = item;
       }
 
-      public Button CellButton { get; set; }
-      public Item CellItem { get; set; }
-      public int TabIndex { get; set; }
-
-      public Cell()
+      public void Deactivate()
       {
-         CellButton = new Button
-         {
-            Content = ButtonName
-         };
+         Active = false;
+         Item = null;
       }
    }
 }

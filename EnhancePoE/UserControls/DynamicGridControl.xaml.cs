@@ -2,8 +2,11 @@
 {
    public partial class DynamicGridControl
    {
-      public DynamicGridControl()
+      public int Size { get; }
+
+      public DynamicGridControl( int size )
       {
+         Size = size;
          InitializeComponent();
       }
    }

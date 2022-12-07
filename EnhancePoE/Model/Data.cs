@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
@@ -619,11 +619,10 @@ namespace EnhancePoE
          // check for full sets
          if ( ItemSetListHighlight[0].EmptyItemSlots.Count == 0 )
          {
-            if ( cell != null )
+            if ( cell is not null )
             {
-               var highlightItem = cell.CellItem;
-               stashTab.DeactivateSingleItemCells( cell.CellItem );
-               _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
+               _ = ItemSetListHighlight[0].ItemList.Remove( cell.Item );
+               stashTab.DeactivateItemCells( cell.Item );
             }
 
             foreach ( var i in ItemSetListHighlight[0].ItemList )
@@ -631,17 +630,10 @@ namespace EnhancePoE
                stashTab.ActivateItemCells( i );
             }
 
-            // mark item order
-            if ( ItemSetListHighlight[0]?.ItemList.Count > 0 )
-            {
-               stashTab.MarkNextItem( ItemSetListHighlight[0].ItemList[0] );
-            }
-
             if ( ItemSetListHighlight[0].ItemList.Count == 0 )
             {
                ItemSetListHighlight.RemoveAt( 0 );
 
-               // activate next set
                ActivateNextCell( true, null );
             }
          }

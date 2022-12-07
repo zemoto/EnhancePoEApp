@@ -80,9 +80,8 @@ namespace EnhancePoE.View
 
          IsOpen = true;
 
-         var stashTabItem = tab.Quad ?
-            new TabItem { Content = new DynamicGridControlQuad { ItemsSource = tab.OverlayCellsList } } :
-            new TabItem { Content = new DynamicGridControl { ItemsSource = tab.OverlayCellsList } };
+         var size = tab.Quad ? 24 : 12;
+         var stashTabItem = new TabItem { Content = new DynamicGridControl( size ) { ItemsSource = tab.OverlayCellsList } };
 
          StashTabOverlayTabControl.ItemsSource = new List<TabItem>() { stashTabItem };
          StashTabOverlayTabControl.SelectedIndex = 0;

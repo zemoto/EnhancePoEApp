@@ -42,12 +42,7 @@ namespace EnhancePoE.Model
          {
             for ( int j = 0; j < size; j++ )
             {
-               OverlayCellsList.Add( new Cell
-               {
-                  Active = false,
-                  XIndex = j,
-                  YIndex = i
-               } );
+               OverlayCellsList.Add( new Cell( j, i ) );
             }
          }
       }
@@ -124,29 +119,29 @@ namespace EnhancePoE.Model
       {
          foreach ( var cell in OverlayCellsList )
          {
-            cell.Active = false;
+            cell.Deactivate();
          }
       }
 
-      public void DeactivateSingleItemCells( Item item )
+      public void DeactivateItemCells( Item item )
       {
-         var AllCoordinates = new List<List<int>>();
+         var itemCoordinates = new List<List<int>>();
 
          for ( int i = 0; i < item.w; i++ )
          {
             for ( int j = 0; j < item.h; j++ )
             {
-               AllCoordinates.Add( new List<int> { item.x + i, item.y + j } );
+               itemCoordinates.Add( new List<int> { item.x + i, item.y + j } );
             }
          }
 
          foreach ( var cell in OverlayCellsList )
          {
-            foreach ( var coordinate in AllCoordinates )
+            foreach ( var coordinate in itemCoordinates )
             {
                if ( coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex )
                {
-                  cell.Active = false;
+                  cell.Deactivate();
                }
             }
          }
@@ -169,21 +164,8 @@ namespace EnhancePoE.Model
             {
                if ( coordinate[0] == cell.XIndex && coordinate[1] == cell.YIndex )
                {
-                  cell.Active = true;
-                  cell.CellItem = item;
-                  cell.TabIndex = TabIndex;
+                  cell.Activate( ref item );
                }
-            }
-         }
-      }
-
-      public void MarkNextItem( Item item )
-      {
-         foreach ( var cell in OverlayCellsList )
-         {
-            if ( cell.CellItem == item )
-            {
-               cell.ButtonName = "X";
             }
          }
       }

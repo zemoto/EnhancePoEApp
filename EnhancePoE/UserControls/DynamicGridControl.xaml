@@ -4,15 +4,16 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               xmlns:properties="clr-namespace:EnhancePoE.Properties"
-              mc:Ignorable="d">
+              mc:Ignorable="d"
+              x:Name="Root">
    <ItemsControl.Background>
       <SolidColorBrush Opacity="0"
                        Color="Transparent" />
    </ItemsControl.Background>
    <ItemsControl.ItemsPanel>
       <ItemsPanelTemplate>
-         <UniformGrid Columns="12"
-                      Rows="12" />
+         <UniformGrid Columns="{Binding ElementName=Root, Path=Size}"
+                      Rows="{Binding ElementName=Root, Path=Size}" />
       </ItemsPanelTemplate>
    </ItemsControl.ItemsPanel>
    <ItemsControl.ItemTemplate>
@@ -25,10 +26,7 @@
                         <ControlTemplate TargetType="{x:Type Button}">
                            <Border Background="{TemplateBinding Background}"
                                    BorderBrush="White"
-                                   BorderThickness="0.5">
-                              <ContentPresenter HorizontalAlignment="Center"
-                                                VerticalAlignment="Center" />
-                           </Border>
+                                   BorderThickness="0.5" />
                         </ControlTemplate>
                      </Setter.Value>
                   </Setter>
@@ -48,12 +46,6 @@
                                 Value="{Binding Source={x:Static properties:Settings.Default}, Path=ColorStash}" />
                         <Setter Property="Opacity"
                                 Value="1" />
-                        <Setter Property="Content"
-                                Value="{Binding ButtonName}" />
-                        <Setter Property="Foreground"
-                                Value="White" />
-                        <Setter Property="FontSize"
-                                Value="20" />
                      </DataTrigger>
                   </Style.Triggers>
                </Style>
