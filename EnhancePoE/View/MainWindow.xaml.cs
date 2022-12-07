@@ -339,24 +339,6 @@ namespace EnhancePoE
 
       private async void OnFetchStashTabsButtonClicked( object sender, RoutedEventArgs e ) => await LoadStashTabsAsync();
 
-      private void OnTabHeaderGapSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
-      {
-         StashTabOverlay.TabHeaderGap = new Thickness( Properties.Settings.Default.TabHeaderGap, 0, Properties.Settings.Default.TabHeaderGap, 0 );
-      }
-
-      private void OnTabHeaderWidthSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
-      {
-         if ( SelectedStashTab is not null )
-         {
-            SelectedStashTab.TabHeaderWidth = new Thickness( Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2 );
-         }
-      }
-
-      private void OnTabHeaderMarginSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
-      {
-         StashTabOverlay.TabMargin = new Thickness( Properties.Settings.Default.TabMargin, 0, 0, 0 );
-      }
-
       private void OnSaveButtonClicked( object sender, RoutedEventArgs e )
       {
          Properties.Settings.Default.Save();

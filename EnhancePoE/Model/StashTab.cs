@@ -26,7 +26,6 @@ namespace EnhancePoE.Model
       public ObservableCollection<Cell> OverlayCellsList { get; } = new ObservableCollection<Cell>();
 
       // used for registering clicks on tab headers
-      public TextBlock TabHeader { get; set; }
       public string TabName { get; set; }
       public int TabIndex { get; set; }
 
@@ -40,31 +39,6 @@ namespace EnhancePoE.Model
             {
                _quad = value;
                InitializeCellList();
-            }
-         }
-      }
-
-      private SolidColorBrush _tabHeaderColor = Brushes.Transparent;
-      public SolidColorBrush TabHeaderColor
-      {
-         get => _tabHeaderColor;
-         set
-         {
-            _tabHeaderColor = value;
-            OnPropertyChanged( nameof( TabHeaderColor ) );
-         }
-      }
-
-      private Thickness _tabHeaderWidth = new( Properties.Settings.Default.TabHeaderWidth, 2, Properties.Settings.Default.TabHeaderWidth, 2 );
-      public Thickness TabHeaderWidth
-      {
-         get => _tabHeaderWidth;
-         set
-         {
-            if ( value != _tabHeaderWidth )
-            {
-               _tabHeaderWidth = value;
-               OnPropertyChanged( nameof( TabHeaderWidth ) );
             }
          }
       }

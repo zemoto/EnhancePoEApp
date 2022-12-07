@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using EnhancePoE.Model;
+using EnhancePoE.UserControls;
 using EnhancePoE.Utils;
 
 namespace EnhancePoE.View
@@ -15,20 +16,6 @@ namespace EnhancePoE.View
    {
       public bool IsOpen { get; set; }
       public bool IsEditing { get; set; }
-
-      private Thickness _tabHeaderGap;
-      public Thickness TabHeaderGap
-      {
-         get => _tabHeaderGap;
-         set
-         {
-            if ( value != _tabHeaderGap )
-            {
-               _tabHeaderGap = value;
-               OnPropertyChanged( nameof( TabHeaderGap ) );
-            }
-         }
-      }
 
       private Thickness _tabMargin;
       public Thickness TabMargin
@@ -70,8 +57,6 @@ namespace EnhancePoE.View
          IsEditing = false;
          MouseHook.Stop();
 
-         MainWindow.Instance.SelectedStashTab.TabHeader = null;
-
          IsOpen = false;
          IsEditing = false;
          MainWindow.Overlay.OpenStashOverlayButtonContent = "Stash";
@@ -86,42 +71,10 @@ namespace EnhancePoE.View
          {
             IsOpen = true;
             OverlayStashTabList.Clear();
-            _tabHeaderGap.Right = Properties.Settings.Default.TabHeaderGap;
-            _tabHeaderGap.Left = Properties.Settings.Default.TabHeaderGap;
-            TabMargin = new Thickness( Properties.Settings.Default.TabMargin, 0, 0, 0 );
 
-            TabItem newStashTabItem;
-            var tbk = new TextBlock() { Text = tab.TabName };
-
-            tbk.DataContext = tab;
-            _ = tbk.SetBinding( TextBlock.BackgroundProperty, new System.Windows.Data.Binding( "TabHeaderColor" ) );
-            _ = tbk.SetBinding( TextBlock.PaddingProperty, new System.Windows.Data.Binding( "TabHeaderWidth" ) );
-            tbk.FontSize = 16;
-            tab.TabHeader = tbk;
-
-            if ( tab.Quad )
-            {
-               newStashTabItem = new TabItem
-               {
-                  Header = tbk,
-                  Content = new UserControls.DynamicGridControlQuad
-                  {
-                     ItemsSource = tab.OverlayCellsList,
-                  }
-               };
-            }
-            else
-            {
-               newStashTabItem = new TabItem
-               {
-                  Header = tbk,
-                  Content = new UserControls.DynamicGridControl
-                  {
-                     ItemsSource = tab.OverlayCellsList
-                  }
-               };
-            }
-
+            var newStashTabItem = tab.Quad ?
+               new TabItem { Content = new DynamicGridControlQuad { ItemsSource = tab.OverlayCellsList } } :
+               new TabItem { Content = new DynamicGridControl { ItemsSource = tab.OverlayCellsList } };
             OverlayStashTabList.Add( newStashTabItem );
 
             StashTabOverlayTabControl.SelectedIndex = 0;

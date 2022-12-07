@@ -408,12 +408,6 @@
                         <RowDefinition Height="25" />
                         <RowDefinition Height="5" />
                         <RowDefinition Height="25" />
-                        <RowDefinition Height="5" />
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="5" />
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="5" />
-                        <RowDefinition Height="25" />
                         <RowDefinition Height="10" />
                      </Grid.RowDefinitions>
 
@@ -485,63 +479,6 @@
                         <ComboBoxItem Content="Set by Set" />
                         <ComboBoxItem Content="All Items" />
                      </ComboBox>
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="11"
-                                VerticalAlignment="Center"
-                                Text="Tab Header Margin:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The starting margin of the tab headers in the Stashtab Overlay." />
-                     <Slider Grid.Column="3"
-                             Grid.Row="11"
-                             Name="TabHeaderMarginSlider"
-                             Width="200"
-                             VerticalAlignment="Center"
-                             Minimum="0"
-                             Maximum="500"
-                             AutoToolTipPlacement="TopLeft"
-                             IsMoveToPointEnabled="True"
-                             AutoToolTipPrecision="1"
-                             ValueChanged="OnTabHeaderMarginSliderValueChanged"
-                             Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabMargin, Mode=TwoWay}" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="13"
-                                VerticalAlignment="Center"
-                                Text="Tab Header Width:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The width of the tab headers in Stashtab Overlay." />
-                     <Slider Grid.Column="3"
-                             Grid.Row="13"
-                             Name="TabHeaderWidthSlider"
-                             Width="200"
-                             VerticalAlignment="Center"
-                             Minimum="0"
-                             Maximum="50"
-                             AutoToolTipPlacement="TopLeft"
-                             IsMoveToPointEnabled="True"
-                             AutoToolTipPrecision="1"
-                             ValueChanged="OnTabHeaderWidthSliderValueChanged"
-                             Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderWidth, Mode=TwoWay}" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="15"
-                                VerticalAlignment="Center"
-                                Text="Tab Header Gap:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="The gap between tab headers in the Stashtab Overlay." />
-                     <Slider Grid.Column="3"
-                             Grid.Row="15"
-                             Name="TabHeaderGapSlider"
-                             Width="200"
-                             VerticalAlignment="Center"
-                             Minimum="0"
-                             Maximum="20"
-                             AutoToolTipPlacement="TopLeft"
-                             IsMoveToPointEnabled="True"
-                             AutoToolTipPrecision="1"
-                             ValueChanged="OnTabHeaderGapSliderValueChanged"
-                             Value="{Binding Source={x:Static properties:Settings.Default}, Path=TabHeaderGap, Mode=TwoWay}" />
                   </Grid>
                </StackPanel>
             </TabItem>

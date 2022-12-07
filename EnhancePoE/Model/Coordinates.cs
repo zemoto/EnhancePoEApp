@@ -57,10 +57,6 @@ namespace EnhancePoE.Model
          {
             MainWindow.StashTabOverlay.HandleEditButton();
          }
-         else if ( CheckForHit( MainWindow.Instance.SelectedStashTab.TabHeader ) )
-         {
-            MainWindow.StashTabOverlay.StashTabOverlayTabControl.SelectedIndex = 0;
-         }
          else
          {
             var ctrl = (ItemsControl)MainWindow.StashTabOverlay.StashTabOverlayTabControl.SelectedContent;

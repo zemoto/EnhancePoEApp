@@ -616,7 +616,6 @@ namespace EnhancePoE
          {
             //activate cell by cell
             stashTab.DeactivateItemCells();
-            stashTab.TabHeaderColor = Brushes.Transparent;
 
             // remove if itemlist empty
             if ( ItemSetListHighlight.Count > 0 && ItemSetListHighlight[0].ItemList.Count == 0 )
@@ -629,9 +628,6 @@ namespace EnhancePoE
             {
                var highlightItem = ItemSetListHighlight[0].ItemList[0];
                stashTab.ActivateItemCells( highlightItem );
-               stashTab.TabHeaderColor = Properties.Settings.Default.ColorStash != ""
-                   ? new SolidColorBrush( (Color)ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash ) )
-                   : Brushes.Red;
                ItemSetListHighlight[0].ItemList.RemoveAt( 0 );
             }
          }
@@ -650,16 +646,12 @@ namespace EnhancePoE
                   {
                      var highlightItem = cell.CellItem;
                      stashTab.DeactivateSingleItemCells( cell.CellItem );
-                     stashTab.TabHeaderColor = Brushes.Transparent;
                      _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
                   }
 
                   foreach ( var i in ItemSetListHighlight[0].ItemList )
                   {
                      stashTab.ActivateItemCells( i );
-                     stashTab.TabHeaderColor = Properties.Settings.Default.ColorStash != ""
-                         ? new SolidColorBrush( (Color)ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash ) )
-                         : Brushes.Red;
                   }
 
                   // mark item order
@@ -688,7 +680,6 @@ namespace EnhancePoE
                   {
                      var highlightItem = cell.CellItem;
                      stashTab.DeactivateSingleItemCells( cell.CellItem );
-                     stashTab.TabHeaderColor = Brushes.Transparent;
                      _ = ItemSetListHighlight[0].ItemList.Remove( highlightItem );
                   }
                }

@@ -313,42 +313,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20.4")]
-        public double TabHeaderWidth {
-            get {
-                return ((double)(this["TabHeaderWidth"]));
-            }
-            set {
-                this["TabHeaderWidth"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5")]
-        public double TabHeaderGap {
-            get {
-                return ((double)(this["TabHeaderGap"]));
-            }
-            set {
-                this["TabHeaderGap"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("23")]
-        public double TabMargin {
-            get {
-                return ((double)(this["TabMargin"]));
-            }
-            set {
-                this["TabMargin"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int HighlightMode {
             get {
