@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.Utils
 {
    public static class MouseHook
    {

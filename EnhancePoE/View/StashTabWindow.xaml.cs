@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using EnhancePoE.Model;
+using EnhancePoE.Utils;
 
 namespace EnhancePoE.View
 {
@@ -54,9 +55,7 @@ namespace EnhancePoE.View
          }
       }
 
-      //public double Gap { get; set; } = 0;
-
-      public static ObservableCollection<TabItem> OverlayStashTabList = new ObservableCollection<TabItem>();
+      public static ObservableCollection<TabItem> OverlayStashTabList = new();
       public StashTabWindow()
       {
          InitializeComponent();
@@ -71,9 +70,7 @@ namespace EnhancePoE.View
          IsEditing = false;
          MouseHook.Stop();
 
-         var stashTab = MainWindow.Instance.SelectedStashTab;
-         stashTab.OverlayCellsList.Clear();
-         stashTab.TabHeader = null;
+         MainWindow.Instance.SelectedStashTab.TabHeader = null;
 
          IsOpen = false;
          IsEditing = false;
@@ -130,6 +127,7 @@ namespace EnhancePoE.View
             StashTabOverlayTabControl.SelectedIndex = 0;
 
             Data.PrepareSelling();
+            MainWindow.Instance.SelectedStashTab.InitializeCellList();
             Data.ActivateNextCell( true, null );
             if ( Properties.Settings.Default.HighlightMode == 2 )
             {

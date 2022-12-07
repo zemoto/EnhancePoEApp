@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -48,8 +48,8 @@ namespace EnhancePoE
 
       private bool _closingFromTrayIcon;
 
-      private readonly LeagueGetter _leagueGetter = new LeagueGetter();
-      private readonly System.Windows.Forms.NotifyIcon _trayIcon = new System.Windows.Forms.NotifyIcon();
+      private readonly LeagueGetter _leagueGetter = new();
+      private readonly System.Windows.Forms.NotifyIcon _trayIcon = new();
 
       public MainWindow()
       {
@@ -337,13 +337,7 @@ namespace EnhancePoE
 
       private void OnRefreshLeaguesButtonClicked( object sender, RoutedEventArgs e ) => LoadLeagueList();
 
-      private async void OnFetchStashTabsButtonClicked( object sender, RoutedEventArgs e )
-      {
-         if ( CheckAllSettings() )
-         {
-            await LoadStashTabsAsync();
-         }
-      }
+      private async void OnFetchStashTabsButtonClicked( object sender, RoutedEventArgs e ) => await LoadStashTabsAsync();
 
       private void OnTabHeaderGapSliderValueChanged( object sender, RoutedPropertyChangedEventArgs<double> e )
       {

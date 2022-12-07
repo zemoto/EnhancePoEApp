@@ -23,13 +23,26 @@ namespace EnhancePoE.Model
       public List<Item> ItemListHunter { get; } = new List<Item>();
       public List<Item> ItemListRedeemer { get; } = new List<Item>();
 
-      public ObservableCollection<Cell> OverlayCellsList { get; set; } = new ObservableCollection<Cell>();
+      public ObservableCollection<Cell> OverlayCellsList { get; } = new ObservableCollection<Cell>();
 
       // used for registering clicks on tab headers
       public TextBlock TabHeader { get; set; }
       public string TabName { get; set; }
-      public bool Quad { get; set; }
       public int TabIndex { get; set; }
+
+      private bool _quad;
+      public bool Quad
+      {
+         get => _quad;
+         set
+         {
+            if ( _quad != value )
+            {
+               _quad = value;
+               InitializeCellList();
+            }
+         }
+      }
 
       private SolidColorBrush _tabHeaderColor = Brushes.Transparent;
       public SolidColorBrush TabHeaderColor
@@ -60,10 +73,14 @@ namespace EnhancePoE.Model
       {
          TabName = name;
          TabIndex = index;
+         InitializeCellList();
       }
 
-      private void Generate2dArr( int size )
+      public void InitializeCellList()
       {
+         OverlayCellsList.Clear();
+
+         int size = Quad ? 24 : 12;
          for ( int i = 0; i < size; i++ )
          {
             for ( int j = 0; j < size; j++ )
@@ -76,12 +93,6 @@ namespace EnhancePoE.Model
                } );
             }
          }
-      }
-
-      public void PrepareOverlayList()
-      {
-         int size = Quad ? 24 : 12;
-         Generate2dArr( size );
       }
 
       public void CleanItemList()

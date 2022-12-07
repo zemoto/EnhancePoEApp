@@ -7,7 +7,7 @@ namespace EnhancePoE.Utils
    internal static class SingleInstance
    {
       private const string SingleInstanceName = "EnhancePoE";
-      private static readonly Mutex SingleInstanceMutex = new Mutex( true, SingleInstanceName );
+      private static readonly Mutex SingleInstanceMutex = new( true, SingleInstanceName );
 
       public static event EventHandler PingedBySecondProcess;
 

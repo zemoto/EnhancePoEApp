@@ -708,7 +708,6 @@ namespace EnhancePoE
             return;
          }
 
-         MainWindow.Instance.SelectedStashTab.PrepareOverlayList();
          foreach ( var itemSet in ItemSetList )
          {
             itemSet.OrderItems();

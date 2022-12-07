@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:EnhancePoE.Properties"
+        xmlns:local="clr-namespace:EnhancePoE.View"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -16,7 +17,8 @@
         Padding="0,0,0,0"
         Margin="0,0,0,0"
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=YStashTabOverlay, Mode=TwoWay}"
-        Width="{Binding Source={x:Static properties:Settings.Default}, Path=XStashTabOverlay, Mode=TwoWay}">
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=XStashTabOverlay, Mode=TwoWay}"
+        d:DataContext="{d:DesignInstance Type={x:Type local:StashTabWindow}}">
    <Window.Background>
       <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}"
                        Color="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabBackgroundColor}" />
@@ -38,43 +40,21 @@
          <RowDefinition Height="*" />
          <RowDefinition Height="2" />
       </Grid.RowDefinitions>
+
       <Rectangle Grid.Column="0"
                  Grid.Row="0"
                  Grid.RowSpan="5"
-                 Visibility="{Binding StashBorderVisibility}">
-         <Rectangle.Fill>
-            <SolidColorBrush Color="White"></SolidColorBrush>
-         </Rectangle.Fill>
-      </Rectangle>
-      <Rectangle Grid.Column="6"
-                 Grid.Row="0"
-                 Grid.RowSpan="5"
-                 Visibility="{Binding StashBorderVisibility}">
-         <Rectangle.Fill>
-            <SolidColorBrush Color="White"></SolidColorBrush>
-         </Rectangle.Fill>
-      </Rectangle>
-      <Rectangle Grid.Column="0"
-                 Grid.Row="0"
                  Grid.ColumnSpan="7"
-                 Visibility="{Binding StashBorderVisibility}">
-         <Rectangle.Fill>
-            <SolidColorBrush Color="White"></SolidColorBrush>
-         </Rectangle.Fill>
-      </Rectangle>
-      <Rectangle Grid.Column="0"
-                 Grid.Row="4"
-                 Grid.ColumnSpan="7"
-                 Visibility="{Binding StashBorderVisibility}">
-         <Rectangle.Fill>
-            <SolidColorBrush Color="White"></SolidColorBrush>
-         </Rectangle.Fill>
-      </Rectangle>
+                 Visibility="{Binding StashBorderVisibility}"
+                 Stroke="White"
+                 StrokeThickness="1" />
+
       <Button Grid.Column="3"
               Grid.Row="1"
               x:Name="EditModeButton"
               Content="Edit"
-              Click="EditModeButton_Click"></Button>
+              Click="EditModeButton_Click" />
+      
       <TabControl x:Name="StashTabOverlayTabControl"
                   Grid.Column="1"
                   Grid.Row="3"
@@ -118,7 +98,7 @@
                   </Setter.Value>
                </Setter>
             </Style>
-            <Style  TargetType="{x:Type TabControl}">
+            <Style TargetType="{x:Type TabControl}">
                <Setter Property="OverridesDefaultStyle"
                        Value="True" />
                <Setter Property="SnapsToDevicePixels"
