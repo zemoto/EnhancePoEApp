@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace EnhancePoE.Model
 {
@@ -28,26 +25,12 @@ namespace EnhancePoE.Model
       // used for registering clicks on tab headers
       public string TabName { get; set; }
       public int TabIndex { get; set; }
-
-      private bool _quad;
-      public bool Quad
-      {
-         get => _quad;
-         set
-         {
-            if ( _quad != value )
-            {
-               _quad = value;
-               InitializeCellList();
-            }
-         }
-      }
+      public bool Quad { get; set; }
 
       public StashTab( string name, int index )
       {
          TabName = name;
          TabIndex = index;
-         InitializeCellList();
       }
 
       public void InitializeCellList()

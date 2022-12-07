@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -42,12 +43,10 @@ namespace EnhancePoE.View
          }
       }
 
-      public static ObservableCollection<TabItem> OverlayStashTabList = new();
       public StashTabWindow()
       {
          InitializeComponent();
          DataContext = this;
-         StashTabOverlayTabControl.ItemsSource = OverlayStashTabList;
       }
 
       public new virtual void Hide()
@@ -67,41 +66,44 @@ namespace EnhancePoE.View
       public new virtual void Show()
       {
          var tab = MainWindow.Instance.SelectedStashTab;
-         if ( tab is not null )
+         if ( tab is null )
          {
-            IsOpen = true;
-            OverlayStashTabList.Clear();
+            _ = MessageBox.Show( "No stash tabs available! Fetch before opening overlay.", "Stash Tab Error", MessageBoxButton.OK, MessageBoxImage.Error );
+            return;
+         }
 
-            var newStashTabItem = tab.Quad ?
-               new TabItem { Content = new DynamicGridControlQuad { ItemsSource = tab.OverlayCellsList } } :
-               new TabItem { Content = new DynamicGridControl { ItemsSource = tab.OverlayCellsList } };
-            OverlayStashTabList.Add( newStashTabItem );
+         if ( tab.ItemList is null )
+         {
+            _ = MessageBox.Show( "No stash data! Fetch before opening stash tab overlay.", "Stash Tab Error", MessageBoxButton.OK, MessageBoxImage.Error );
+            return;
+         }
 
-            StashTabOverlayTabControl.SelectedIndex = 0;
+         IsOpen = true;
 
-            Data.PrepareSelling();
-            MainWindow.Instance.SelectedStashTab.InitializeCellList();
-            Data.ActivateNextCell( true, null );
-            if ( Properties.Settings.Default.HighlightMode == 2 )
+         var stashTabItem = tab.Quad ?
+            new TabItem { Content = new DynamicGridControlQuad { ItemsSource = tab.OverlayCellsList } } :
+            new TabItem { Content = new DynamicGridControl { ItemsSource = tab.OverlayCellsList } };
+
+         StashTabOverlayTabControl.ItemsSource = new List<TabItem>() { stashTabItem };
+         StashTabOverlayTabControl.SelectedIndex = 0;
+
+         Data.PrepareSelling();
+         Data.ActivateNextCell( true, null );
+         if ( Properties.Settings.Default.HighlightMode == 2 )
+         {
+            foreach ( var set in Data.ItemSetListHighlight )
             {
-               foreach ( var set in Data.ItemSetListHighlight )
+               foreach ( var item in set.ItemList )
                {
-                  foreach ( var item in set.ItemList )
-                  {
-                     tab.ActivateItemCells( item );
-                  }
+                  tab.ActivateItemCells( item );
                }
             }
-
-            MainWindow.Overlay.OpenStashOverlayButtonContent = "Hide";
-
-            MouseHook.Start();
-            base.Show();
          }
-         else
-         {
-            _ = MessageBox.Show( "No StashTabs Available! Fetch before opening Overlay.", "Stashtab Error", MessageBoxButton.OK, MessageBoxImage.Error );
-         }
+
+         MainWindow.Overlay.OpenStashOverlayButtonContent = "Hide";
+
+         MouseHook.Start();
+         base.Show();
       }
 
       public void StartEditMode()

@@ -192,6 +192,7 @@ namespace EnhancePoE
                   stashTab.ItemList = deserializedContent.items;
                   stashTab.Quad = deserializedContent.quadLayout;
 
+                  stashTab.InitializeCellList();
                   stashTab.CleanItemList();
                }
                else

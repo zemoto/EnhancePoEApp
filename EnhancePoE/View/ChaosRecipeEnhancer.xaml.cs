@@ -406,11 +406,6 @@ namespace EnhancePoE
          }
       }
 
-      private void OnTimedEvent( object source, System.Timers.ElapsedEventArgs e )
-      {
-         FetchData();
-      }
-
       private void Window_MouseDown( object sender, MouseButtonEventArgs e )
       {
          if ( e.ChangedButton == MouseButton.Left && !Properties.Settings.Default.LockOverlayPosition && Mouse.LeftButton == MouseButtonState.Pressed )
