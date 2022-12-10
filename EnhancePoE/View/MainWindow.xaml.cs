@@ -390,6 +390,11 @@ namespace EnhancePoE
          Overlay.AmountsVisibility = Properties.Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
       }
 
+      private void OnLeagueSelectionChanged( object sender, SelectionChangedEventArgs e )
+      {
+         StashTabList.Clear();
+      }
+
       #region INotifyPropertyChanged implementation
       // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
       public event PropertyChangedEventHandler PropertyChanged;

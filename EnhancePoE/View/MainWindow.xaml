@@ -110,7 +110,8 @@
                         <ComboBox x:Name="LeagueComboBox"
                                   Grid.Column="0"
                                   ItemsSource="{Binding LeagueList, Mode=OneWay}"
-                                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}" />
+                                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}"
+                                  SelectionChanged="OnLeagueSelectionChanged" />
                         <Button x:Name="RefreshLeaguesButtons"
                                 Grid.Column="1"
                                 Margin="4,0,0,0"
