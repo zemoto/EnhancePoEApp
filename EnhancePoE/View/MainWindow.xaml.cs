@@ -305,30 +305,36 @@ namespace EnhancePoE
          StashTabComboBox.IsEnabled = false;
 
          SelectedStashTab = null;
-         if ( await ApiAdapter.GenerateUri() )
+         var stashTabs = await ApiAdapter.FetchStashTabs();
+         if ( stashTabs is not null )
          {
-            foreach ( var stashTab in ApiAdapter.StashTabList )
+            StashTabList.Clear();
+            foreach ( var tab in stashTabs )
             {
-               StashTabList.Add( stashTab );
+               StashTabList.Add( tab );
             }
-         }
 
-         if ( StashTabList.Count > 0 )
-         {
-            var selectedStashTabName = Properties.Settings.Default.SelectedStashTabName;
-            if ( !string.IsNullOrEmpty( selectedStashTabName ) )
+            if ( stashTabs.Count > 0 )
             {
-               var previouslySelectedStashTab = StashTabList.FirstOrDefault( x => x.TabName == selectedStashTabName );
-               if ( previouslySelectedStashTab is not null )
+               var selectedStashTabName = Properties.Settings.Default.SelectedStashTabName;
+               if ( !string.IsNullOrEmpty( selectedStashTabName ) )
                {
-                  SelectedStashTab = previouslySelectedStashTab;
+                  var previouslySelectedStashTab = StashTabList.FirstOrDefault( x => x.TabName == selectedStashTabName );
+                  if ( previouslySelectedStashTab is not null )
+                  {
+                     SelectedStashTab = previouslySelectedStashTab;
+                  }
+               }
+
+               if ( SelectedStashTab is null )
+               {
+                  SelectedStashTab = StashTabList[0];
                }
             }
-
-            if ( SelectedStashTab is null )
-            {
-               SelectedStashTab = StashTabList[0];
-            }
+         }
+         else
+         {
+            _ = MessageBox.Show( "Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error );
          }
 
          FetchStashTabsButton.IsEnabled = true;

@@ -19,9 +19,7 @@ namespace EnhancePoE
       public static bool FetchError { get; set; }
       public static bool FetchingDone { get; set; }
 
-      public static List<StashTab> StashTabList { get; private set; }
-
-      public static async Task<bool> GenerateUri()
+      public static async Task<List<StashTab>> FetchStashTabs()
       {
          FetchError = false;
          FetchingDone = false;
@@ -34,9 +32,13 @@ namespace EnhancePoE
 
             if ( await GetProps( accName, league ) && !FetchError )
             {
-               StashTabList = PropsList.tabs.ConvertAll( x => new StashTab( x.n, x.i ) );
-               GenerateStashtabUris( accName, league );
-               return true;
+               var stashTabs = PropsList.tabs.ConvertAll( x => new StashTab( x.n, x.i ) );
+               for ( int i = 0; i < stashTabs.Count; i++ )
+               {
+                  stashTabs[i].StashTabUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={i}&league={league}" );
+               }
+
+               return stashTabs;
             }
          }
          else
@@ -44,20 +46,7 @@ namespace EnhancePoE
             _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please set Accountname, Stash Tab and League." );
          }
          IsFetching = false;
-         return false;
-      }
-
-      private static void GenerateStashtabUris( string accName, string league )
-      {
-         if ( StashTabList is null )
-         {
-            return;
-         }
-
-         for ( int i = 0; i < StashTabList.Count; i++ )
-         {
-            StashTabList[i].StashTabUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={i}&league={league}" );
-         }
+         return null;
       }
 
       private static async Task<bool> GetProps( string accName, string league )
