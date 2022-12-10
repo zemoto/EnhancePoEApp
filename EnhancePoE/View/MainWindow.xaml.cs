@@ -22,7 +22,7 @@ namespace EnhancePoE
       public static ChaosRecipeEnhancer Overlay { get; } = new ChaosRecipeEnhancer();
       public static StashTabWindow StashTabOverlay { get; } = new StashTabWindow();
 
-      public string AppVersionText { get; } = "v.1.2.8-zemoto";
+      public string AppVersionText { get; } = "v.1.5.1-zemoto";
 
       private StashTab _selectedStashTab;
       public StashTab SelectedStashTab
