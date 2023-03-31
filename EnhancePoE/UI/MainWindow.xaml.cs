@@ -63,7 +63,10 @@ namespace EnhancePoE.UI
 
       private async void OnWindowLoaded( object sender, RoutedEventArgs e )
       {
-         await LoadStashTabsAsync();
+         if ( CheckAllSettings( showError: false ) )
+         {
+            await LoadStashTabsAsync();
+         }
       }
 
       // creates tray icon with menu
@@ -119,7 +122,7 @@ namespace EnhancePoE.UI
          }
          else
          {
-            if ( CheckAllSettings() )
+            if ( CheckAllSettings( showError: true ) )
             {
                RecipeOverlay.Show();
                RunOverlayButton.Content = "Stop Overlay";
@@ -131,7 +134,7 @@ namespace EnhancePoE.UI
 
       public static void RunStashTabOverlay()
       {
-         if ( CheckAllSettings() )
+         if ( CheckAllSettings( showError: true ) )
          {
             if ( StashTabOverlay.IsOpen )
             {
@@ -146,7 +149,7 @@ namespace EnhancePoE.UI
 
       private void OnWindowMouseDown( object sender, MouseButtonEventArgs e ) => _ = MainGrid.Focus();
 
-      public static bool CheckAllSettings()
+      public static bool CheckAllSettings( bool showError )
       {
          var missingSettings = new List<string>();
          string errorMessage = "Please add: \n";
@@ -174,7 +177,11 @@ namespace EnhancePoE.UI
             errorMessage += setting;
          }
 
-         _ = MessageBox.Show( errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error );
+         if ( showError )
+         {
+            _ = MessageBox.Show( errorMessage, "Missing Settings", MessageBoxButton.OK, MessageBoxImage.Error );
+         }
+
          return false;
       }
 
@@ -199,11 +206,6 @@ namespace EnhancePoE.UI
 
       private async Task LoadStashTabsAsync()
       {
-         if ( !CheckAllSettings() )
-         {
-            return;
-         }
-
          FetchStashTabsButton.IsEnabled = false;
          StashTabComboBox.IsEnabled = false;
 
@@ -246,7 +248,13 @@ namespace EnhancePoE.UI
 
       private void OnRefreshLeaguesButtonClicked( object sender, RoutedEventArgs e ) => LoadLeagueList();
 
-      private async void OnFetchStashTabsButtonClicked( object sender, RoutedEventArgs e ) => await LoadStashTabsAsync();
+      private async void OnFetchStashTabsButtonClicked( object sender, RoutedEventArgs e )
+      {
+         if ( CheckAllSettings( showError: true ) )
+         {
+            await LoadStashTabsAsync();
+         }
+      }
 
       private void OnSaveButtonClicked( object sender, RoutedEventArgs e )
       {
