@@ -57,6 +57,6 @@ namespace EnhancePoE
          }
       }
 
-      private void OnStartup( object sender, StartupEventArgs e ) => EnhancePoE.MainWindow.Instance.Show();
+      private void OnStartup( object sender, StartupEventArgs e ) => EnhancePoE.UI.MainWindow.Instance.Show();
    }
 }

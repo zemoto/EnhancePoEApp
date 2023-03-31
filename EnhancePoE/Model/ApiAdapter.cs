@@ -9,6 +9,7 @@ using EnhancePoE.Model;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using EnhancePoE.UI;
 
 namespace EnhancePoE
 {

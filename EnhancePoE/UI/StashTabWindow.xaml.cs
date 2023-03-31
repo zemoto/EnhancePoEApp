@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
@@ -8,12 +7,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using EnhancePoE.Model;
-using EnhancePoE.UserControls;
 using EnhancePoE.Utils;
 
-namespace EnhancePoE.View
+namespace EnhancePoE.UI
 {
-   public partial class StashTabWindow : Window, INotifyPropertyChanged
+   internal partial class StashTabWindow : Window, INotifyPropertyChanged
    {
       public bool IsOpen { get; set; }
       public bool IsEditing { get; set; }
@@ -58,7 +56,7 @@ namespace EnhancePoE.View
 
          IsOpen = false;
          IsEditing = false;
-         MainWindow.Overlay.OpenStashOverlayButtonContent = "Stash";
+         MainWindow.RecipeOverlay.OpenStashOverlayButtonContent = "Stash";
 
          base.Hide();
       }
@@ -89,7 +87,7 @@ namespace EnhancePoE.View
          Data.PrepareSelling();
          Data.ActivateNextCell( true, null );
 
-         MainWindow.Overlay.OpenStashOverlayButtonContent = "Hide";
+         MainWindow.RecipeOverlay.OpenStashOverlayButtonContent = "Hide";
 
          MouseHook.Start();
          base.Show();

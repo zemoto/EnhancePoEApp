@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows.Media;
 using EnhancePoE.Model;
+using EnhancePoE.UI;
 
 namespace EnhancePoE
 {
@@ -259,9 +260,9 @@ namespace EnhancePoE
          {
             if ( ApiAdapter.FetchError )
             {
-               MainWindow.Overlay.WarningMessage = "Fetching Error...";
-               MainWindow.Overlay.ShadowOpacity = 1;
-               MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.RecipeOverlay.WarningMessage = "Fetching Error...";
+               MainWindow.RecipeOverlay.ShadowOpacity = 1;
+               MainWindow.RecipeOverlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                return;
             }
 
@@ -420,14 +421,14 @@ namespace EnhancePoE
                Trace.WriteLine( "section list cleared" );
             }
 
-            _ = MainWindow.Overlay.Dispatcher.Invoke( () => MainWindow.Overlay.FullSetsText = fullSets.ToString() );
+            _ = MainWindow.RecipeOverlay.Dispatcher.Invoke( () => MainWindow.RecipeOverlay.FullSetsText = fullSets.ToString() );
 
             // invoke chaos missing
             if ( missingChaos && !Properties.Settings.Default.RegalRecipe )
             {
-               MainWindow.Overlay.WarningMessage = "Need lower level items!";
-               MainWindow.Overlay.ShadowOpacity = 1;
-               MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.RecipeOverlay.WarningMessage = "Need lower level items!";
+               MainWindow.RecipeOverlay.ShadowOpacity = 1;
+               MainWindow.RecipeOverlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
             }
 
             // invoke exalted recipe ready
@@ -440,18 +441,18 @@ namespace EnhancePoE
                    || ItemSetHunter.EmptyItemSlots.Count == 0
                    || ItemSetRedeemer.EmptyItemSlots.Count == 0 )
                {
-                  MainWindow.Overlay.WarningMessage = "Exalted Recipe ready!";
-                  MainWindow.Overlay.ShadowOpacity = 1;
-                  MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+                  MainWindow.RecipeOverlay.WarningMessage = "Exalted Recipe ready!";
+                  MainWindow.RecipeOverlay.ShadowOpacity = 1;
+                  MainWindow.RecipeOverlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
                }
             }
 
             // invoke set full
             if ( fullSets == SetTargetAmount && !missingChaos )
             {
-               MainWindow.Overlay.WarningMessage = "Sets full!";
-               MainWindow.Overlay.ShadowOpacity = 1;
-               MainWindow.Overlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.RecipeOverlay.WarningMessage = "Sets full!";
+               MainWindow.RecipeOverlay.ShadowOpacity = 1;
+               MainWindow.RecipeOverlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
             }
 
             Trace.WriteLine( fullSets, "full sets" );
@@ -581,26 +582,26 @@ namespace EnhancePoE
                Trace.WriteLine( a );
             }
             amounts[4] = weaponsSmall + weaponBig;
-            MainWindow.Overlay.RingsAmount = amounts[0];
-            MainWindow.Overlay.AmuletsAmount = amounts[1];
-            MainWindow.Overlay.BeltsAmount = amounts[2];
-            MainWindow.Overlay.ChestsAmount = amounts[3];
-            MainWindow.Overlay.WeaponsAmount = amounts[4];
-            MainWindow.Overlay.GlovesAmount = amounts[5];
-            MainWindow.Overlay.HelmetsAmount = amounts[6];
-            MainWindow.Overlay.BootsAmount = amounts[7];
+            MainWindow.RecipeOverlay.RingsAmount = amounts[0];
+            MainWindow.RecipeOverlay.AmuletsAmount = amounts[1];
+            MainWindow.RecipeOverlay.BeltsAmount = amounts[2];
+            MainWindow.RecipeOverlay.ChestsAmount = amounts[3];
+            MainWindow.RecipeOverlay.WeaponsAmount = amounts[4];
+            MainWindow.RecipeOverlay.GlovesAmount = amounts[5];
+            MainWindow.RecipeOverlay.HelmetsAmount = amounts[6];
+            MainWindow.RecipeOverlay.BootsAmount = amounts[7];
          }
          else if ( Properties.Settings.Default.ShowItemAmount == 2 )
          {
             amounts[4] = weaponsSmall + weaponBig;
-            MainWindow.Overlay.RingsAmount = Math.Max( ( SetTargetAmount * 2 ) - amounts[0], 0 );
-            MainWindow.Overlay.AmuletsAmount = Math.Max( SetTargetAmount - amounts[1], 0 );
-            MainWindow.Overlay.BeltsAmount = Math.Max( SetTargetAmount - amounts[2], 0 );
-            MainWindow.Overlay.ChestsAmount = Math.Max( SetTargetAmount - amounts[3], 0 );
-            MainWindow.Overlay.WeaponsAmount = Math.Max( ( SetTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ), 0 );
-            MainWindow.Overlay.GlovesAmount = Math.Max( SetTargetAmount - amounts[5], 0 );
-            MainWindow.Overlay.HelmetsAmount = Math.Max( SetTargetAmount - amounts[6], 0 );
-            MainWindow.Overlay.BootsAmount = Math.Max( SetTargetAmount - amounts[7], 0 );
+            MainWindow.RecipeOverlay.RingsAmount = Math.Max( ( SetTargetAmount * 2 ) - amounts[0], 0 );
+            MainWindow.RecipeOverlay.AmuletsAmount = Math.Max( SetTargetAmount - amounts[1], 0 );
+            MainWindow.RecipeOverlay.BeltsAmount = Math.Max( SetTargetAmount - amounts[2], 0 );
+            MainWindow.RecipeOverlay.ChestsAmount = Math.Max( SetTargetAmount - amounts[3], 0 );
+            MainWindow.RecipeOverlay.WeaponsAmount = Math.Max( ( SetTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ), 0 );
+            MainWindow.RecipeOverlay.GlovesAmount = Math.Max( SetTargetAmount - amounts[5], 0 );
+            MainWindow.RecipeOverlay.HelmetsAmount = Math.Max( SetTargetAmount - amounts[6], 0 );
+            MainWindow.RecipeOverlay.BootsAmount = Math.Max( SetTargetAmount - amounts[7], 0 );
          }
       }
 

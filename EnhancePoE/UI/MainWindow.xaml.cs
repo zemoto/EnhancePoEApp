@@ -5,21 +5,20 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.ComponentModel;
 using EnhancePoE.Model;
-using EnhancePoE.View;
 using EnhancePoE.Utils;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Color = System.Windows.Media.Color;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
-   public partial class MainWindow : Window, INotifyPropertyChanged
+   internal partial class MainWindow : Window, INotifyPropertyChanged
    {
       private static MainWindow _instance;
       public static MainWindow Instance => _instance ??= new MainWindow();
 
-      public static ChaosRecipeEnhancer Overlay { get; } = new ChaosRecipeEnhancer();
+      public static RecipeStatusOverlay RecipeOverlay { get; } = new RecipeStatusOverlay();
       public static StashTabWindow StashTabOverlay { get; } = new StashTabWindow();
 
       public string AppVersionText { get; } = "v.1.5.1-zemoto";
@@ -155,9 +154,9 @@ namespace EnhancePoE
 
       public void RunOverlay()
       {
-         if ( Overlay.IsOpen )
+         if ( RecipeOverlay.IsOpen )
          {
-            Overlay.Hide();
+            RecipeOverlay.Hide();
             if ( StashTabOverlay.IsOpen )
             {
                StashTabOverlay.Hide();
@@ -168,7 +167,7 @@ namespace EnhancePoE
          {
             if ( CheckAllSettings() )
             {
-               Overlay.Show();
+               RecipeOverlay.Show();
                RunOverlayButton.Content = "Stop Overlay";
             }
          }
@@ -354,11 +353,11 @@ namespace EnhancePoE
       {
          if ( Properties.Settings.Default.OverlayMode == 0 )
          {
-            Overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContent();
+            RecipeOverlay.MainOverlayContentControl.Content = new MainOverlayContent();
          }
          else if ( Properties.Settings.Default.OverlayMode == 1 )
          {
-            Overlay.MainOverlayContentControl.Content = new UserControls.MainOverlayContentMinified();
+            RecipeOverlay.MainOverlayContentControl.Content = new MainOverlayContentMinified();
          }
       }
 
@@ -387,7 +386,7 @@ namespace EnhancePoE
 
       private void OnShowNumbersComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e )
       {
-         Overlay.AmountsVisibility = Properties.Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
+         RecipeOverlay.AmountsVisibility = Properties.Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
       }
 
       private void OnLeagueSelectionChanged( object sender, SelectionChangedEventArgs e )

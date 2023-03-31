@@ -1,11 +1,12 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
-namespace EnhancePoE.UserControls
+namespace EnhancePoE.UI
 {
-   public partial class MainOverlayContent : UserControl
+   internal partial class MainOverlayContentMinified : UserControl
    {
-      public MainOverlayContent()
+      public MainOverlayContentMinified()
       {
          InitializeComponent();
       }
@@ -17,7 +18,12 @@ namespace EnhancePoE.UserControls
 
       private void OnFetchButtonClicked( object sender, RoutedEventArgs e )
       {
-         MainWindow.Overlay.RunFetching();
+         MainWindow.RecipeOverlay.RunFetching();
+      }
+
+      private void Border_MouseDown( object sender, MouseButtonEventArgs e )
+      {
+         MainWindow.RunStashTabOverlay();
       }
    }
 }

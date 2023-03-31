@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace EnhancePoE
+namespace EnhancePoE.UI
 {
-   public partial class ChaosRecipeEnhancer : Window, INotifyPropertyChanged
+   internal partial class RecipeStatusOverlay : Window, INotifyPropertyChanged
    {
       // toggle fetch button
       public static bool FetchingActive { get; set; }
@@ -284,7 +284,7 @@ namespace EnhancePoE
       }
 
       public static int FullSets { get; set; }
-      public ChaosRecipeEnhancer()
+      public RecipeStatusOverlay()
       {
          InitializeComponent();
          DataContext = this;
@@ -293,9 +293,9 @@ namespace EnhancePoE
 
       private void DisableWarnings()
       {
-         MainWindow.Overlay.WarningMessage = "";
-         MainWindow.Overlay.ShadowOpacity = 0;
-         MainWindow.Overlay.WarningMessageVisibility = Visibility.Collapsed;
+         MainWindow.RecipeOverlay.WarningMessage = "";
+         MainWindow.RecipeOverlay.ShadowOpacity = 0;
+         MainWindow.RecipeOverlay.WarningMessageVisibility = Visibility.Collapsed;
       }
 
       private async void FetchData()
@@ -346,18 +346,18 @@ namespace EnhancePoE
              }
              if ( RateLimit.RateLimitExceeded )
              {
-                MainWindow.Overlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
-                MainWindow.Overlay.ShadowOpacity = 1;
-                MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+                MainWindow.RecipeOverlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
+                MainWindow.RecipeOverlay.ShadowOpacity = 1;
+                MainWindow.RecipeOverlay.WarningMessageVisibility = Visibility.Visible;
                 await Task.Delay( RateLimit.GetSecondsToWait() * 1000 );
                 RateLimit.RequestCounter = 0;
                 RateLimit.RateLimitExceeded = false;
              }
              if ( RateLimit.BanTime > 0 )
              {
-                MainWindow.Overlay.WarningMessage = "Temporary Ban! Waiting...";
-                MainWindow.Overlay.ShadowOpacity = 1;
-                MainWindow.Overlay.WarningMessageVisibility = Visibility.Visible;
+                MainWindow.RecipeOverlay.WarningMessage = "Temporary Ban! Waiting...";
+                MainWindow.RecipeOverlay.ShadowOpacity = 1;
+                MainWindow.RecipeOverlay.WarningMessageVisibility = Visibility.Visible;
                 await Task.Delay( RateLimit.BanTime * 1000 );
                 RateLimit.BanTime = 0;
              }

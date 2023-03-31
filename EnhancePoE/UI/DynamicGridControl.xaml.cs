@@ -1,6 +1,6 @@
-﻿namespace EnhancePoE.UserControls
+﻿namespace EnhancePoE.UI
 {
-   public partial class DynamicGridControl
+   internal partial class DynamicGridControl
    {
       public int Size { get; }
 

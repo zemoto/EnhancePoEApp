@@ -1,4 +1,5 @@
-﻿using EnhancePoE.Utils;
+﻿using EnhancePoE.UI;
+using EnhancePoE.Utils;
 using System;
 using System.Collections.Generic;
 using System.Windows;
