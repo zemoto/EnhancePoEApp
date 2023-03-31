@@ -70,7 +70,7 @@ namespace EnhancePoE.UI
             return;
          }
 
-         if ( tab.ItemList is null )
+         if ( tab.OverlayCellsList is null )
          {
             _ = MessageBox.Show( "No stash data! Fetch before opening stash tab overlay.", "Stash Tab Error", MessageBoxButton.OK, MessageBoxImage.Error );
             return;
@@ -84,8 +84,7 @@ namespace EnhancePoE.UI
          StashTabOverlayTabControl.ItemsSource = new List<TabItem>() { stashTabItem };
          StashTabOverlayTabControl.SelectedIndex = 0;
 
-         Data.PrepareSelling();
-         Data.ActivateNextCell( true, null );
+         Data.ActivateAllCellsForNextSet();
 
          MainWindow.RecipeOverlay.OpenStashOverlayButtonContent = "Hide";
 

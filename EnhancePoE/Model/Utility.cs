@@ -30,10 +30,5 @@ namespace EnhancePoE.Model
          }
          return null;
       }
-
-      public static object GetPropertyValue( object src, string propertyName )
-      {
-         return src.GetType().GetProperty( propertyName ).GetValue( src );
-      }
    }
 }

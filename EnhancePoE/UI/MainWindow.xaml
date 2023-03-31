@@ -199,96 +199,26 @@
                      <CheckBox x:Name="hideOnClose"
                                Grid.Column="3"
                                Grid.Row="7"
+                               Margin="0,2,0,0"
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
                   </Grid>
-                  <!-- RECIPES -->
-                  <Grid>
+                  <!-- RECIPE SETTINGS -->
+                  <Grid Margin="10,40,10,10"
+                        VerticalAlignment="Top">
                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="4" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="10" />
                      </Grid.ColumnDefinitions>
-                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="30" />
-                        <RowDefinition Height="24" />
-                        <RowDefinition Height="24" />
-                        <RowDefinition Height="24" />
-                        <RowDefinition Height="24" />
-                        <RowDefinition Height="24" />
-                        <RowDefinition Height="10" />
-                     </Grid.RowDefinitions>
 
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="1"
-                                VerticalAlignment="Center"
-                                Grid.ColumnSpan="2"
-                                Text="Recipes"
-                                FontSize="24"
-                                FontWeight="Bold" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="2"
-                                VerticalAlignment="Center"
-                                Text="Chaos Orb Recipe:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates Chaos Recipe. Mutually exclusiv to Regal Recipe." />
-                     <CheckBox x:Name="ChaosRecipeCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="2"
-                               VerticalAlignment="Center"
-                               Checked="OnChaosRecipeCheckBoxChecked"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ChaosRecipe, Mode=TwoWay}" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="3"
-                                VerticalAlignment="Center"
-                                Text="Regal Recipe:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates Regal Recipe. Mutually exclusive to Chaos Recipe." />
-                     <CheckBox x:Name="RegalRecipeCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="3"
-                               VerticalAlignment="Center"
-                               Checked="OnRegalRecipeCheckBoxChecked"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=RegalRecipe, Mode=TwoWay}" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="4"
-                                VerticalAlignment="Center"
-                                Text="Exalted Shard Recipe:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Activates Exalted Shard Recipe. Not fully functional at the moment. Visit github for more information." />
-                     <CheckBox x:Name="ExaltedRecipeCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="4"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ExaltedRecipe, Mode=TwoWay}" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="5"
-                                VerticalAlignment="Center"
-                                Text="Fill Greedy Mode:"
-                                ToolTipService.InitialShowDelay="50"
-                                ToolTip="Sets will be filled with more than 1 low ilvl item. Deactivate to only allow 1 low ilvl item." />
-                     <CheckBox x:Name="LimitChaosCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="5"
-                               VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=FillWithChaos, Mode=TwoWay}" />
-
-                     <TextBlock Grid.Column="1"
-                                Grid.Row="6"
-                                VerticalAlignment="Center"
+                     <TextBlock Grid.Column="0"
                                 Text="Include Identified Items:"
                                 ToolTipService.InitialShowDelay="50"
                                 ToolTip="Also counts identified Items for 1 chaos per set." />
                      <CheckBox x:Name="IncludeIdentifiedCheckBox"
-                               Grid.Column="3"
-                               Grid.Row="6"
+                               Margin="0,2,0,0"
+                               Grid.Column="2"
                                VerticalAlignment="Center"
                                IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentified, Mode=TwoWay}" />
                   </Grid>

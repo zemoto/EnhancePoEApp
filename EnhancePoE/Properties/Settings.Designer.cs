@@ -277,18 +277,6 @@ namespace EnhancePoE.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ExaltedRecipe {
-            get {
-                return ((bool)(this["ExaltedRecipe"]));
-            }
-            set {
-                this["ExaltedRecipe"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("#14FFFFFF")]
         public string StashTabBackgroundColor {
             get {
@@ -308,18 +296,6 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["ColorAmulet"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool FillWithChaos {
-            get {
-                return ((bool)(this["FillWithChaos"]));
-            }
-            set {
-                this["FillWithChaos"] = value;
             }
         }
         
@@ -356,30 +332,6 @@ namespace EnhancePoE.Properties {
             }
             set {
                 this["IncludeIdentified"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ChaosRecipe {
-            get {
-                return ((bool)(this["ChaosRecipe"]));
-            }
-            set {
-                this["ChaosRecipe"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool RegalRecipe {
-            get {
-                return ((bool)(this["RegalRecipe"]));
-            }
-            set {
-                this["RegalRecipe"] = value;
             }
         }
         

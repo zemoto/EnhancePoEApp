@@ -65,17 +65,11 @@
     <Setting Name="ColorBelt" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFFF0303</Value>
     </Setting>
-    <Setting Name="ExaltedRecipe" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="StashTabBackgroundColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">#14FFFFFF</Value>
     </Setting>
     <Setting Name="ColorAmulet" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FFFF0303</Value>
-    </Setting>
-    <Setting Name="FillWithChaos" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="OverlayMode" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
@@ -84,12 +78,6 @@
       <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="IncludeIdentified" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="ChaosRecipe" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="RegalRecipe" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="LockOverlayPosition" Type="System.Boolean" Scope="User">

@@ -13,7 +13,7 @@ using EnhancePoE.UI;
 
 namespace EnhancePoE
 {
-   public static class ApiAdapter
+   internal static class ApiAdapter
    {
       public static bool IsFetching { get; set; }
       private static StashTabPropsList PropsList { get; set; }
@@ -179,11 +179,11 @@ namespace EnhancePoE
                   // deserialize response
                   string resContent = await content.ReadAsStringAsync();
                   var deserializedContent = JsonSerializer.Deserialize<ItemList>( resContent );
-                  stashTab.ItemList = deserializedContent.items;
-                  stashTab.Quad = deserializedContent.quadLayout;
 
+                  stashTab.Quad = deserializedContent.quadLayout;
                   stashTab.InitializeCellList();
-                  stashTab.CleanItemList();
+
+                  stashTab.FilterItemsForChaosRecipe( deserializedContent.items );
                }
                else
                {

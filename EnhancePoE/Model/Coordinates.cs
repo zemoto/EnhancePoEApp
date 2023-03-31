@@ -65,7 +65,7 @@ namespace EnhancePoE.Model
             {
                if ( CheckForHit( GetButtonFromCell( ctrl, activeCells[i] ) ) )
                {
-                  Data.ActivateNextCell( true, activeCells[i] );
+                  Data.OnItemCellClicked( activeCells[i] );
                   return;
                }
             }

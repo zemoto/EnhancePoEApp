@@ -286,16 +286,6 @@ namespace EnhancePoE.UI
          }
       }
 
-      private void OnChaosRecipeCheckBoxChecked( object sender, RoutedEventArgs e )
-      {
-         Properties.Settings.Default.RegalRecipe = false;
-      }
-
-      private void OnRegalRecipeCheckBoxChecked( object sender, RoutedEventArgs e )
-      {
-         Properties.Settings.Default.ChaosRecipe = false;
-      }
-
       private void OnShowNumbersComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e )
       {
          RecipeOverlay.AmountsVisibility = Properties.Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
@@ -307,7 +297,6 @@ namespace EnhancePoE.UI
       }
 
       #region INotifyPropertyChanged implementation
-      // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
       public event PropertyChangedEventHandler PropertyChanged;
       protected virtual void OnPropertyChanged( string propertyName )
       {

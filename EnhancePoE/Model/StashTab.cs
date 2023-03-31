@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace EnhancePoE.Model
 {
-   public class StashTab : INotifyPropertyChanged
+   internal sealed class StashTab
    {
-      public event PropertyChangedEventHandler PropertyChanged;
-      protected void OnPropertyChanged( string name = null ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( name ) );
-
       public Uri StashTabUri { get; set; }
-      public List<Item> ItemList { get; set; }
-      public List<Item> ItemListChaos { get; } = new List<Item>();
-      public List<Item> ItemListShaper { get; } = new List<Item>();
-      public List<Item> ItemListElder { get; } = new List<Item>();
-      public List<Item> ItemListWarlord { get; } = new List<Item>();
-      public List<Item> ItemListCrusader { get; } = new List<Item>();
-      public List<Item> ItemListHunter { get; } = new List<Item>();
-      public List<Item> ItemListRedeemer { get; } = new List<Item>();
+      public List<Item> ItemsForChaosRecipe { get; } = new List<Item>();
 
-      public ObservableCollection<Cell> OverlayCellsList { get; } = new ObservableCollection<Cell>();
+      public ObservableCollection<Cell> OverlayCellsList { get; private set; }
 
       // used for registering clicks on tab headers
       public string TabName { get; set; }
@@ -35,7 +24,7 @@ namespace EnhancePoE.Model
 
       public void InitializeCellList()
       {
-         OverlayCellsList.Clear();
+         OverlayCellsList = new ObservableCollection<Cell>();
 
          int size = Quad ? 24 : 12;
          for ( int i = 0; i < size; i++ )
@@ -47,70 +36,26 @@ namespace EnhancePoE.Model
          }
       }
 
-      public void CleanItemList()
+      public void FilterItemsForChaosRecipe( List<Item> itemList )
       {
-         ItemListChaos.Clear();
-         ItemListShaper.Clear();
-         ItemListElder.Clear();
-         ItemListCrusader.Clear();
-         ItemListWarlord.Clear();
-         ItemListHunter.Clear();
-         ItemListRedeemer.Clear();
-
-         // for loop backwards for deleting from list 
-         for ( int i = ItemList.Count - 1; i > -1; i-- )
+         ItemsForChaosRecipe.Clear();
+         foreach( var item in itemList )
          {
-            if ( ItemList[i].identified && !Properties.Settings.Default.IncludeIdentified )
+            if ( ( item.identified && !Properties.Settings.Default.IncludeIdentified ) || item.frameType != 2 )
             {
-               ItemList.RemoveAt( i );
-               continue;
-            }
-            if ( ItemList[i].frameType != 2 )
-            {
-               ItemList.RemoveAt( i );
                continue;
             }
 
-            ItemList[i].GetItemClass();
-            if ( ItemList[i].ItemType == null )
+            item.GetItemClass();
+            if ( item.ItemType == null )
             {
-               ItemList.RemoveAt( i );
                continue;
             }
 
-            ItemList[i].StashTabIndex = TabIndex;
-            //exalted recipe every ilvl allowed, same bases, sort in itemlists
-            if ( Properties.Settings.Default.ExaltedRecipe && ItemList[i].influences != null )
+            if ( item.ilvl >= 60 && item.ilvl <= 74 )
             {
-               if ( ItemList[i].influences.shaper ) { ItemListShaper.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.elder ) { ItemListElder.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.warlord ) { ItemListWarlord.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.crusader ) { ItemListCrusader.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.hunter ) { ItemListHunter.Add( ItemList[i] ); }
-               else if ( ItemList[i].influences.redeemer ) { ItemListRedeemer.Add( ItemList[i] ); }
-
-               ItemList.RemoveAt( i );
-               continue;
-            }
-            if ( !Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe )
-            {
-               ItemList.RemoveAt( i );
-               continue;
-            }
-            if ( ItemList[i].ilvl < 60 )
-            {
-               ItemList.RemoveAt( i );
-               continue;
-            }
-            if ( Properties.Settings.Default.RegalRecipe && ItemList[i].ilvl < 75 )
-            {
-               ItemList.RemoveAt( i );
-               continue;
-            }
-            if ( ItemList[i].ilvl <= 74 )
-            {
-               ItemListChaos.Add( ItemList[i] );
-               ItemList.RemoveAt( i );
+               item.StashTabIndex = TabIndex;
+               ItemsForChaosRecipe.Add( item );
             }
          }
       }
@@ -158,6 +103,7 @@ namespace EnhancePoE.Model
                AllCoordinates.Add( new List<int> { item.x + i, item.y + j } );
             }
          }
+
          foreach ( var cell in OverlayCellsList )
          {
             foreach ( var coordinate in AllCoordinates )

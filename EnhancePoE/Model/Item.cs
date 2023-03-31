@@ -18,7 +18,6 @@ namespace EnhancePoE
       public int frameType { get; set; }
       public int x { get; set; }
       public int y { get; set; }
-      public Influence influences { get; set; }
       public string icon { get; set; }
       public List<PropertiesList> properties { get; set; }
 
@@ -63,15 +62,5 @@ namespace EnhancePoE
    {
       public List<Item> items { get; set; }
       public bool quadLayout { get; set; }
-   }
-
-   public class Influence
-   {
-      public bool shaper { get; set; }
-      public bool elder { get; set; }
-      public bool crusader { get; set; }
-      public bool redeemer { get; set; }
-      public bool hunter { get; set; }
-      public bool warlord { get; set; }
    }
 }

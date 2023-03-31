@@ -305,12 +305,6 @@ namespace EnhancePoE.UI
             return;
          }
 
-         if ( !Properties.Settings.Default.ChaosRecipe && !Properties.Settings.Default.RegalRecipe && !Properties.Settings.Default.ExaltedRecipe )
-         {
-            _ = MessageBox.Show( "No recipes are enabled. Please pick a recipe.", "No Recipes", MessageBoxButton.OK, MessageBoxImage.Error );
-            return;
-         }
-
          DisableWarnings();
          FetchingActive = true;
          CalculationActive = true;
