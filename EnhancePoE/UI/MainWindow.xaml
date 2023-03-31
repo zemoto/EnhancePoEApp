@@ -21,6 +21,10 @@
         Loaded="OnWindowLoaded"
         d:DataContext="{d:DesignInstance Type={x:Type local:MainWindow}}">
 
+   <Window.Resources>
+      <local:StringColorConverter x:Key="StringColorConverter" />
+   </Window.Resources>
+
    <Border BorderBrush="DarkGray"
            BorderThickness="1">
       <Grid Name="MainGrid"
@@ -446,9 +450,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="5"
                                        Width="200"
-                                       Name="ColorStashBackgroundPicker"
-                                       ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorStashBackgroundColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"
+                                       ColorMode="ColorCanvas" />
 
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
@@ -459,9 +462,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="7"
                                        Width="200"
-                                       Name="ColorStashPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorStashPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorStash, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                   </Grid>
                </StackPanel>
             </TabItem>
@@ -510,9 +512,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="3"
                                        Width="200"
-                                       Name="ColorGlovesPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorGlovesPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorGloves, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -520,9 +521,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="5"
                                        Width="200"
-                                       Name="ColorBootsPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorBootsPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBoots, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -530,9 +530,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="7"
                                        Width="200"
-                                       Name="ColorHelmetPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorHelmetPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorHelmet, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -540,9 +539,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="9"
                                        Width="200"
-                                       Name="ColorChestPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorChestPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorChest, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="11"
                                 VerticalAlignment="Center"
@@ -550,9 +548,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="11"
                                        Width="200"
-                                       Name="ColorWeaponsPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorWeaponsPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorWeapon, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="13"
                                 Text="Ring Color:"
@@ -560,9 +557,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="13"
                                        Width="200"
-                                       Name="ColorRingPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorRingPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorRing, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="15"
                                 VerticalAlignment="Center"
@@ -570,9 +566,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="15"
                                        Width="200"
-                                       Name="ColorAmuletPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorAmuletPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorAmulet, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="17"
                                 VerticalAlignment="Center"
@@ -580,9 +575,8 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="17"
                                        Width="200"
-                                       Name="ColorBeltPicker"
                                        ColorMode="ColorCanvas"
-                                       SelectedColorChanged="OnColorBeltPickerSelectedColorChanged" />
+                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBelt, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                   </Grid>
                </Grid>
             </TabItem>

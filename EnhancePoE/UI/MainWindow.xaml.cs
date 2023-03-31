@@ -9,7 +9,6 @@ using EnhancePoE.Utils;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Color = System.Windows.Media.Color;
 
 namespace EnhancePoE.UI
 {
@@ -55,7 +54,6 @@ namespace EnhancePoE.UI
          InitializeComponent();
          DataContext = this;
 
-         InitializeColors();
          InitializeTray();
          LoadLeagueList();
 
@@ -66,50 +64,6 @@ namespace EnhancePoE.UI
       private async void OnWindowLoaded( object sender, RoutedEventArgs e )
       {
          await LoadStashTabsAsync();
-      }
-
-      private void InitializeColors()
-      {
-         if ( Properties.Settings.Default.ColorStash != "" )
-         {
-            ColorStashPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorStash );
-         }
-         if ( Properties.Settings.Default.StashTabBackgroundColor != "" )
-         {
-            ColorStashBackgroundPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.StashTabBackgroundColor );
-         }
-         if ( Properties.Settings.Default.ColorBoots != "" )
-         {
-            ColorBootsPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorBoots );
-         }
-         if ( Properties.Settings.Default.ColorChest != "" )
-         {
-            ColorChestPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorChest );
-         }
-         if ( Properties.Settings.Default.ColorWeapon != "" )
-         {
-            ColorWeaponsPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorWeapon );
-         }
-         if ( Properties.Settings.Default.ColorGloves != "" )
-         {
-            ColorGlovesPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorGloves );
-         }
-         if ( Properties.Settings.Default.ColorHelmet != "" )
-         {
-            ColorHelmetPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorHelmet );
-         }
-         if ( Properties.Settings.Default.ColorRing != "" )
-         {
-            ColorRingPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorRing );
-         }
-         if ( Properties.Settings.Default.ColorAmulet != "" )
-         {
-            ColorAmuletPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorAmulet );
-         }
-         if ( Properties.Settings.Default.ColorBelt != "" )
-         {
-            ColorBeltPicker.SelectedColor = (Color)System.Windows.Media.ColorConverter.ConvertFromString( Properties.Settings.Default.ColorBelt );
-         }
       }
 
       // creates tray icon with menu
@@ -188,56 +142,6 @@ namespace EnhancePoE.UI
                StashTabOverlay.Show();
             }
          }
-      }
-
-      private void OnColorGlovesPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorGloves = ColorGlovesPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorBootsPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorBoots = ColorBootsPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorHelmetPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorHelmet = ColorHelmetPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorChestPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorChest = ColorChestPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorWeaponsPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorWeapon = ColorWeaponsPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorStashBackgroundColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.StashTabBackgroundColor = ColorStashBackgroundPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorRingPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorRing = ColorRingPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorAmuletPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorAmulet = ColorAmuletPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorBeltPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorBelt = ColorBeltPicker.SelectedColor.ToString();
-      }
-
-      private void OnColorStashPickerSelectedColorChanged( object sender, RoutedPropertyChangedEventArgs<Color?> e )
-      {
-         Properties.Settings.Default.ColorStash = ColorStashPicker.SelectedColor.ToString();
       }
 
       private void OnWindowMouseDown( object sender, MouseButtonEventArgs e ) => _ = MainGrid.Focus();
