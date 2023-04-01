@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace EnhancePoE.Utils
 {
-   public static class MouseHook
+   internal sealed class MouseHookEventArgs : EventArgs
    {
-      public static event EventHandler MouseAction = delegate { };
+      public Point ClickLocation { get; }
+
+      public MouseHookEventArgs( int x, int y ) => ClickLocation = new Point( x, y );
+   }
+
+   internal static class MouseHook
+   {
+      public static event EventHandler<MouseHookEventArgs> MouseAction = delegate { };
 
       public static void Start() => _hookID = SetHook( _proc );
       public static void Stop() => UnhookWindowsHookEx( _hookID );
@@ -29,10 +37,8 @@ namespace EnhancePoE.Utils
          if ( nCode >= 0 && MouseMessages.WM_LBUTTONDOWN == (MouseMessages)wParam )
          {
             var hookStruct = (MSLLHOOKSTRUCT)Marshal.PtrToStructure( lParam, typeof( MSLLHOOKSTRUCT ) );
-            ClickLocationX = hookStruct.pt.x;
-            ClickLocationY = hookStruct.pt.y;
 
-            MouseAction( null, new EventArgs() );
+            MouseAction( null, new MouseHookEventArgs( hookStruct.pt.x, hookStruct.pt.y ) );
          }
          return CallNextHookEx( _hookID, nCode, wParam, lParam );
       }
@@ -41,12 +47,12 @@ namespace EnhancePoE.Utils
 
       private enum MouseMessages
       {
+         WM_MOUSEMOVE = 0x0200,
          WM_LBUTTONDOWN = 0x0201,
          WM_LBUTTONUP = 0x0202,
-         WM_MOUSEMOVE = 0x0200,
-         WM_MOUSEWHEEL = 0x020A,
          WM_RBUTTONDOWN = 0x0204,
-         WM_RBUTTONUP = 0x0205
+         WM_RBUTTONUP = 0x0205,
+         WM_MOUSEWHEEL = 0x020A
       }
 
       [StructLayout( LayoutKind.Sequential )]
@@ -65,16 +71,14 @@ namespace EnhancePoE.Utils
       }
 
       [DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
-      private static extern IntPtr SetWindowsHookEx( int idHook,
-        LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId );
+      private static extern IntPtr SetWindowsHookEx( int idHook, LowLevelMouseProc lpfn, IntPtr hMod, uint dwThreadId );
 
       [DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
       [return: MarshalAs( UnmanagedType.Bool )]
       private static extern bool UnhookWindowsHookEx( IntPtr hhk );
 
       [DllImport( "user32.dll", CharSet = CharSet.Auto, SetLastError = true )]
-      private static extern IntPtr CallNextHookEx( IntPtr hhk, int nCode,
-        IntPtr wParam, IntPtr lParam );
+      private static extern IntPtr CallNextHookEx( IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam );
 
       [DllImport( "kernel32.dll", CharSet = CharSet.Auto, SetLastError = true )]
       private static extern IntPtr GetModuleHandle( string lpModuleName );

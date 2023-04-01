@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
-using EnhancePoE.Model;
 using EnhancePoE.Utils;
 
 namespace EnhancePoE.UI
@@ -14,21 +13,6 @@ namespace EnhancePoE.UI
    internal partial class StashTabWindow : Window, INotifyPropertyChanged
    {
       public bool IsOpen { get; set; }
-      public bool IsEditing { get; set; }
-
-      private Thickness _tabMargin;
-      public Thickness TabMargin
-      {
-         get => _tabMargin;
-         set
-         {
-            if ( value != _tabMargin )
-            {
-               _tabMargin = value;
-               OnPropertyChanged( nameof( TabMargin ) );
-            }
-         }
-      }
 
       private Visibility _stashBorderVisibility = Visibility.Hidden;
       public Visibility StashBorderVisibility
@@ -41,21 +25,24 @@ namespace EnhancePoE.UI
          }
       }
 
+      private bool _isEditing;
+
       public StashTabWindow()
       {
          InitializeComponent();
          DataContext = this;
+
+         MouseHook.MouseAction += OnMouseHookClick;
       }
 
       public new virtual void Hide()
       {
-         Transparentize();
+         MakeWindowTransparent();
          EditModeButton.Content = "Edit";
-         IsEditing = false;
+         _isEditing = false;
          MouseHook.Stop();
 
          IsOpen = false;
-         IsEditing = false;
          MainWindow.RecipeOverlay.OpenStashOverlayButtonContent = "Stash";
 
          base.Hide();
@@ -92,22 +79,29 @@ namespace EnhancePoE.UI
          base.Show();
       }
 
-      public void StartEditMode()
+      private void OnMouseHookClick( object sender, MouseHookEventArgs e )
       {
-         MouseHook.Stop();
-         EditModeButton.Content = "Save";
-         StashBorderVisibility = Visibility.Visible;
-         Normalize();
-         IsEditing = true;
-      }
+         if ( !IsOpen || MainWindow.Instance.SelectedStashTab is null )
+         {
+            return;
+         }
 
-      public void StopEditMode()
-      {
-         Transparentize();
-         EditModeButton.Content = "Edit";
-         StashBorderVisibility = Visibility.Hidden;
-         MouseHook.Start();
-         IsEditing = false;
+         if ( UtilityMethods.HitTest( EditModeButton, e.ClickLocation ) )
+         {
+            HandleEditButton();
+         }
+         else
+         {
+            var ctrl = (ItemsControl)StashTabOverlayTabControl.SelectedContent;
+            foreach ( var cell in MainWindow.Instance.SelectedStashTab.OverlayCellsList.Where( cell => cell.Active ) )
+            {
+               if ( UtilityMethods.HitTest( UtilityMethods.GetContainerForDataObject<Button>( ctrl, cell ), e.ClickLocation ) )
+               {
+                  Data.OnItemCellClicked( cell );
+                  return;
+               }
+            }
+         }
       }
 
       private void Window_MouseDown( object sender, MouseButtonEventArgs e )
@@ -121,59 +115,36 @@ namespace EnhancePoE.UI
       protected override void OnSourceInitialized( EventArgs e )
       {
          base.OnSourceInitialized( e );
-
-         // Get this window's handle
-         var hwnd = new WindowInteropHelper( this ).Handle;
-
-         Win32.MakeTransparent( hwnd );
+         MakeWindowTransparent();
       }
 
-      public void Transparentize()
+      private void MakeWindowTransparent() => Win32.MakeTransparent( new WindowInteropHelper( this ).Handle );
+
+      private void MakeWindowNormal() => Win32.MakeNormal( new WindowInteropHelper( this ).Handle );
+
+      private void HandleEditButton()
       {
-         Trace.WriteLine( "make transparent" );
-         var hwnd = new WindowInteropHelper( this ).Handle;
-
-         Win32.MakeTransparent( hwnd );
-      }
-
-      public void Normalize()
-      {
-         Trace.WriteLine( "make normal" );
-         var hwnd = new WindowInteropHelper( this ).Handle;
-
-         Win32.MakeNormal( hwnd );
-      }
-
-      protected override void OnClosing( CancelEventArgs e )
-      {
-      }
-
-      public void HandleEditButton()
-      {
-         if ( MainWindow.StashTabOverlay.IsEditing )
+         if ( _isEditing )
          {
-            StopEditMode();
+            MakeWindowTransparent();
+            EditModeButton.Content = "Edit";
+            StashBorderVisibility = Visibility.Hidden;
+            MouseHook.Start();
+            _isEditing = false;
          }
          else
          {
-            StartEditMode();
+            MouseHook.Stop();
+            EditModeButton.Content = "Save";
+            StashBorderVisibility = Visibility.Visible;
+            MakeWindowNormal();
+            _isEditing = true;
          }
       }
 
-      private void EditModeButton_Click( object sender, RoutedEventArgs e )
-      {
-         HandleEditButton();
-      }
+      private void OnEditModeButtonClick( object sender, RoutedEventArgs e ) => HandleEditButton();
 
-      #region INotifyPropertyChanged implementation
-      // Basically, the UI thread subscribes to this event and update the binding if the received Property Name correspond to the Binding Path element
       public event PropertyChangedEventHandler PropertyChanged;
-      protected virtual void OnPropertyChanged( string propertyName )
-      {
-         var handler = PropertyChanged;
-         if ( handler != null )
-            handler( this, new PropertyChangedEventArgs( propertyName ) );
-      }
-      #endregion
+      protected virtual void OnPropertyChanged( string propertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
    }
 }

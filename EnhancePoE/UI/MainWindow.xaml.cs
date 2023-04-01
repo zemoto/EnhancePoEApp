@@ -57,7 +57,6 @@ namespace EnhancePoE.UI
          InitializeTray();
          LoadLeagueList();
 
-         MouseHook.MouseAction += Coordinates.Event;
          SingleInstance.PingedBySecondProcess += ( s, a ) => Dispatcher.Invoke( Show );
       }
 
@@ -69,7 +68,6 @@ namespace EnhancePoE.UI
          }
       }
 
-      // creates tray icon with menu
       private void InitializeTray()
       {
          _trayIcon.Icon = new System.Drawing.Icon( @"Assets\coin.ico" );

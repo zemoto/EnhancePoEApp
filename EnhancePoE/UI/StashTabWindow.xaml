@@ -54,7 +54,7 @@
               Grid.Row="1"
               x:Name="EditModeButton"
               Content="Edit"
-              Click="EditModeButton_Click" />
+              Click="OnEditModeButtonClick" />
       
       <TabControl x:Name="StashTabOverlayTabControl"
                   Grid.Column="1"
