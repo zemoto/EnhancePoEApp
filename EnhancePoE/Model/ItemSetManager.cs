@@ -21,7 +21,7 @@ namespace EnhancePoE
          CancelTokenSource = new CancellationTokenSource();
       }
 
-      public void CheckActives()
+      public void UpdateData()
       {
          try
          {
@@ -38,112 +38,7 @@ namespace EnhancePoE
 
             GenerateItemSets();
 
-            // check for full sets
-            int fullSets = 0;
-            // unique missing item classes
-            var missingItemClasses = new HashSet<string>();
-            var deactivatedItemClasses = new List<string> { "Helmets", "BodyArmours", "Gloves", "Boots", "Rings", "Amulets", "Belts", "OneHandWeapons", "TwoHandWeapons" };
-
-            foreach ( var set in _itemSetList )
-            {
-               if ( set.EmptyItemSlots.Count == 0 )
-               {
-                  fullSets++;
-               }
-               else
-               {
-                  // all classes which are active over all ilvls
-                  foreach ( string itemClass in set.EmptyItemSlots )
-                  {
-                     _ = missingItemClasses.Add( itemClass );
-                  }
-               }
-            }
-
-            if ( fullSets == Properties.Settings.Default.Sets )
-            {
-               Data.GlovesActive = false;
-               Data.HelmetActive = false;
-               Data.ChestActive = false;
-               Data.BootsActive = false;
-               Data.WeaponActive = false;
-               Data.RingActive = false;
-               Data.AmuletActive = false;
-               Data.BeltActive = false;
-            }
-            else
-            {
-               // activate missing classes
-               foreach ( string itemClass in missingItemClasses )
-               {
-                  switch ( itemClass )
-                  {
-                     case "BodyArmours":
-                        Data.ChestActive = true;
-                        break;
-                     case "Helmets":
-                        Data.HelmetActive = true;
-                        break;
-                     case "Gloves":
-                        Data.GlovesActive = true;
-                        break;
-                     case "Boots":
-                        Data.BootsActive = true;
-                        break;
-                     case "Rings":
-                        Data.RingActive = true;
-                        break;
-                     case "Amulets":
-                        Data.AmuletActive = true;
-                        break;
-                     case "Belts":
-                        Data.BeltActive = true;
-                        break;
-                     case "OneHandWeapons":
-                     case "TwoHandWeapons":
-                        Data.WeaponActive = true;
-                        _ = deactivatedItemClasses.Remove( "OneHandWeapons" );
-                        _ = deactivatedItemClasses.Remove( "TwoHandWeapons" );
-                        break;
-                  }
-                  _ = deactivatedItemClasses.Remove( itemClass );
-               }
-
-               //deactivate rest
-               foreach ( string itemClass in deactivatedItemClasses )
-               {
-                  switch ( itemClass )
-                  {
-                     case "BodyArmours":
-                        Data.ChestActive = false;
-                        break;
-                     case "Helmets":
-                        Data.HelmetActive = false;
-                        break;
-                     case "Gloves":
-                        Data.GlovesActive = false;
-                        break;
-                     case "Boots":
-                        Data.BootsActive = false;
-                        break;
-                     case "OneHandWeapons":
-                     case "TwoHandWeapons":
-                        Data.WeaponActive = false;
-                        break;
-                     case "Rings":
-                        Data.RingActive = false;
-                        break;
-                     case "Amulets":
-                        Data.AmuletActive = false;
-                        break;
-                     case "Belts":
-                        Data.BeltActive = false;
-                        break;
-                  }
-               }
-            }
-
-            Data.FullSets = fullSets;
+            Data.FullSets = _itemSetList.Count( x => x.EmptyItemSlots.Count == 0 );
          }
          catch ( OperationCanceledException ex ) when ( ex.CancellationToken == CancelTokenSource.Token )
          {

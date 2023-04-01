@@ -16,9 +16,6 @@ namespace EnhancePoE.UI
       public static bool CalculationActive { get; set; }
       //public static System.Timers.Timer aTimer;
 
-      private const double deactivatedOpacity = .1;
-      private const double activatedOpacity = 1;
-
       private const int fetchCooldown = 30;
 
       public bool IsOpen { get; set; }
@@ -31,87 +28,6 @@ namespace EnhancePoE.UI
          {
             _isIndeterminate = value;
             OnPropertyChanged( nameof( IsIndeterminate ) );
-         }
-      }
-
-      private double _helmetOpacity = activatedOpacity;
-      public double HelmetOpacity
-      {
-         get => _helmetOpacity;
-         set
-         {
-            _helmetOpacity = value;
-            OnPropertyChanged( nameof( HelmetOpacity ) );
-         }
-      }
-      private double _bootsOpacity = activatedOpacity;
-      public double BootsOpacity
-      {
-         get => _bootsOpacity;
-         set
-         {
-            _bootsOpacity = value;
-            OnPropertyChanged( nameof( BootsOpacity ) );
-         }
-      }
-      private double _glovesOpacity = activatedOpacity;
-      public double GlovesOpacity
-      {
-         get => _glovesOpacity;
-         set
-         {
-            _glovesOpacity = value;
-            OnPropertyChanged( nameof( GlovesOpacity ) );
-         }
-      }
-      private double _chestsOpacity = activatedOpacity;
-      public double ChestsOpacity
-      {
-         get => _chestsOpacity;
-         set
-         {
-            _chestsOpacity = value;
-            OnPropertyChanged( nameof( ChestsOpacity ) );
-         }
-      }
-      private double _weaponsOpacity = activatedOpacity;
-      public double WeaponsOpacity
-      {
-         get => _weaponsOpacity;
-         set
-         {
-            _weaponsOpacity = value;
-            OnPropertyChanged( nameof( WeaponsOpacity ) );
-         }
-      }
-      private double _ringsOpacity = activatedOpacity;
-      public double RingsOpacity
-      {
-         get => _ringsOpacity;
-         set
-         {
-            _ringsOpacity = value;
-            OnPropertyChanged( nameof( RingsOpacity ) );
-         }
-      }
-      private double _amuletsOpacity = activatedOpacity;
-      public double AmuletsOpacity
-      {
-         get => _amuletsOpacity;
-         set
-         {
-            _amuletsOpacity = value;
-            OnPropertyChanged( nameof( AmuletsOpacity ) );
-         }
-      }
-      private double _beltsOpacity = activatedOpacity;
-      public double BeltsOpacity
-      {
-         get => _beltsOpacity;
-         set
-         {
-            _beltsOpacity = value;
-            OnPropertyChanged( nameof( BeltsOpacity ) );
          }
       }
 
@@ -187,8 +103,7 @@ namespace EnhancePoE.UI
                 {
                    await Task.Run( () =>
                     {
-                       _itemSetManager.CheckActives();
-                       SetOpacity();
+                       _itemSetManager.UpdateData();
                        CalculationActive = false;
                        _ = Dispatcher.Invoke( () => IsIndeterminate = false );
                     }, _itemSetManager.CancelTokenSource.Token );
@@ -266,77 +181,6 @@ namespace EnhancePoE.UI
          {
             DragMove();
          }
-      }
-
-      private void SetOpacity()
-      {
-         Dispatcher.Invoke( () =>
-          {
-             if ( !_itemSetManager.Data.HelmetActive )
-             {
-                HelmetOpacity = deactivatedOpacity;
-             }
-             else
-             {
-                HelmetOpacity = activatedOpacity;
-             }
-             if ( !_itemSetManager.Data.GlovesActive )
-             {
-                GlovesOpacity = deactivatedOpacity;
-             }
-             else
-             {
-                GlovesOpacity = activatedOpacity;
-             }
-             if ( !_itemSetManager.Data.BootsActive )
-             {
-                BootsOpacity = deactivatedOpacity;
-             }
-             else
-             {
-                BootsOpacity = activatedOpacity;
-             }
-             if ( !_itemSetManager.Data.WeaponActive )
-             {
-                WeaponsOpacity = deactivatedOpacity;
-             }
-             else
-             {
-                WeaponsOpacity = activatedOpacity;
-             }
-             if ( !_itemSetManager.Data.ChestActive )
-             {
-                ChestsOpacity = deactivatedOpacity;
-             }
-             else
-             {
-                ChestsOpacity = activatedOpacity;
-             }
-             if ( !_itemSetManager.Data.RingActive )
-             {
-                RingsOpacity = deactivatedOpacity;
-             }
-             else
-             {
-                RingsOpacity = activatedOpacity;
-             }
-             if ( !_itemSetManager.Data.AmuletActive )
-             {
-                AmuletsOpacity = deactivatedOpacity;
-             }
-             else
-             {
-                AmuletsOpacity = activatedOpacity;
-             }
-             if ( !_itemSetManager.Data.BeltActive )
-             {
-                BeltsOpacity = deactivatedOpacity;
-             }
-             else
-             {
-                BeltsOpacity = activatedOpacity;
-             }
-          } );
       }
 
       public new virtual void Hide()

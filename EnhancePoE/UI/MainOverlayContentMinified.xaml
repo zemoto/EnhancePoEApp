@@ -10,6 +10,13 @@
              FontSize="14"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type={x:Type local:RecipeStatusOverlay}}">
+
+   <UserControl.Resources>
+      <ui:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
+                                TrueValue="1.0"
+                                FalseValue="0.1" />
+   </UserControl.Resources>
+
    <Grid>
       <Grid.ColumnDefinitions>
          <ColumnDefinition Width="3" />
@@ -39,7 +46,7 @@
               CornerRadius="50"
               Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorGloves}"
               Margin="3,0"
-              Opacity="{Binding GlovesOpacity}"
+              Opacity="{Binding Data.GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               x:Name="Gloves">
          <Grid>
             <Image Source="/Assets/gloves.png"
@@ -70,7 +77,7 @@
               Width="30"
               CornerRadius="50"
               Margin="3,0"
-              Opacity="{Binding BootsOpacity}"
+              Opacity="{Binding Data.BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               x:Name="Boots"
               Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBoots}">
          <Grid>
@@ -103,7 +110,7 @@
               Margin="3,0"
               CornerRadius="50"
               x:Name="Chest"
-              Opacity="{Binding ChestsOpacity}"
+              Opacity="{Binding Data.ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorChest}">
          <Grid>
             <Image MaxHeight="20"
@@ -136,7 +143,7 @@
               Margin="3,0"
               CornerRadius="50"
               x:Name="Weapon"
-              Opacity="{Binding WeaponsOpacity}"
+              Opacity="{Binding Data.WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorWeapon}">
          <Grid>
             <Image MaxHeight="20"
@@ -168,7 +175,7 @@
               Width="30"
               Margin="3,0"
               CornerRadius="50"
-              Opacity="{Binding HelmetOpacity}"
+              Opacity="{Binding Data.HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorHelmet}"
               x:Name="Helmet">
          <Grid>
@@ -201,7 +208,7 @@
               Width="30"
               CornerRadius="50"
               Margin="3,0"
-              Opacity="{Binding RingsOpacity}"
+              Opacity="{Binding Data.RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorRing}"
               x:Name="Rings">
          <Grid>
@@ -234,7 +241,7 @@
               Width="30"
               Margin="3,0"
               CornerRadius="50"
-              Opacity="{Binding AmuletsOpacity}"
+              Opacity="{Binding Data.AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorAmulet}"
               x:Name="Amulet">
          <Grid>
@@ -267,7 +274,7 @@
               Width="30"
               Margin="3,0"
               CornerRadius="50"
-              Opacity="{Binding BeltsOpacity}"
+              Opacity="{Binding Data.BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBelt}"
               x:Name="Belt">
          <Grid>

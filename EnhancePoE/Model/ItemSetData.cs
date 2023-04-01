@@ -13,7 +13,7 @@ namespace EnhancePoE.Model
       {
          if ( e.PropertyName == nameof( Properties.Settings.Sets ) || e.PropertyName == nameof( Properties.Settings.ShowItemAmount ) )
          {
-            UpdateDisplayAmounts();
+            UpdateDisplay();
          }
       }
 
@@ -37,26 +37,41 @@ namespace EnhancePoE.Model
          _glovesAmount = amounts[6];
          _helmetsAmount = amounts[7];
          _bootsAmount = amounts[8];
-         UpdateDisplayAmounts();
+         UpdateDisplay();
       }
 
-      private void UpdateDisplayAmounts()
+      private void UpdateDisplay()
       {
          OnPropertyChanged( nameof( RingsAmount ) );
+         OnPropertyChanged( nameof( RingsActive ) );
+
          OnPropertyChanged( nameof( AmuletsAmount ) );
+         OnPropertyChanged( nameof( AmuletsActive ) );
+
          OnPropertyChanged( nameof( BeltsAmount ) );
+         OnPropertyChanged( nameof( BeltsActive ) );
+
          OnPropertyChanged( nameof( ChestsAmount ) );
+         OnPropertyChanged( nameof( ChestsActive ) );
+
          OnPropertyChanged( nameof( WeaponsAmount ) );
+         OnPropertyChanged( nameof( WeaponsActive ) );
+
          OnPropertyChanged( nameof( GlovesAmount ) );
+         OnPropertyChanged( nameof( GlovesActive ) );
+
          OnPropertyChanged( nameof( HelmetsAmount ) );
+         OnPropertyChanged( nameof( HelmetsActive ) );
+
          OnPropertyChanged( nameof( BootsAmount ) );
+         OnPropertyChanged( nameof( BootsActive ) );
 
          CheckForFullSets();
       }
 
       private void CheckForFullSets()
       {
-         if ( FullSets == Properties.Settings.Default.Sets )
+         if ( FullSets >= Properties.Settings.Default.Sets )
          {
             WarningMessage = _setsFullText;
          }
@@ -83,84 +98,36 @@ namespace EnhancePoE.Model
 
       private int _ringsAmount;
       public int RingsAmount => ShowAmountNeeded ? Math.Max( ( Properties.Settings.Default.Sets * 2 ) - _ringsAmount, 0 ) : _ringsAmount;
+      public bool RingsActive => ( Properties.Settings.Default.Sets * 2 ) - _ringsAmount > 0;
 
       private int _amuletsAmount;
       public int AmuletsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _amuletsAmount, 0 ) : _amuletsAmount;
+      public bool AmuletsActive => Properties.Settings.Default.Sets - _amuletsAmount > 0;
 
       private int _beltsAmount;
       public int BeltsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _beltsAmount, 0 ) : _beltsAmount;
+      public bool BeltsActive => Properties.Settings.Default.Sets - _beltsAmount > 0;
 
       private int _chestsAmount;
       public int ChestsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _chestsAmount, 0 ) : _chestsAmount;
+      public bool ChestsActive => Properties.Settings.Default.Sets - _chestsAmount > 0;
 
       private int _weaponsSmallAmount;
       private int _weaponsBigAmount;
       public int WeaponsAmount => ShowAmountNeeded ? Math.Max( ( Properties.Settings.Default.Sets * 2 ) - ( _weaponsSmallAmount + ( _weaponsBigAmount * 2 ) ), 0 ) : _weaponsSmallAmount + ( _weaponsBigAmount * 2 );
+      public bool WeaponsActive => ( Properties.Settings.Default.Sets * 2 ) - ( _weaponsSmallAmount + ( _weaponsBigAmount * 2 ) ) > 0;
 
       private int _glovesAmount;
       public int GlovesAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _glovesAmount, 0 ) : _glovesAmount;
+      public bool GlovesActive => Properties.Settings.Default.Sets - _glovesAmount > 0;
 
       private int _helmetsAmount;
       public int HelmetsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _helmetsAmount, 0 ) : _helmetsAmount;
+      public bool HelmetsActive => Properties.Settings.Default.Sets - _helmetsAmount > 0;
 
       private int _bootsAmount;
       public int BootsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _bootsAmount, 0 ) : _bootsAmount;
-
-      private bool _glovesActive = true;
-      public bool GlovesActive
-      {
-         get => _glovesActive;
-         set => SetProperty( ref _glovesActive, value );
-      }
-
-      private bool _helmetActive = true;
-      public bool HelmetActive
-      {
-         get => _helmetActive;
-         set => SetProperty( ref _helmetActive, value );
-      }
-
-      private bool _bootsActive = true;
-      public bool BootsActive
-      {
-         get => _bootsActive;
-         set => SetProperty( ref _bootsActive, value );
-      }
-
-      private bool _chestActive = true;
-      public bool ChestActive
-      {
-         get => _chestActive;
-         set => SetProperty( ref _chestActive, value );
-      }
-
-      private bool _weaponActive = true;
-      public bool WeaponActive
-      {
-         get => _weaponActive;
-         set => SetProperty( ref _weaponActive, value );
-      }
-
-      private bool _ringActive = true;
-      public bool RingActive
-      {
-         get => _ringActive;
-         set => SetProperty( ref _ringActive, value );
-      }
-
-      private bool _amuletActive = true;
-      public bool AmuletActive
-      {
-         get => _amuletActive;
-         set => SetProperty( ref _amuletActive, value );
-      }
-
-      private bool _beltActive = true;
-      public bool BeltActive
-      {
-         get => _beltActive;
-         set => SetProperty( ref _beltActive, value );
-      }
+      public bool BootsActive => Properties.Settings.Default.Sets - _bootsAmount > 0;
 
       private string _warningMessage;
       public string WarningMessage
