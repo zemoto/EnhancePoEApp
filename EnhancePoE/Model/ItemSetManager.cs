@@ -27,7 +27,7 @@ namespace EnhancePoE
          {
             if ( ApiAdapter.FetchError )
             {
-               MainWindow.RecipeOverlay.SetWarning( "Fetching Error..." );
+               Data.WarningMessage = "Fetching Error...";
                return;
             }
 
@@ -59,9 +59,6 @@ namespace EnhancePoE
                   }
                }
             }
-
-            var sectionList = new HashSet<string>();
-
 
             if ( fullSets == Properties.Settings.Default.Sets )
             {
@@ -146,12 +143,7 @@ namespace EnhancePoE
                }
             }
 
-            _ = MainWindow.RecipeOverlay.Dispatcher.Invoke( () => MainWindow.RecipeOverlay.FullSetsText = fullSets.ToString() );
-
-            if ( fullSets == Properties.Settings.Default.Sets )
-            {
-               MainWindow.RecipeOverlay.SetWarning( "Sets full!" );
-            }
+            Data.FullSets = fullSets;
          }
          catch ( OperationCanceledException ex ) when ( ex.CancellationToken == CancelTokenSource.Token )
          {

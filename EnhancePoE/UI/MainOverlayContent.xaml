@@ -26,8 +26,7 @@
          <ColumnDefinition Width="5" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
-         <RowDefinition Height="auto"
-                        MinHeight="6" />
+         <RowDefinition Height="6" />
          <RowDefinition Height="auto" />
          <RowDefinition Height="auto" />
          <RowDefinition Height="5" />
@@ -319,8 +318,7 @@
          <TextBlock TextAlignment="Center"
                     VerticalAlignment="Center"
                     Text="Sets" />
-         <TextBlock x:Name="FullSetsTextBlock"
-                    Text="{Binding FullSetsText}"
+         <TextBlock Text="{Binding Data.FullSets}"
                     VerticalAlignment="Center"
                     TextAlignment="Center" />
       </UniformGrid>
@@ -336,17 +334,5 @@
                    Background="AntiqueWhite"
                    BorderThickness="0,0,0,0"
                    x:Name="OverlayProgressBar"></ProgressBar>
-      <Border Grid.Column="4"
-              Grid.ColumnSpan="6"
-              Grid.Row="0"
-              CornerRadius="5"
-              Background="White"
-              Margin="0,0,0,4"
-              Visibility="{Binding WarningMessageVisibility}">
-         <TextBlock VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Text="{Binding WarningMessage}"
-                    FontSize="16"></TextBlock>
-      </Border>
    </Grid>
 </UserControl>

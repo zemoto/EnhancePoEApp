@@ -23,49 +23,6 @@ namespace EnhancePoE.UI
 
       public bool IsOpen { get; set; }
 
-      private string _warningMessage;
-      public string WarningMessage
-      {
-         get => _warningMessage;
-         set
-         {
-            _warningMessage = value;
-            OnPropertyChanged( nameof( WarningMessage ) );
-         }
-      }
-
-      private Visibility _warningMessageVisibility = Visibility.Collapsed;
-      public Visibility WarningMessageVisibility
-      {
-         get => _warningMessageVisibility;
-         set
-         {
-            _warningMessageVisibility = value;
-            OnPropertyChanged( nameof( WarningMessageVisibility ) );
-         }
-      }
-      private double _shadowOpacity;
-      public double ShadowOpacity
-      {
-         get => _shadowOpacity;
-         set
-         {
-            _shadowOpacity = value;
-            OnPropertyChanged( nameof( ShadowOpacity ) );
-         }
-      }
-
-      private string _fullSetsText = "0";
-      public string FullSetsText
-      {
-         get => _fullSetsText;
-         set
-         {
-            _fullSetsText = value;
-            OnPropertyChanged( nameof( FullSetsText ) );
-         }
-      }
-
       private bool _isIndeterminate;
       public bool IsIndeterminate
       {
@@ -206,20 +163,6 @@ namespace EnhancePoE.UI
          _stashTabOverlay = new StashTabWindow( _itemSetManager );
       }
 
-      private void DisableWarning()
-      {
-         WarningMessage = "";
-         ShadowOpacity = 0;
-         WarningMessageVisibility = Visibility.Collapsed;
-      }
-
-      public void SetWarning( string message )
-      {
-         WarningMessage = message;
-         ShadowOpacity = 1;
-         WarningMessageVisibility = Visibility.Visible;
-      }
-
       private async void FetchData()
       {
          if ( FetchingActive )
@@ -227,7 +170,7 @@ namespace EnhancePoE.UI
             return;
          }
 
-         DisableWarning();
+         _itemSetManager.Data.WarningMessage = string.Empty;
          FetchingActive = true;
          CalculationActive = true;
 
@@ -262,14 +205,14 @@ namespace EnhancePoE.UI
              }
              if ( RateLimit.RateLimitExceeded )
              {
-                SetWarning( "Rate Limit Exceeded! Waiting..." );
+               _itemSetManager.Data.WarningMessage = "Rate Limit Exceeded! Waiting...";
                 await Task.Delay( RateLimit.GetSecondsToWait() * 1000 );
                 RateLimit.RequestCounter = 0;
                 RateLimit.RateLimitExceeded = false;
              }
              if ( RateLimit.BanTime > 0 )
              {
-                SetWarning( "Temporary Ban! Waiting..." );
+                _itemSetManager.Data.WarningMessage = "Temporary Ban! Waiting...";
                 await Task.Delay( RateLimit.BanTime * 1000 );
                 RateLimit.BanTime = 0;
              }

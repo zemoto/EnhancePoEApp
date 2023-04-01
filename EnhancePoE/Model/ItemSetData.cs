@@ -5,10 +5,9 @@ namespace EnhancePoE.Model
 {
    internal sealed class ItemSetData : ViewModelBase
    {
-      public ItemSetData()
-      {
-         Properties.Settings.Default.PropertyChanged += OnSettingsChanged;
-      }
+      private const string _setsFullText = "Sets full!";
+
+      public ItemSetData() => Properties.Settings.Default.PropertyChanged += OnSettingsChanged;
 
       private void OnSettingsChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
       {
@@ -51,6 +50,33 @@ namespace EnhancePoE.Model
          OnPropertyChanged( nameof( GlovesAmount ) );
          OnPropertyChanged( nameof( HelmetsAmount ) );
          OnPropertyChanged( nameof( BootsAmount ) );
+
+         CheckForFullSets();
+      }
+
+      private void CheckForFullSets()
+      {
+         if ( FullSets == Properties.Settings.Default.Sets )
+         {
+            WarningMessage = _setsFullText;
+         }
+         else if ( WarningMessage == _setsFullText )
+         {
+            WarningMessage = string.Empty;
+         }
+      }
+
+      private int _fullSets;
+      public int FullSets
+      {
+         get => _fullSets;
+         set
+         {
+            if ( SetProperty( ref _fullSets, value ) )
+            {
+               CheckForFullSets();
+            }
+         }
       }
 
       private bool ShowAmountNeeded => Properties.Settings.Default.ShowItemAmount == 2;
@@ -134,6 +160,13 @@ namespace EnhancePoE.Model
       {
          get => _beltActive;
          set => SetProperty( ref _beltActive, value );
+      }
+
+      private string _warningMessage;
+      public string WarningMessage
+      {
+         get => _warningMessage;
+         set => SetProperty( ref _warningMessage, value );
       }
    }
 }
