@@ -163,7 +163,7 @@
                               Grid.Column="3"
                               Grid.Row="3"
                               Width="200"
-                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=Sets, Mode=TwoWay}" />
+                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=Sets, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"

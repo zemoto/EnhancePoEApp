@@ -169,87 +169,6 @@ namespace EnhancePoE.UI
          }
       }
 
-      private int _ringsAmount;
-      public int RingsAmount
-      {
-         get => _ringsAmount;
-         set
-         {
-            _ringsAmount = value;
-            OnPropertyChanged( nameof( RingsAmount ) );
-         }
-      }
-      private int _amuletsAmount;
-      public int AmuletsAmount
-      {
-         get => _amuletsAmount;
-         set
-         {
-            _amuletsAmount = value;
-            OnPropertyChanged( nameof( AmuletsAmount ) );
-         }
-      }
-      private int _beltsAmount;
-      public int BeltsAmount
-      {
-         get => _beltsAmount;
-         set
-         {
-            _beltsAmount = value;
-            OnPropertyChanged( nameof( BeltsAmount ) );
-         }
-      }
-      private int _chestsAmount;
-      public int ChestsAmount
-      {
-         get => _chestsAmount;
-         set
-         {
-            _chestsAmount = value;
-            OnPropertyChanged( nameof( ChestsAmount ) );
-         }
-      }
-      private int _weaponsAmount;
-      public int WeaponsAmount
-      {
-         get => _weaponsAmount;
-         set
-         {
-            _weaponsAmount = value;
-            OnPropertyChanged( nameof( WeaponsAmount ) );
-         }
-      }
-      private int _glovesAmount;
-      public int GlovesAmount
-      {
-         get => _glovesAmount;
-         set
-         {
-            _glovesAmount = value;
-            OnPropertyChanged( nameof( GlovesAmount ) );
-         }
-      }
-      private int _helmetsAmount;
-      public int HelmetsAmount
-      {
-         get => _helmetsAmount;
-         set
-         {
-            _helmetsAmount = value;
-            OnPropertyChanged( nameof( HelmetsAmount ) );
-         }
-      }
-      private int _bootsAmount;
-      public int BootsAmount
-      {
-         get => _bootsAmount;
-         set
-         {
-            _bootsAmount = value;
-            OnPropertyChanged( nameof( BootsAmount ) );
-         }
-      }
-
       private Visibility _amountsVisibility = Visibility.Hidden;
       public Visibility AmountsVisibility
       {
@@ -272,14 +191,19 @@ namespace EnhancePoE.UI
          }
       }
 
-      public static int FullSets { get; set; }
+      public ItemSetData Data => _itemSetManager.Data;
 
-      private readonly StashTabWindow _stashTabOverlay = new();
+      public int FullSets { get; set; }
+
+      private readonly StashTabWindow _stashTabOverlay;
+      private readonly ItemSetManager _itemSetManager = new();
 
       public RecipeStatusOverlay()
       {
          InitializeComponent();
          DataContext = this;
+
+         _stashTabOverlay = new StashTabWindow( _itemSetManager );
       }
 
       private void DisableWarning()
@@ -320,18 +244,18 @@ namespace EnhancePoE.UI
                 {
                    await Task.Run( () =>
                     {
-                       Data.CheckActives();
+                       _itemSetManager.CheckActives();
                        SetOpacity();
                        CalculationActive = false;
                        _ = Dispatcher.Invoke( () => IsIndeterminate = false );
-                    }, Data.ct );
+                    }, _itemSetManager.CancelTokenSource.Token );
                    await Task.Delay( fetchCooldown * 1000 ).ContinueWith( _ =>
                       {
                          Trace.WriteLine( "waited fetchcooldown" );
 
                       } );
                 }
-                catch ( OperationCanceledException ex ) when ( ex.CancellationToken == Data.ct )
+                catch ( OperationCanceledException ex ) when ( ex.CancellationToken == _itemSetManager.CancelTokenSource.Token )
                 {
                    Trace.WriteLine( "abort" );
                 }
@@ -375,15 +299,14 @@ namespace EnhancePoE.UI
          }
          if ( CalculationActive )
          {
-            Data.cs.Cancel();
+            _itemSetManager.CancelTokenSource.Cancel();
             FetchingActive = false;
          }
          else
          {
             if ( !ApiAdapter.IsFetching )
             {
-               Data.cs = new System.Threading.CancellationTokenSource();
-               Data.ct = Data.cs.Token;
+               _itemSetManager.ResetCancelToken();
                if ( _stashTabOverlay.IsOpen )
                {
                   _stashTabOverlay.Hide();
@@ -406,7 +329,7 @@ namespace EnhancePoE.UI
       {
          Dispatcher.Invoke( () =>
           {
-             if ( !Data.ActiveItems.HelmetActive )
+             if ( !_itemSetManager.Data.HelmetActive )
              {
                 HelmetOpacity = deactivatedOpacity;
              }
@@ -414,7 +337,7 @@ namespace EnhancePoE.UI
              {
                 HelmetOpacity = activatedOpacity;
              }
-             if ( !Data.ActiveItems.GlovesActive )
+             if ( !_itemSetManager.Data.GlovesActive )
              {
                 GlovesOpacity = deactivatedOpacity;
              }
@@ -422,7 +345,7 @@ namespace EnhancePoE.UI
              {
                 GlovesOpacity = activatedOpacity;
              }
-             if ( !Data.ActiveItems.BootsActive )
+             if ( !_itemSetManager.Data.BootsActive )
              {
                 BootsOpacity = deactivatedOpacity;
              }
@@ -430,7 +353,7 @@ namespace EnhancePoE.UI
              {
                 BootsOpacity = activatedOpacity;
              }
-             if ( !Data.ActiveItems.WeaponActive )
+             if ( !_itemSetManager.Data.WeaponActive )
              {
                 WeaponsOpacity = deactivatedOpacity;
              }
@@ -438,7 +361,7 @@ namespace EnhancePoE.UI
              {
                 WeaponsOpacity = activatedOpacity;
              }
-             if ( !Data.ActiveItems.ChestActive )
+             if ( !_itemSetManager.Data.ChestActive )
              {
                 ChestsOpacity = deactivatedOpacity;
              }
@@ -446,7 +369,7 @@ namespace EnhancePoE.UI
              {
                 ChestsOpacity = activatedOpacity;
              }
-             if ( !Data.ActiveItems.RingActive )
+             if ( !_itemSetManager.Data.RingActive )
              {
                 RingsOpacity = deactivatedOpacity;
              }
@@ -454,7 +377,7 @@ namespace EnhancePoE.UI
              {
                 RingsOpacity = activatedOpacity;
              }
-             if ( !Data.ActiveItems.AmuletActive )
+             if ( !_itemSetManager.Data.AmuletActive )
              {
                 AmuletsOpacity = deactivatedOpacity;
              }
@@ -462,7 +385,7 @@ namespace EnhancePoE.UI
              {
                 AmuletsOpacity = activatedOpacity;
              }
-             if ( !Data.ActiveItems.BeltActive )
+             if ( !_itemSetManager.Data.BeltActive )
              {
                 BeltsOpacity = deactivatedOpacity;
              }

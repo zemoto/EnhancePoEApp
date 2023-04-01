@@ -7,50 +7,21 @@ using EnhancePoE.UI;
 
 namespace EnhancePoE
 {
-   internal static class Data
+   internal sealed class ItemSetManager
    {
-      public static ActiveItemTypes ActiveItems { get; set; } = new ActiveItemTypes();
+      private readonly List<ItemSet> _itemSetList = new();
 
-      private static readonly List<ItemSet> _itemSetList = new();
+      public CancellationTokenSource CancelTokenSource { get; private set; }
 
-      public static CancellationTokenSource cs { get; set; } = new CancellationTokenSource();
-      public static CancellationToken ct { get; set; } = cs.Token;
+      public ItemSetData Data { get; } = new();
 
-      private static void GenerateItemSets()
+      public void ResetCancelToken()
       {
-         _itemSetList.Clear();
-         var stashTab = MainWindow.Instance.SelectedStashTab;
-
-         for ( int i = 0; i < Properties.Settings.Default.Sets; i++ )
-         {
-            var itemSet = new ItemSet();
-            while ( true )
-            {
-               Item closestMissingItem = null;
-               double minDistance = double.PositiveInfinity;
-
-               foreach ( var item in stashTab.ItemsForChaosRecipe.Where( item => itemSet.NeedsItem( item ) && itemSet.GetItemDistance( item ) < minDistance ) )
-               {
-                  minDistance = itemSet.GetItemDistance( item );
-                  closestMissingItem = item;
-               }
-
-               if ( closestMissingItem is not null )
-               {
-                  _ = itemSet.AddItem( closestMissingItem );
-                  _ = stashTab.ItemsForChaosRecipe.Remove( closestMissingItem );
-               }
-               else
-               {
-                  break;
-               }
-            }
-
-            _itemSetList.Add( itemSet );
-         }
+         CancelTokenSource?.Dispose();
+         CancelTokenSource = new CancellationTokenSource();
       }
 
-      public static void CheckActives()
+      public void CheckActives()
       {
          try
          {
@@ -94,15 +65,14 @@ namespace EnhancePoE
 
             if ( fullSets == Properties.Settings.Default.Sets )
             {
-               //deactivate all
-               ActiveItems.GlovesActive = false;
-               ActiveItems.HelmetActive = false;
-               ActiveItems.ChestActive = false;
-               ActiveItems.BootsActive = false;
-               ActiveItems.WeaponActive = false;
-               ActiveItems.RingActive = false;
-               ActiveItems.AmuletActive = false;
-               ActiveItems.BeltActive = false;
+               Data.GlovesActive = false;
+               Data.HelmetActive = false;
+               Data.ChestActive = false;
+               Data.BootsActive = false;
+               Data.WeaponActive = false;
+               Data.RingActive = false;
+               Data.AmuletActive = false;
+               Data.BeltActive = false;
             }
             else
             {
@@ -112,29 +82,29 @@ namespace EnhancePoE
                   switch ( itemClass )
                   {
                      case "BodyArmours":
-                        ActiveItems.ChestActive = true;
+                        Data.ChestActive = true;
                         break;
                      case "Helmets":
-                        ActiveItems.HelmetActive = true;
+                        Data.HelmetActive = true;
                         break;
                      case "Gloves":
-                        ActiveItems.GlovesActive = true;
+                        Data.GlovesActive = true;
                         break;
                      case "Boots":
-                        ActiveItems.BootsActive = true;
+                        Data.BootsActive = true;
                         break;
                      case "Rings":
-                        ActiveItems.RingActive = true;
+                        Data.RingActive = true;
                         break;
                      case "Amulets":
-                        ActiveItems.AmuletActive = true;
+                        Data.AmuletActive = true;
                         break;
                      case "Belts":
-                        ActiveItems.BeltActive = true;
+                        Data.BeltActive = true;
                         break;
                      case "OneHandWeapons":
                      case "TwoHandWeapons":
-                        ActiveItems.WeaponActive = true;
+                        Data.WeaponActive = true;
                         _ = deactivatedItemClasses.Remove( "OneHandWeapons" );
                         _ = deactivatedItemClasses.Remove( "TwoHandWeapons" );
                         break;
@@ -148,29 +118,29 @@ namespace EnhancePoE
                   switch ( itemClass )
                   {
                      case "BodyArmours":
-                        ActiveItems.ChestActive = false;
+                        Data.ChestActive = false;
                         break;
                      case "Helmets":
-                        ActiveItems.HelmetActive = false;
+                        Data.HelmetActive = false;
                         break;
                      case "Gloves":
-                        ActiveItems.GlovesActive = false;
+                        Data.GlovesActive = false;
                         break;
                      case "Boots":
-                        ActiveItems.BootsActive = false;
+                        Data.BootsActive = false;
                         break;
                      case "OneHandWeapons":
                      case "TwoHandWeapons":
-                        ActiveItems.WeaponActive = false;
+                        Data.WeaponActive = false;
                         break;
                      case "Rings":
-                        ActiveItems.RingActive = false;
+                        Data.RingActive = false;
                         break;
                      case "Amulets":
-                        ActiveItems.AmuletActive = false;
+                        Data.AmuletActive = false;
                         break;
                      case "Belts":
-                        ActiveItems.BeltActive = false;
+                        Data.BeltActive = false;
                         break;
                   }
                }
@@ -183,13 +153,13 @@ namespace EnhancePoE
                MainWindow.RecipeOverlay.SetWarning( "Sets full!" );
             }
          }
-         catch ( OperationCanceledException ex ) when ( ex.CancellationToken == ct )
+         catch ( OperationCanceledException ex ) when ( ex.CancellationToken == CancelTokenSource.Token )
          {
             // cancelled
          }
       }
 
-      public static void CalculateItemAmounts()
+      public void CalculateItemAmounts()
       {
          var tab = MainWindow.Instance.SelectedStashTab;
          if ( tab is null )
@@ -201,13 +171,12 @@ namespace EnhancePoE
          // 1: amulets
          // 2: belts
          // 3: chests
-         // 4: weapons
-         // 5: gloves
-         // 6: helmets
-         // 7: boots
-         int[] amounts = new int[8];
-         int weaponsSmall = 0;
-         int weaponBig = 0;
+         // 4: weaponsSmall
+         // 5: weaponsBig
+         // 6: gloves
+         // 7: helmets
+         // 8: boots
+         int[] amounts = new int[9];
          foreach ( var item in tab.ItemsForChaosRecipe )
          {
             if ( item.ItemType == "Rings" )
@@ -226,55 +195,32 @@ namespace EnhancePoE
             {
                amounts[3]++;
             }
-            else if ( item.ItemType == "TwoHandWeapons" )
-            {
-               weaponBig++;
-            }
             else if ( item.ItemType == "OneHandWeapons" )
             {
-               weaponsSmall++;
+               amounts[4]++;
             }
-            else if ( item.ItemType == "Gloves" )
+            else if ( item.ItemType == "TwoHandWeapons" )
             {
                amounts[5]++;
             }
-            else if ( item.ItemType == "Helmets" )
+            else if ( item.ItemType == "Gloves" )
             {
                amounts[6]++;
             }
-            else if ( item.ItemType == "Boots" )
+            else if ( item.ItemType == "Helmets" )
             {
                amounts[7]++;
             }
+            else if ( item.ItemType == "Boots" )
+            {
+               amounts[8]++;
+            }
          }
-         amounts[4] = weaponsSmall + weaponBig;
 
-         if ( Properties.Settings.Default.ShowItemAmount == 1 )
-         {
-            MainWindow.RecipeOverlay.RingsAmount = amounts[0];
-            MainWindow.RecipeOverlay.AmuletsAmount = amounts[1];
-            MainWindow.RecipeOverlay.BeltsAmount = amounts[2];
-            MainWindow.RecipeOverlay.ChestsAmount = amounts[3];
-            MainWindow.RecipeOverlay.WeaponsAmount = amounts[4];
-            MainWindow.RecipeOverlay.GlovesAmount = amounts[5];
-            MainWindow.RecipeOverlay.HelmetsAmount = amounts[6];
-            MainWindow.RecipeOverlay.BootsAmount = amounts[7];
-         }
-         else if ( Properties.Settings.Default.ShowItemAmount == 2 )
-         {
-            var setTargetAmount = Properties.Settings.Default.Sets;
-            MainWindow.RecipeOverlay.RingsAmount = Math.Max( ( setTargetAmount * 2 ) - amounts[0], 0 );
-            MainWindow.RecipeOverlay.AmuletsAmount = Math.Max( setTargetAmount - amounts[1], 0 );
-            MainWindow.RecipeOverlay.BeltsAmount = Math.Max( setTargetAmount - amounts[2], 0 );
-            MainWindow.RecipeOverlay.ChestsAmount = Math.Max( setTargetAmount - amounts[3], 0 );
-            MainWindow.RecipeOverlay.WeaponsAmount = Math.Max( ( setTargetAmount * 2 ) - ( weaponsSmall + ( weaponBig * 2 ) ), 0 );
-            MainWindow.RecipeOverlay.GlovesAmount = Math.Max( setTargetAmount - amounts[5], 0 );
-            MainWindow.RecipeOverlay.HelmetsAmount = Math.Max( setTargetAmount - amounts[6], 0 );
-            MainWindow.RecipeOverlay.BootsAmount = Math.Max( setTargetAmount - amounts[7], 0 );
-         }
+         Data.UpdateAmounts( amounts );
       }
 
-      public static void ActivateAllCellsForNextSet()
+      public void ActivateAllCellsForNextSet()
       {
          // Sets are filled from first index so if first set has missing items we have no full sets
          if ( _itemSetList.Count == 0 || _itemSetList[0].EmptyItemSlots.Count > 0 )
@@ -288,7 +234,7 @@ namespace EnhancePoE
          }
       }
 
-      public static void OnItemCellClicked( Cell cell )
+      public void OnItemCellClicked( Cell cell )
       {
          // Sets are filled from first index so if first set has missing items we have no full sets
          if ( cell is null || _itemSetList[0].EmptyItemSlots.Count > 0 )
@@ -305,17 +251,39 @@ namespace EnhancePoE
             ActivateAllCellsForNextSet();
          }
       }
-   }
 
-   public class ActiveItemTypes
-   {
-      public bool GlovesActive { get; set; } = true;
-      public bool HelmetActive { get; set; } = true;
-      public bool BootsActive { get; set; } = true;
-      public bool ChestActive { get; set; } = true;
-      public bool WeaponActive { get; set; } = true;
-      public bool RingActive { get; set; } = true;
-      public bool AmuletActive { get; set; } = true;
-      public bool BeltActive { get; set; } = true;
+      private void GenerateItemSets()
+      {
+         _itemSetList.Clear();
+         var stashTab = MainWindow.Instance.SelectedStashTab;
+
+         for ( int i = 0; i < Properties.Settings.Default.Sets; i++ )
+         {
+            var itemSet = new ItemSet();
+            while ( true )
+            {
+               Item closestMissingItem = null;
+               double minDistance = double.PositiveInfinity;
+
+               foreach ( var item in stashTab.ItemsForChaosRecipe.Where( item => itemSet.NeedsItem( item ) && itemSet.GetItemDistance( item ) < minDistance ) )
+               {
+                  minDistance = itemSet.GetItemDistance( item );
+                  closestMissingItem = item;
+               }
+
+               if ( closestMissingItem is not null )
+               {
+                  _ = itemSet.AddItem( closestMissingItem );
+                  _ = stashTab.ItemsForChaosRecipe.Remove( closestMissingItem );
+               }
+               else
+               {
+                  break;
+               }
+            }
+
+            _itemSetList.Add( itemSet );
+         }
+      }
    }
 }

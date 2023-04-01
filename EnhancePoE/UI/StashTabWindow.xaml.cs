@@ -25,10 +25,14 @@ namespace EnhancePoE.UI
          }
       }
 
+      private readonly ItemSetManager _itemSetManager;
+
       private bool _isEditing;
 
-      public StashTabWindow()
+      public StashTabWindow( ItemSetManager itemSetManager )
       {
+         _itemSetManager = itemSetManager;
+
          InitializeComponent();
          DataContext = this;
 
@@ -74,7 +78,7 @@ namespace EnhancePoE.UI
          StashTabOverlayTabControl.ItemsSource = new List<TabItem>() { stashTabItem };
          StashTabOverlayTabControl.SelectedIndex = 0;
 
-         Data.ActivateAllCellsForNextSet();
+         _itemSetManager.ActivateAllCellsForNextSet();
 
          MouseHook.Start();
          base.Show();
@@ -98,7 +102,7 @@ namespace EnhancePoE.UI
             {
                if ( UtilityMethods.HitTest( UtilityMethods.GetContainerForDataObject<Button>( ctrl, cell ), e.ClickLocation ) )
                {
-                  Data.OnItemCellClicked( cell );
+                  _itemSetManager.OnItemCellClicked( cell );
                   return;
                }
             }

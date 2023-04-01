@@ -60,7 +60,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding GlovesAmount}"></TextBlock>
+                          Text="{Binding Data.GlovesAmount}" />
             </Border>
          </Grid>
       </Border>
@@ -92,7 +92,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding BootsAmount}"></TextBlock>
+                          Text="{Binding Data.BootsAmount}" />
             </Border>
          </Grid>
       </Border>
@@ -124,7 +124,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding ChestsAmount}"></TextBlock>
+                          Text="{Binding Data.ChestsAmount}" />
             </Border>
          </Grid>
 
@@ -157,7 +157,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding WeaponsAmount}"></TextBlock>
+                          Text="{Binding Data.WeaponsAmount}" />
             </Border>
          </Grid>
 
@@ -190,7 +190,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding HelmetsAmount}"></TextBlock>
+                          Text="{Binding Data.HelmetsAmount}" />
             </Border>
          </Grid>
 
@@ -223,7 +223,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding RingsAmount}"></TextBlock>
+                          Text="{Binding Data.RingsAmount}" />
             </Border>
          </Grid>
 
@@ -256,7 +256,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding AmuletsAmount}"></TextBlock>
+                          Text="{Binding Data.AmuletsAmount}" />
             </Border>
          </Grid>
 
@@ -289,7 +289,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding BeltsAmount}"></TextBlock>
+                          Text="{Binding Data.BeltsAmount}" />
             </Border>
          </Grid>
 
