@@ -248,11 +248,6 @@ namespace EnhancePoE.UI
          }
       }
 
-      private void OnShowNumbersComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e )
-      {
-         _recipeOverlay.AmountsVisibility = Properties.Settings.Default.ShowItemAmount != 0 ? Visibility.Visible : Visibility.Hidden;
-      }
-
       private void OnLeagueSelectionChanged( object sender, SelectionChangedEventArgs e )
       {
          StashTabList.Clear();

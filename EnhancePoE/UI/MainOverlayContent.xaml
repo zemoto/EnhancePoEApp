@@ -9,12 +9,13 @@
              FontSize="14"
              xmlns:properties="clr-namespace:EnhancePoE.Properties"
              xmlns:ui="clr-namespace:ZemotoCommon.UI"
-             d:DataContext="{d:DesignInstance Type={x:Type local:RecipeStatusOverlay}}">
+             d:DataContext="{d:DesignInstance Type={x:Type local:RecipeStatusOverlayViewModel}}">
 
    <UserControl.Resources>
       <ui:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
                                 TrueValue="1.0"
                                 FalseValue="0.1" />
+      <BooleanToVisibilityConverter x:Key="VisibleIfTrue" />
    </UserControl.Resources>
    
    <Grid>
@@ -54,7 +55,7 @@
                    MaxHeight="50" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -87,7 +88,7 @@
                    Source="/Assets/boots.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -119,7 +120,7 @@
                    Source="/Assets/chest.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -152,7 +153,7 @@
                    Source="/Assets/weapon.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -185,7 +186,7 @@
                    Source="/Assets/helmet.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -218,7 +219,7 @@
                    Source="/Assets/ring.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -250,7 +251,7 @@
                    Source="/Assets/amulet.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -282,7 +283,7 @@
                    Source="/Assets/belt.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding AmountsVisibility}"
+                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -336,11 +337,10 @@
                    Height="5"
                    Minimum="0"
                    Maximum="10"
-                   IsIndeterminate="{Binding IsIndeterminate}"
+                   IsIndeterminate="{Binding ShowProgress}"
                    Margin="10,10,10,0"
                    Foreground="Aqua"
                    Background="AntiqueWhite"
-                   BorderThickness="0,0,0,0"
-                   x:Name="OverlayProgressBar"></ProgressBar>
+                   BorderThickness="0,0,0,0" />
    </Grid>
 </UserControl>

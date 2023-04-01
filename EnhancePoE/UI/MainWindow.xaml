@@ -287,8 +287,6 @@
                                Grid.Row="7"
                                Width="200"
                                VerticalContentAlignment="Center"
-                               Name="ShowNumbersComboBox"
-                               SelectionChanged="OnShowNumbersComboBoxSelectionChanged"
                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=ShowItemAmount, Mode=TwoWay}">
                         <ComboBoxItem Content="None"></ComboBoxItem>
                         <ComboBoxItem Content="Total Items"></ComboBoxItem>

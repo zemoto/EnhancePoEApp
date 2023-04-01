@@ -11,9 +11,14 @@ namespace EnhancePoE.Model
 
       private void OnSettingsChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
       {
-         if ( e.PropertyName == nameof( Properties.Settings.Sets ) || e.PropertyName == nameof( Properties.Settings.ShowItemAmount ) )
+         if ( e.PropertyName == nameof( Properties.Settings.Sets ) )
          {
             UpdateDisplay();
+         }
+         else if ( e.PropertyName == nameof( Properties.Settings.ShowItemAmount ) )
+         {
+            UpdateDisplay();
+            AmountsAreVisible = Properties.Settings.Default.ShowItemAmount != 0;
          }
       }
 
@@ -134,6 +139,13 @@ namespace EnhancePoE.Model
       {
          get => _warningMessage;
          set => SetProperty( ref _warningMessage, value );
+      }
+
+      private bool _amountsVisibility = Properties.Settings.Default.ShowItemAmount != 0;
+      public bool AmountsAreVisible
+      {
+         get => _amountsVisibility;
+         private set => SetProperty( ref _amountsVisibility, value );
       }
    }
 }
