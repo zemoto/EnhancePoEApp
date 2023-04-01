@@ -37,6 +37,11 @@ namespace EnhancePoE.UI
 
       public new virtual void Hide()
       {
+         if ( !IsOpen )
+         {
+            return;
+         }
+
          MakeWindowTransparent();
          EditModeButton.Content = "Edit";
          _isEditing = false;

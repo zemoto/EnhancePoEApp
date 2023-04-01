@@ -56,9 +56,7 @@ namespace EnhancePoE
          {
             if ( ApiAdapter.FetchError )
             {
-               MainWindow.RecipeOverlay.WarningMessage = "Fetching Error...";
-               MainWindow.RecipeOverlay.ShadowOpacity = 1;
-               MainWindow.RecipeOverlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.RecipeOverlay.SetWarning( "Fetching Error..." );
                return;
             }
 
@@ -180,12 +178,9 @@ namespace EnhancePoE
 
             _ = MainWindow.RecipeOverlay.Dispatcher.Invoke( () => MainWindow.RecipeOverlay.FullSetsText = fullSets.ToString() );
 
-            // invoke set full
             if ( fullSets == Properties.Settings.Default.Sets )
             {
-               MainWindow.RecipeOverlay.WarningMessage = "Sets full!";
-               MainWindow.RecipeOverlay.ShadowOpacity = 1;
-               MainWindow.RecipeOverlay.WarningMessageVisibility = System.Windows.Visibility.Visible;
+               MainWindow.RecipeOverlay.SetWarning( "Sets full!" );
             }
          }
          catch ( OperationCanceledException ex ) when ( ex.CancellationToken == ct )

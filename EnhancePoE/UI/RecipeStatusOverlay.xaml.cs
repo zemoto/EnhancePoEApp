@@ -273,18 +273,27 @@ namespace EnhancePoE.UI
       }
 
       public static int FullSets { get; set; }
+
+      private readonly StashTabWindow _stashTabOverlay = new();
+
       public RecipeStatusOverlay()
       {
          InitializeComponent();
          DataContext = this;
-         FullSetsText = "0";
       }
 
-      private void DisableWarnings()
+      private void DisableWarning()
       {
-         MainWindow.RecipeOverlay.WarningMessage = "";
-         MainWindow.RecipeOverlay.ShadowOpacity = 0;
-         MainWindow.RecipeOverlay.WarningMessageVisibility = Visibility.Collapsed;
+         WarningMessage = "";
+         ShadowOpacity = 0;
+         WarningMessageVisibility = Visibility.Collapsed;
+      }
+
+      public void SetWarning( string message )
+      {
+         WarningMessage = message;
+         ShadowOpacity = 1;
+         WarningMessageVisibility = Visibility.Visible;
       }
 
       private async void FetchData()
@@ -294,7 +303,7 @@ namespace EnhancePoE.UI
             return;
          }
 
-         DisableWarnings();
+         DisableWarning();
          FetchingActive = true;
          CalculationActive = true;
 
@@ -329,18 +338,14 @@ namespace EnhancePoE.UI
              }
              if ( RateLimit.RateLimitExceeded )
              {
-                MainWindow.RecipeOverlay.WarningMessage = "Rate Limit Exceeded! Waiting...";
-                MainWindow.RecipeOverlay.ShadowOpacity = 1;
-                MainWindow.RecipeOverlay.WarningMessageVisibility = Visibility.Visible;
+                SetWarning( "Rate Limit Exceeded! Waiting..." );
                 await Task.Delay( RateLimit.GetSecondsToWait() * 1000 );
                 RateLimit.RequestCounter = 0;
                 RateLimit.RateLimitExceeded = false;
              }
              if ( RateLimit.BanTime > 0 )
              {
-                MainWindow.RecipeOverlay.WarningMessage = "Temporary Ban! Waiting...";
-                MainWindow.RecipeOverlay.ShadowOpacity = 1;
-                MainWindow.RecipeOverlay.WarningMessageVisibility = Visibility.Visible;
+                SetWarning( "Temporary Ban! Waiting..." );
                 await Task.Delay( RateLimit.BanTime * 1000 );
                 RateLimit.BanTime = 0;
              }
@@ -379,9 +384,9 @@ namespace EnhancePoE.UI
             {
                Data.cs = new System.Threading.CancellationTokenSource();
                Data.ct = Data.cs.Token;
-               if ( MainWindow.StashTabOverlay.IsOpen )
+               if ( _stashTabOverlay.IsOpen )
                {
-                  MainWindow.StashTabOverlay.Hide();
+                  _stashTabOverlay.Hide();
                }
                FetchData();
                FetchingActive = true;
@@ -471,6 +476,7 @@ namespace EnhancePoE.UI
       public new virtual void Hide()
       {
          IsOpen = false;
+         _stashTabOverlay.Hide();
          base.Hide();
       }
 
@@ -480,8 +486,28 @@ namespace EnhancePoE.UI
          base.Show();
       }
 
-      protected override void OnClosing( CancelEventArgs e )
+      public void UpdateOverlayType()
       {
+         if ( Properties.Settings.Default.OverlayMode == 0 )
+         {
+            MainOverlayContentControl.Content = new MainOverlayContent( this );
+         }
+         else if ( Properties.Settings.Default.OverlayMode == 1 )
+         {
+            MainOverlayContentControl.Content = new MainOverlayContentMinified( this );
+         }
+      }
+
+      public void RunStashTabOverlay()
+      {
+         if ( _stashTabOverlay.IsOpen )
+         {
+            _stashTabOverlay.Hide();
+         }
+         else
+         {
+            _stashTabOverlay.Show();
+         }
       }
 
       #region INotifyPropertyChanged implementation

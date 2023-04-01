@@ -18,7 +18,6 @@ namespace EnhancePoE.UI
       public static MainWindow Instance => _instance ??= new MainWindow();
 
       public static RecipeStatusOverlay RecipeOverlay { get; } = new RecipeStatusOverlay();
-      public static StashTabWindow StashTabOverlay { get; } = new StashTabWindow();
 
       public string AppVersionText { get; } = "v.1.5.1-zemoto";
 
@@ -112,10 +111,6 @@ namespace EnhancePoE.UI
          if ( RecipeOverlay.IsOpen )
          {
             RecipeOverlay.Hide();
-            if ( StashTabOverlay.IsOpen )
-            {
-               StashTabOverlay.Hide();
-            }
             RunOverlayButton.Content = "Run Overlay";
          }
          else
@@ -129,21 +124,6 @@ namespace EnhancePoE.UI
       }
 
       private void OnRunOverlayButtonClicked( object sender, RoutedEventArgs e ) => RunOverlay();
-
-      public static void RunStashTabOverlay()
-      {
-         if ( CheckAllSettings( showError: true ) )
-         {
-            if ( StashTabOverlay.IsOpen )
-            {
-               StashTabOverlay.Hide();
-            }
-            else
-            {
-               StashTabOverlay.Show();
-            }
-         }
-      }
 
       private void OnWindowMouseDown( object sender, MouseButtonEventArgs e ) => _ = MainGrid.Focus();
 
@@ -254,22 +234,9 @@ namespace EnhancePoE.UI
          }
       }
 
-      private void OnSaveButtonClicked( object sender, RoutedEventArgs e )
-      {
-         Properties.Settings.Default.Save();
-      }
+      private void OnSaveButtonClicked( object sender, RoutedEventArgs e ) => Properties.Settings.Default.Save();
 
-      private void OnOverlayModeComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e )
-      {
-         if ( Properties.Settings.Default.OverlayMode == 0 )
-         {
-            RecipeOverlay.MainOverlayContentControl.Content = new MainOverlayContent();
-         }
-         else if ( Properties.Settings.Default.OverlayMode == 1 )
-         {
-            RecipeOverlay.MainOverlayContentControl.Content = new MainOverlayContentMinified();
-         }
-      }
+      private void OnOverlayModeComboBoxSelectionChanged( object sender, SelectionChangedEventArgs e ) => RecipeOverlay.UpdateOverlayType();
 
       private void OnResetButtonClicked( object sender, RoutedEventArgs e )
       {
