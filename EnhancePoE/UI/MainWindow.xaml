@@ -306,7 +306,6 @@
                                Width="200"
                                VerticalContentAlignment="Center"
                                Name="OverlayModeComboBox"
-                               SelectionChanged="OnOverlayModeComboBoxSelectionChanged"
                                SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=OverlayMode, Mode=TwoWay}">
                         <ComboBoxItem Content="Standard" />
                         <ComboBoxItem Content="Minified" />

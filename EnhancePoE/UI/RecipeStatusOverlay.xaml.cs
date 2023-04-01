@@ -77,6 +77,16 @@ namespace EnhancePoE.UI
          DataContext = this;
 
          _stashTabOverlay = new StashTabWindow( _itemSetManager );
+         UpdateOverlayType();
+         Properties.Settings.Default.PropertyChanged += OnSettingsChanged;
+      }
+
+      private void OnSettingsChanged( object sender, PropertyChangedEventArgs e )
+      {
+         if ( e.PropertyName == nameof( Properties.Settings.OverlayMode ) )
+         {
+            UpdateOverlayType();
+         }
       }
 
       private async void FetchData()
@@ -196,7 +206,7 @@ namespace EnhancePoE.UI
          base.Show();
       }
 
-      public void UpdateOverlayType()
+      private void UpdateOverlayType()
       {
          if ( Properties.Settings.Default.OverlayMode == 0 )
          {
