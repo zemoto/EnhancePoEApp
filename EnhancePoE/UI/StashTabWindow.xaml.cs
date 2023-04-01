@@ -43,8 +43,6 @@ namespace EnhancePoE.UI
          MouseHook.Stop();
 
          IsOpen = false;
-         MainWindow.RecipeOverlay.OpenStashOverlayButtonContent = "Stash";
-
          base.Hide();
       }
 
@@ -72,8 +70,6 @@ namespace EnhancePoE.UI
          StashTabOverlayTabControl.SelectedIndex = 0;
 
          Data.ActivateAllCellsForNextSet();
-
-         MainWindow.RecipeOverlay.OpenStashOverlayButtonContent = "Hide";
 
          MouseHook.Start();
          base.Show();

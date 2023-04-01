@@ -77,17 +77,6 @@ namespace EnhancePoE.UI
          }
       }
 
-      private string _openStashOverlayButtonContent = "Stash";
-      public string OpenStashOverlayButtonContent
-      {
-         get => _openStashOverlayButtonContent;
-         set
-         {
-            _openStashOverlayButtonContent = value;
-            OnPropertyChanged( nameof( OpenStashOverlayButtonContent ) );
-         }
-      }
-
       private double _helmetOpacity = activatedOpacity;
       public double HelmetOpacity
       {
