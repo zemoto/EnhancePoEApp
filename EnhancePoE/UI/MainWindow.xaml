@@ -5,7 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:properties="clr-namespace:EnhancePoE.Properties"
         xmlns:local="clr-namespace:EnhancePoE.UI"
         mc:Ignorable="d"
         FontSize="14"
@@ -13,22 +12,21 @@
         FontFamily="Segoe UI Light"
         SizeToContent="WidthAndHeight"
         WindowStyle="SingleBorderWindow"
-        MouseDown="OnWindowMouseDown"
         ResizeMode="CanMinimize"
         ShowActivated="True"
         WindowStartupLocation="CenterScreen"
         MinWidth="700"
         Loaded="OnWindowLoaded"
-        d:DataContext="{d:DesignInstance Type={x:Type local:MainWindow}}">
+        d:DataContext="{d:DesignInstance Type={x:Type local:MainViewModel}}">
 
    <Window.Resources>
       <local:StringColorConverter x:Key="StringColorConverter" />
+      <xctk:InverseBoolConverter x:Key="InvertBoolConverter" />
    </Window.Resources>
 
    <Border BorderBrush="DarkGray"
            BorderThickness="1">
-      <Grid Name="MainGrid"
-            Focusable="True">
+      <Grid>
          <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
             <ColumnDefinition Width="1*" />
@@ -82,7 +80,7 @@
                               Grid.Column="3"
                               Grid.Row="3"
                               Width="200"
-                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=accName, Mode=TwoWay}" />
+                              Text="{Binding Settings.accName, Mode=TwoWay}" />
 
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
@@ -96,7 +94,7 @@
                               Width="200"
                               VerticalContentAlignment="Center"
                               FontFamily="{StaticResource PasswordFont}"
-                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=SessionId, Mode=TwoWay}" />
+                              Text="{Binding Settings.SessionId, Mode=TwoWay}" />
 
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
@@ -112,11 +110,10 @@
                            <ColumnDefinition Width="*" />
                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <ComboBox x:Name="LeagueComboBox"
-                                  Grid.Column="0"
+                        <ComboBox Grid.Column="0"
+                                  IsSynchronizedWithCurrentItem="True"
                                   ItemsSource="{Binding LeagueList, Mode=OneWay}"
-                                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=League, Mode=TwoWay}"
-                                  SelectionChanged="OnLeagueSelectionChanged" />
+                                  SelectedItem="{Binding Settings.League, Mode=TwoWay}" />
                         <Button x:Name="RefreshLeaguesButtons"
                                 Grid.Column="1"
                                 Margin="4,0,0,0"
@@ -163,7 +160,7 @@
                               Grid.Column="3"
                               Grid.Row="3"
                               Width="200"
-                              Text="{Binding Source={x:Static properties:Settings.Default}, Path=Sets, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                              Text="{Binding Settings.Sets, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
@@ -177,16 +174,16 @@
                            <ColumnDefinition Width="4"/>
                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox x:Name="StashTabComboBox"
-                                  Grid.Column="0"
+                        <ComboBox Grid.Column="0"
                                   Width="140"
+                                  IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
                                   ItemsSource="{Binding StashTabList}"
                                   SelectedItem="{Binding SelectedStashTab, Mode=TwoWay}"
                                   DisplayMemberPath="TabName"
                                   VerticalContentAlignment="Center" />
-                        <Button x:Name="FetchStashTabsButton" 
-                                Content="Fetch"
-                                Grid.Column="2" 
+                        <Button Content="Fetch"
+                                Grid.Column="2"
+                                IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"
                                 Click="OnFetchStashTabsButtonClicked" />
                      </Grid>
 
@@ -201,7 +198,7 @@
                                Grid.Row="7"
                                Margin="0,2,0,0"
                                VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=hideOnClose, Mode=TwoWay}" />
+                               IsChecked="{Binding Settings.hideOnClose, Mode=TwoWay}" />
                   </Grid>
                   <!-- RECIPE SETTINGS -->
                   <Grid Margin="10,40,10,10"
@@ -220,7 +217,7 @@
                                Margin="0,2,0,0"
                                Grid.Column="2"
                                VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeIdentified, Mode=TwoWay}" />
+                               IsChecked="{Binding Settings.IncludeIdentified, Mode=TwoWay}" />
                   </Grid>
                </StackPanel>
             </TabItem>
@@ -275,7 +272,7 @@
                              AutoToolTipPlacement="TopLeft"
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="2"
-                             Value="{Binding Source={x:Static properties:Settings.Default}, Path=RecipeStatusOpacity, Mode=TwoWay}" />
+                             Value="{Binding Settings.RecipeStatusOpacity, Mode=TwoWay}" />
 
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
@@ -287,10 +284,10 @@
                                Grid.Row="7"
                                Width="200"
                                VerticalContentAlignment="Center"
-                               SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=ShowItemAmount, Mode=TwoWay}">
-                        <ComboBoxItem Content="None"></ComboBoxItem>
-                        <ComboBoxItem Content="Total Items"></ComboBoxItem>
-                        <ComboBoxItem Content="Items Missing"></ComboBoxItem>
+                               SelectedIndex="{Binding Settings.ShowItemAmount, Mode=TwoWay}">
+                        <ComboBoxItem Content="None" />
+                        <ComboBoxItem Content="Total Items" />
+                        <ComboBoxItem Content="Items Missing" />
                      </ComboBox>
 
                      <TextBlock Grid.Column="1"
@@ -304,7 +301,7 @@
                                Width="200"
                                VerticalContentAlignment="Center"
                                Name="OverlayModeComboBox"
-                               SelectedIndex="{Binding Source={x:Static properties:Settings.Default}, Path=OverlayMode, Mode=TwoWay}">
+                               SelectedIndex="{Binding Settings.OverlayMode, Mode=TwoWay}">
                         <ComboBoxItem Content="Standard" />
                         <ComboBoxItem Content="Minified" />
                      </ComboBox>
@@ -319,7 +316,7 @@
                                Grid.Column="3"
                                Grid.Row="9"
                                VerticalAlignment="Center"
-                               IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=LockOverlayPosition, Mode=TwoWay}" />
+                               IsChecked="{Binding Settings.LockOverlayPosition, Mode=TwoWay}" />
                   </Grid>
                   <!-- STASHTAB OVERLAY -->
                   <Grid>
@@ -366,7 +363,7 @@
                              AutoToolTipPlacement="TopLeft"
                              IsMoveToPointEnabled="True"
                              AutoToolTipPrecision="2"
-                             Value="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab, Mode=TwoWay}" />
+                             Value="{Binding Settings.OpacityStashTab, Mode=TwoWay}" />
 
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
@@ -377,7 +374,7 @@
                      <xctk:ColorPicker Grid.Column="3"
                                        Grid.Row="5"
                                        Width="200"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"
+                                       SelectedColor="{Binding Settings.StashTabBackgroundColor, Mode=TwoWay, Converter={StaticResource StringColorConverter}}"
                                        ColorMode="ColorCanvas" />
 
                      <TextBlock Grid.Column="1"
@@ -390,7 +387,7 @@
                                        Grid.Row="7"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorStash, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorStash, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                   </Grid>
                </StackPanel>
             </TabItem>
@@ -440,7 +437,7 @@
                                        Grid.Row="3"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorGloves, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorGloves, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="5"
                                 VerticalAlignment="Center"
@@ -449,7 +446,7 @@
                                        Grid.Row="5"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBoots, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorBoots, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="7"
                                 VerticalAlignment="Center"
@@ -458,7 +455,7 @@
                                        Grid.Row="7"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorHelmet, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorHelmet, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="9"
                                 VerticalAlignment="Center"
@@ -467,7 +464,7 @@
                                        Grid.Row="9"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorChest, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorChest, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="11"
                                 VerticalAlignment="Center"
@@ -476,7 +473,7 @@
                                        Grid.Row="11"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorWeapon, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorWeapon, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="13"
                                 Text="Ring Color:"
@@ -485,7 +482,7 @@
                                        Grid.Row="13"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorRing, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorRing, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="15"
                                 VerticalAlignment="Center"
@@ -494,7 +491,7 @@
                                        Grid.Row="15"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorAmulet, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorAmulet, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                      <TextBlock Grid.Column="1"
                                 Grid.Row="17"
                                 VerticalAlignment="Center"
@@ -503,7 +500,7 @@
                                        Grid.Row="17"
                                        Width="200"
                                        ColorMode="ColorCanvas"
-                                       SelectedColor="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBelt, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
+                                       SelectedColor="{Binding Settings.ColorBelt, Mode=TwoWay, Converter={StaticResource StringColorConverter}}" />
                   </Grid>
                </Grid>
             </TabItem>
@@ -543,18 +540,16 @@
             </TextBlock>
             <TextBlock Grid.Column="2"
                        Grid.Row="3"
-                       Text="{Binding AppVersionText}"
+                       Text="{x:Static local:MainViewModel.AppVersionText}"
                        FontSize="12"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center" />
 
-            <Button x:Name="SaveButton"
-                    Click="OnSaveButtonClicked"
+            <Button Click="OnSaveButtonClicked"
                     Content="Save Settings"
                     Grid.Column="0"
                     Grid.Row="1" />
-            <Button x:Name="ResetButton"
-                    Click="OnResetButtonClicked"
+            <Button Click="OnResetButtonClicked"
                     Width="100"
                     Content="Reset Settings"
                     Grid.Column="1"

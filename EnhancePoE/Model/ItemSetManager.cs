@@ -31,11 +31,7 @@ namespace EnhancePoE
                return;
             }
 
-            if ( Properties.Settings.Default.ShowItemAmount != 0 )
-            {
-               CalculateItemAmounts();
-            }
-
+            CalculateItemAmounts();
             GenerateItemSets();
             ActivateAllCellsForNextSet();
 

@@ -1,61 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.ComponentModel;
 using EnhancePoE.Model;
 using EnhancePoE.Utils;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using ZemotoCommon;
 
 namespace EnhancePoE.UI
 {
-   internal partial class MainWindow : Window, INotifyPropertyChanged
+   internal partial class MainWindow
    {
       private static MainWindow _instance;
       public static MainWindow Instance => _instance ??= new MainWindow();
 
-      public string AppVersionText { get; } = "v.1.5.1-zemoto";
-
-      private StashTab _selectedStashTab;
-      public StashTab SelectedStashTab
-      {
-         get => _selectedStashTab;
-         set
-         {
-            if ( _selectedStashTab != value )
-            {
-               _selectedStashTab = value;
-               if ( _selectedStashTab is not null )
-               {
-                  Properties.Settings.Default.SelectedStashTabName = _selectedStashTab.TabName;
-               }
-
-               OnPropertyChanged( nameof( SelectedStashTab ) );
-            }
-         }
-      }
-
-      public ObservableCollection<string> LeagueList { get; } = new ObservableCollection<string>();
-      public ObservableCollection<StashTab> StashTabList { get; } = new ObservableCollection<StashTab>();
-
       private bool _closingFromTrayIcon;
 
+      private readonly MainViewModel _model = new();
       private readonly LeagueGetter _leagueGetter = new();
       private readonly System.Windows.Forms.NotifyIcon _trayIcon = new();
       private readonly RecipeStatusOverlay _recipeOverlay = new();
 
+      public StashTab SelectedStashTab => _model.SelectedStashTab;
+
       public MainWindow()
       {
+         DataContext = _model;
+
          InitializeComponent();
-         DataContext = this;
 
          InitializeTray();
          LoadLeagueList();
-
-         SingleInstance.PingedBySecondProcess += ( s, a ) => Dispatcher.Invoke( Show );
       }
 
       private async void OnWindowLoaded( object sender, RoutedEventArgs e )
@@ -105,7 +81,7 @@ namespace EnhancePoE.UI
          }
       }
 
-      public void RunOverlay()
+      private void OnRunOverlayButtonClicked( object sender, RoutedEventArgs e )
       {
          if ( _recipeOverlay.IsOpen )
          {
@@ -121,10 +97,6 @@ namespace EnhancePoE.UI
             }
          }
       }
-
-      private void OnRunOverlayButtonClicked( object sender, RoutedEventArgs e ) => RunOverlay();
-
-      private void OnWindowMouseDown( object sender, MouseButtonEventArgs e ) => _ = MainGrid.Focus();
 
       public static bool CheckAllSettings( bool showError )
       {
@@ -164,63 +136,45 @@ namespace EnhancePoE.UI
 
       private async void LoadLeagueList()
       {
-         var selectedLeague = Properties.Settings.Default.League;
-         LeagueComboBox.IsEnabled = false;
-         LeagueList.Clear();
-
          var leagues = await _leagueGetter.GetLeaguesAsync();
-         foreach ( var league in leagues )
-         {
-            LeagueList.Add( league );
-         }
-
-         if ( LeagueList.Count > 0 )
-         {
-            LeagueComboBox.IsEnabled = true;
-            LeagueComboBox.SelectedIndex = Math.Max( LeagueList.IndexOf( selectedLeague ), 0 );
-         }
+         _model.UpdateLeagueList( leagues );
       }
 
       private async Task LoadStashTabsAsync()
       {
-         FetchStashTabsButton.IsEnabled = false;
-         StashTabComboBox.IsEnabled = false;
+         _model.FetchingStashTabs = true;
+         using var __ = new ScopeGuard( () => _model.FetchingStashTabs = false );
 
-         SelectedStashTab = null;
+         _model.SelectedStashTab = null;
          var stashTabs = await ApiAdapter.FetchStashTabs();
-         if ( stashTabs is not null )
-         {
-            StashTabList.Clear();
-            foreach ( var tab in stashTabs )
-            {
-               StashTabList.Add( tab );
-            }
-
-            if ( stashTabs.Count > 0 )
-            {
-               var selectedStashTabName = Properties.Settings.Default.SelectedStashTabName;
-               if ( !string.IsNullOrEmpty( selectedStashTabName ) )
-               {
-                  var previouslySelectedStashTab = StashTabList.FirstOrDefault( x => x.TabName == selectedStashTabName );
-                  if ( previouslySelectedStashTab is not null )
-                  {
-                     SelectedStashTab = previouslySelectedStashTab;
-                  }
-               }
-
-               if ( SelectedStashTab is null )
-               {
-                  SelectedStashTab = StashTabList[0];
-               }
-            }
-         }
-         else
+         if ( stashTabs is null )
          {
             _ = MessageBox.Show( "Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error );
+            return;
          }
 
-         FetchStashTabsButton.IsEnabled = true;
-         StashTabComboBox.IsEnabled = true;
+         if ( stashTabs.Count == 0 )
+         {
+            return;
+         }
+
+         _model.StashTabList.Clear();
+         foreach ( var tab in stashTabs )
+         {
+            _model.StashTabList.Add( tab );
+         }
+
+         var selectedStashTabName = Properties.Settings.Default.SelectedStashTabName;
+         if ( !string.IsNullOrEmpty( selectedStashTabName ) )
+         {
+            var previouslySelectedStashTab = _model.StashTabList.FirstOrDefault( x => x.TabName == selectedStashTabName );
+            if ( previouslySelectedStashTab is not null )
+            {
+               _model.SelectedStashTab = previouslySelectedStashTab;
+            }
+         }
+
+         _model.SelectedStashTab ??= _model.StashTabList[0];
       }
 
       private void OnRefreshLeaguesButtonClicked( object sender, RoutedEventArgs e ) => LoadLeagueList();
@@ -240,27 +194,11 @@ namespace EnhancePoE.UI
          switch ( MessageBox.Show( "This will reset all of your settings!", "Reset Settings", MessageBoxButton.YesNo ) )
          {
             case MessageBoxResult.Yes:
-               LeagueComboBox.SelectedIndex = 0;
                Properties.Settings.Default.Reset();
                break;
             case MessageBoxResult.No:
                break;
          }
       }
-
-      private void OnLeagueSelectionChanged( object sender, SelectionChangedEventArgs e )
-      {
-         StashTabList.Clear();
-      }
-
-      #region INotifyPropertyChanged implementation
-      public event PropertyChangedEventHandler PropertyChanged;
-      protected virtual void OnPropertyChanged( string propertyName )
-      {
-         var handler = PropertyChanged;
-         if ( handler != null )
-            handler( this, new PropertyChangedEventArgs( propertyName ) );
-      }
-      #endregion
    }
 }

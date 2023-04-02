@@ -1,21 +1,24 @@
-﻿using EnhancePoE.Utils;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using ZemotoCommon;
 
 namespace EnhancePoE
 {
    public partial class App : Application
    {
+      private SingleInstance _singleInstance = new( "EnhancePoE" );
+
       public App()
       {
-         if ( !SingleInstance.Claim() )
+         if ( !_singleInstance.Claim() )
          {
             Shutdown();
          }
 
          SetupUnhandledExceptionHandling();
+         _singleInstance.PingedByOtherProcess += ( s, e ) => Dispatcher.Invoke( UI.MainWindow.Instance.Show );
       }
 
       private void SetupUnhandledExceptionHandling()
@@ -57,6 +60,6 @@ namespace EnhancePoE
          }
       }
 
-      private void OnStartup( object sender, StartupEventArgs e ) => EnhancePoE.UI.MainWindow.Instance.Show();
+      private void OnStartup( object sender, StartupEventArgs e ) => UI.MainWindow.Instance.Show();
    }
 }
