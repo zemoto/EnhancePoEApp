@@ -6,24 +6,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:EnhancePoE.Properties"
         xmlns:local="clr-namespace:EnhancePoE.UI"
+        xmlns:ui="clr-namespace:ZemotoCommon.UI"
         mc:Ignorable="d"
         WindowStyle="None"
         AllowsTransparency="True"
         Topmost="True"
-        MouseDown="Window_MouseDown"
+        MouseLeftButtonDown="OnMouseLeftButtonDown"
         ResizeMode="CanResizeWithGrip"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftStashTabOverlay, Mode=TwoWay}"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopStashTabOverlay, Mode=TwoWay}"
-        Title="StashTabWindow"
-        Padding="0,0,0,0"
-        Margin="0,0,0,0"
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=YStashTabOverlay, Mode=TwoWay}"
         Width="{Binding Source={x:Static properties:Settings.Default}, Path=XStashTabOverlay, Mode=TwoWay}"
-        d:DataContext="{d:DesignInstance Type={x:Type local:StashTabWindow}}">
+        d:DataContext="{d:DesignInstance Type={x:Type local:StashTabWindowViewModel}}">
    <Window.Background>
       <SolidColorBrush Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=OpacityStashTab}"
                        Color="{Binding Source={x:Static properties:Settings.Default}, Path=StashTabBackgroundColor}" />
    </Window.Background>
+
+   <Window.Resources>
+      <ui:BoolVisibilityConverter x:Key="HiddenIfFalse"
+                                  CollapseWhenNotVisible="True" />
+      
+      <ui:BoolToObjectConverter x:Key="EditButtonTextConvereter"
+                                TrueValue="Save"
+                                FalseValue="Edit" />
+   </Window.Resources>
+   
    <Grid>
       <Grid.ColumnDefinitions>
          <ColumnDefinition Width="2" />
@@ -46,14 +54,14 @@
                  Grid.Row="0"
                  Grid.RowSpan="5"
                  Grid.ColumnSpan="7"
-                 Visibility="{Binding StashBorderVisibility}"
+                 Visibility="{Binding IsEditing, Converter={StaticResource HiddenIfFalse}}"
                  Stroke="White"
                  StrokeThickness="1" />
 
-      <Button Grid.Column="3"
+      <Button x:Name="EditModeButton" 
+              Grid.Column="3"
               Grid.Row="1"
-              x:Name="EditModeButton"
-              Content="Edit"
+              Content="{Binding IsEditing, Converter={StaticResource EditButtonTextConvereter}}"
               Click="OnEditModeButtonClick" />
       
       <TabControl x:Name="StashTabOverlayTabControl"

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,31 +9,19 @@ using EnhancePoE.Utils;
 
 namespace EnhancePoE.UI
 {
-   internal partial class StashTabWindow : Window, INotifyPropertyChanged
+   internal partial class StashTabWindow : Window
    {
       public bool IsOpen { get; set; }
 
-      private Visibility _stashBorderVisibility = Visibility.Hidden;
-      public Visibility StashBorderVisibility
-      {
-         get => _stashBorderVisibility;
-         set
-         {
-            _stashBorderVisibility = value;
-            OnPropertyChanged( nameof( StashBorderVisibility ) );
-         }
-      }
-
       private readonly ItemSetManager _itemSetManager;
-
-      private bool _isEditing;
+      private readonly StashTabWindowViewModel _model = new();
 
       public StashTabWindow( ItemSetManager itemSetManager )
       {
+         DataContext = _model;
          _itemSetManager = itemSetManager;
 
          InitializeComponent();
-         DataContext = this;
 
          MouseHook.MouseAction += OnMouseHookClick;
       }
@@ -48,7 +35,7 @@ namespace EnhancePoE.UI
 
          MakeWindowTransparent();
          EditModeButton.Content = "Edit";
-         _isEditing = false;
+         _model.IsEditing = false;
          MouseHook.Stop();
 
          IsOpen = false;
@@ -109,14 +96,6 @@ namespace EnhancePoE.UI
          }
       }
 
-      private void Window_MouseDown( object sender, MouseButtonEventArgs e )
-      {
-         if ( e.ChangedButton == MouseButton.Left )
-         {
-            DragMove();
-         }
-      }
-
       protected override void OnSourceInitialized( EventArgs e )
       {
          base.OnSourceInitialized( e );
@@ -129,27 +108,22 @@ namespace EnhancePoE.UI
 
       private void HandleEditButton()
       {
-         if ( _isEditing )
+         if ( _model.IsEditing )
          {
             MakeWindowTransparent();
-            EditModeButton.Content = "Edit";
-            StashBorderVisibility = Visibility.Hidden;
             MouseHook.Start();
-            _isEditing = false;
+            _model.IsEditing = false;
          }
          else
          {
             MouseHook.Stop();
-            EditModeButton.Content = "Save";
-            StashBorderVisibility = Visibility.Visible;
             MakeWindowNormal();
-            _isEditing = true;
+            _model.IsEditing = true;
          }
       }
 
       private void OnEditModeButtonClick( object sender, RoutedEventArgs e ) => HandleEditButton();
 
-      public event PropertyChangedEventHandler PropertyChanged;
-      protected virtual void OnPropertyChanged( string propertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
+      private void OnMouseLeftButtonDown( object sender, MouseButtonEventArgs e ) => DragMove();
    }
 }
