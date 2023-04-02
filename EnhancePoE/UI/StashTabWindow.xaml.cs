@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,8 +32,7 @@ namespace EnhancePoE.UI
             return;
          }
 
-         MakeWindowTransparent();
-         EditModeButton.Content = "Edit";
+         MakeWindowClickThrough( true );
          _model.IsEditing = false;
          MouseHook.Stop();
 
@@ -51,21 +49,8 @@ namespace EnhancePoE.UI
             return;
          }
 
-         if ( tab.OverlayCellsList is null )
-         {
-            _ = MessageBox.Show( "No stash data! Fetch before opening stash tab overlay.", "Stash Tab Error", MessageBoxButton.OK, MessageBoxImage.Error );
-            return;
-         }
-
+         _model.Tab = tab;
          IsOpen = true;
-
-         var size = tab.Quad ? 24 : 12;
-         var stashTabItem = new TabItem { Content = new DynamicGridControl( size ) { ItemsSource = tab.OverlayCellsList } };
-
-         StashTabOverlayTabControl.ItemsSource = new List<TabItem>() { stashTabItem };
-         StashTabOverlayTabControl.SelectedIndex = 0;
-
-         _itemSetManager.ActivateAllCellsForNextSet();
 
          MouseHook.Start();
          base.Show();
@@ -84,10 +69,9 @@ namespace EnhancePoE.UI
          }
          else
          {
-            var ctrl = (ItemsControl)StashTabOverlayTabControl.SelectedContent;
-            foreach ( var cell in MainWindow.Instance.SelectedStashTab.OverlayCellsList.Where( cell => cell.Active ) )
+            foreach ( var cell in _model.Tab.OverlayCellsList.Where( cell => cell.Active ) )
             {
-               if ( UtilityMethods.HitTest( UtilityMethods.GetContainerForDataObject<Button>( ctrl, cell ), e.ClickLocation ) )
+               if ( UtilityMethods.HitTest( UtilityMethods.GetContainerForDataObject<Button>( StashTabControl, cell ), e.ClickLocation ) )
                {
                   _itemSetManager.OnItemCellClicked( cell );
                   return;
@@ -99,25 +83,34 @@ namespace EnhancePoE.UI
       protected override void OnSourceInitialized( EventArgs e )
       {
          base.OnSourceInitialized( e );
-         MakeWindowTransparent();
+         MakeWindowClickThrough( true );
       }
 
-      private void MakeWindowTransparent() => Win32.MakeTransparent( new WindowInteropHelper( this ).Handle );
-
-      private void MakeWindowNormal() => Win32.MakeNormal( new WindowInteropHelper( this ).Handle );
+      private void MakeWindowClickThrough( bool clickThrough )
+      {
+         var handle = new WindowInteropHelper( this ).Handle;
+         if ( clickThrough )
+         {
+            Win32.MakeTransparent( handle );
+         }
+         else
+         {
+            Win32.MakeNormal( handle );
+         }
+      }
 
       private void HandleEditButton()
       {
          if ( _model.IsEditing )
          {
-            MakeWindowTransparent();
+            MakeWindowClickThrough( true );
             MouseHook.Start();
             _model.IsEditing = false;
          }
          else
          {
             MouseHook.Stop();
-            MakeWindowNormal();
+            MakeWindowClickThrough( false );
             _model.IsEditing = true;
          }
       }

@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using EnhancePoE.Model;
 using ZemotoCommon.UI;
 
 namespace EnhancePoE.UI
@@ -10,6 +10,13 @@ namespace EnhancePoE.UI
       {
          get => _isEditing;
          set => SetProperty( ref _isEditing, value );
+      }
+
+      private StashTab _tab;
+      public StashTab Tab
+      {
+         get => _tab;
+         set => SetProperty( ref _tab, value );
       }
    }
 }

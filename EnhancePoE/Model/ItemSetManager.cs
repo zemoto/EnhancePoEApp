@@ -37,6 +37,7 @@ namespace EnhancePoE
             }
 
             GenerateItemSets();
+            ActivateAllCellsForNextSet();
 
             Data.FullSets = _itemSetList.Count( x => x.EmptyItemSlots.Count == 0 );
          }
@@ -107,7 +108,7 @@ namespace EnhancePoE
          Data.UpdateAmounts( amounts );
       }
 
-      public void ActivateAllCellsForNextSet()
+      private void ActivateAllCellsForNextSet()
       {
          // Sets are filled from first index so if first set has missing items we have no full sets
          if ( _itemSetList.Count == 0 || _itemSetList[0].EmptyItemSlots.Count > 0 )

@@ -1,12 +1,9 @@
-﻿using System.ComponentModel;
+﻿using ZemotoCommon.UI;
 
 namespace EnhancePoE.Model
 {
-   public class Cell : INotifyPropertyChanged
+   internal sealed class Cell : ViewModelBase
    {
-      public event PropertyChangedEventHandler PropertyChanged;
-      protected virtual void OnPropertyChanged( string propertyName ) => PropertyChanged?.Invoke( this, new PropertyChangedEventArgs( propertyName ) );
-
       public int XIndex { get; }
       public int YIndex { get; }
       public Item Item { get; private set; }
@@ -15,11 +12,7 @@ namespace EnhancePoE.Model
       public bool Active
       {
          get => _active;
-         private set
-         {
-            _active = value;
-            OnPropertyChanged( nameof( Active ) );
-         }
+         private set => SetProperty( ref _active, value );
       }
 
       public Cell( int x, int y )

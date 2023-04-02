@@ -25,18 +25,19 @@ namespace EnhancePoE
          FetchError = false;
          FetchingDone = false;
          Trace.WriteLine( "generating uris!!" );
-         if ( Properties.Settings.Default.accName != ""
-             && Properties.Settings.Default.League != "" )
+         if ( Properties.Settings.Default.accName != "" && Properties.Settings.Default.League != "" )
          {
             string accName = Properties.Settings.Default.accName.Trim();
             string league = Properties.Settings.Default.League.Trim();
 
             if ( await GetProps( accName, league ) && !FetchError )
             {
-               var stashTabs = PropsList.tabs.ConvertAll( x => new StashTab( x.n, x.i ) );
-               for ( int i = 0; i < stashTabs.Count; i++ )
+               var stashTabs = new List<StashTab>();
+               for ( int i = 0; i < PropsList.tabs.Count; i++ )
                {
-                  stashTabs[i].StashTabUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={i}&league={league}" );
+                  var stashTabProps  = PropsList.tabs[i];
+                  var uri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={i}&league={league}" );
+                  stashTabs.Add( new StashTab( stashTabProps.n, stashTabProps.i, uri ) );
                }
 
                return stashTabs;

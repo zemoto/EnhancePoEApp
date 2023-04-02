@@ -69,11 +69,6 @@ namespace EnhancePoE.UI
          else if ( !ApiAdapter.IsFetching )
          {
             _itemSetManager.ResetCancelToken();
-            if ( _stashTabOverlay.IsOpen )
-            {
-               _stashTabOverlay.Hide();
-            }
-
             FetchData();
          }
       }

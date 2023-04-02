@@ -1,30 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using ZemotoCommon.UI;
 
 namespace EnhancePoE.Model
 {
-   internal sealed class StashTab
+   internal sealed class StashTab : ViewModelBase
    {
-      public Uri StashTabUri { get; set; }
       public List<Item> ItemsForChaosRecipe { get; } = new List<Item>();
 
-      public ObservableCollection<Cell> OverlayCellsList { get; private set; }
+      public ObservableCollection<Cell> OverlayCellsList { get; } = new();
 
-      // used for registering clicks on tab headers
-      public string TabName { get; set; }
-      public int TabIndex { get; set; }
-      public bool Quad { get; set; }
+      private bool _quad;
+      public bool Quad
+      {
+         get => _quad;
+         set => SetProperty( ref _quad, value );
+      }
 
-      public StashTab( string name, int index )
+      public string TabName { get; }
+      public int TabIndex { get; }
+      public Uri StashTabUri { get; }
+
+      public StashTab( string name, int index, Uri tabUri )
       {
          TabName = name;
          TabIndex = index;
+         StashTabUri = tabUri;
       }
 
       public void InitializeCellList()
       {
-         OverlayCellsList = new ObservableCollection<Cell>();
+         OverlayCellsList.Clear();
 
          int size = Quad ? 24 : 12;
          for ( int i = 0; i < size; i++ )
