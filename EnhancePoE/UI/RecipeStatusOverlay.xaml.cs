@@ -9,6 +9,7 @@ namespace EnhancePoE.UI
 {
    internal partial class RecipeStatusOverlay
    {
+      private const string _setsFullText = "Sets full!";
       private const int fetchCooldown = 30;
 
       public bool IsOpen { get; private set; }
@@ -21,7 +22,7 @@ namespace EnhancePoE.UI
       public RecipeStatusOverlay( ItemSetManager itemSetManager )
       {
          _itemSetManager = itemSetManager;
-         DataContext = _model = new RecipeStatusOverlayViewModel( _itemSetManager.Data );
+         DataContext = _model = new RecipeStatusOverlayViewModel( _itemSetManager );
          _stashTabOverlay = new StashTabWindow( _itemSetManager );
 
          InitializeComponent();
@@ -35,6 +36,10 @@ namespace EnhancePoE.UI
          if ( e.PropertyName == nameof( Properties.Settings.OverlayMode ) )
          {
             UpdateOverlayType();
+         }
+         else if ( e.PropertyName == nameof( Properties.Settings.Sets ) || e.PropertyName == nameof( Properties.Settings.SelectedStashTabName ) )
+         {
+            CheckForFullSets();
          }
       }
 
@@ -57,7 +62,7 @@ namespace EnhancePoE.UI
             return;
          }
 
-         if ( _itemSetManager.Data.Tab is null )
+         if ( _itemSetManager.SelectedStashTab is null )
          {
             _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please select a Stash Tab." );
             return;
@@ -71,35 +76,52 @@ namespace EnhancePoE.UI
 
       private async void FetchData()
       {
-         _itemSetManager.Data.WarningMessage = string.Empty;
+         _model.WarningMessage = string.Empty;
 
          _model.ShowProgress = true;
          _model.FetchButtonEnabled = false;
 
-         if ( await ApiAdapter.GetItems( _itemSetManager.Data.Tab ) )
+         if ( await ApiAdapter.GetItems( _itemSetManager.SelectedStashTab ) )
          {
             await Task.Run( _itemSetManager.UpdateData );
+            if ( !string.IsNullOrEmpty( _itemSetManager.LastError) )
+            {
+               _model.WarningMessage = _itemSetManager.LastError;
+            }
+
             _model.ShowProgress = false;
             await Task.Delay( fetchCooldown * 1000 );
          }
-
-         if ( RateLimit.RateLimitExceeded )
+         else if ( RateLimit.RateLimitExceeded )
          {
-            _itemSetManager.Data.WarningMessage = "Rate Limit Exceeded! Waiting...";
+            _model.WarningMessage = "Rate Limit Exceeded! Waiting...";
             await Task.Delay( RateLimit.GetSecondsToWait() * 1000 );
             RateLimit.RequestCounter = 0;
             RateLimit.RateLimitExceeded = false;
          }
-
-         if ( RateLimit.BanTime > 0 )
+         else if ( RateLimit.BanTime > 0 )
          {
-            _itemSetManager.Data.WarningMessage = "Temporary Ban! Waiting...";
+            _model.WarningMessage = "Temporary Ban! Waiting...";
             await Task.Delay( RateLimit.BanTime * 1000 );
             RateLimit.BanTime = 0;
          }
 
          _model.ShowProgress = false;
          _model.FetchButtonEnabled = true;
+
+         CheckForFullSets();
+      }
+
+      private void CheckForFullSets()
+      {
+         if ( _itemSetManager.SelectedStashTab.FullSets >= Properties.Settings.Default.Sets )
+         {
+            _model.WarningMessage = _setsFullText;
+         }
+         else if ( _model.WarningMessage == _setsFullText )
+         {
+            _model.WarningMessage = string.Empty;
+         }
       }
 
       private void Window_MouseDown( object sender, MouseButtonEventArgs e )

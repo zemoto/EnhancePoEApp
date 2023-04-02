@@ -12,18 +12,18 @@ namespace EnhancePoE.UI
 {
    internal partial class MainWindow
    {
-      private readonly MainViewModel _model = new();
+      private readonly MainViewModel _model;
+      private readonly RecipeStatusOverlay _recipeOverlay;
       private readonly LeagueGetter _leagueGetter = new();
       private readonly System.Windows.Forms.NotifyIcon _trayIcon = new();
-      private readonly ItemSetManager _itemSetManager = new();
-      private readonly RecipeStatusOverlay _recipeOverlay;
 
       private bool _closingFromTrayIcon;
 
       public MainWindow()
       {
-         _recipeOverlay = new RecipeStatusOverlay( _itemSetManager );
-         DataContext = _model;
+         var itemSetManager = new ItemSetManager();
+         _recipeOverlay = new RecipeStatusOverlay( itemSetManager );
+         DataContext = _model = new MainViewModel( itemSetManager );
 
          InitializeComponent();
 
@@ -142,7 +142,7 @@ namespace EnhancePoE.UI
          _model.FetchingStashTabs = true;
          using var __ = new ScopeGuard( () => _model.FetchingStashTabs = false );
 
-         _model.SelectedStashTab = null;
+         _model.SelectedStashTabHandler.SelectedStashTab = null;
          var stashTabs = await ApiAdapter.FetchStashTabs();
          if ( stashTabs is null )
          {
@@ -167,11 +167,11 @@ namespace EnhancePoE.UI
             var previouslySelectedStashTab = _model.StashTabList.FirstOrDefault( x => x.TabName == selectedStashTabName );
             if ( previouslySelectedStashTab is not null )
             {
-               _model.SelectedStashTab = previouslySelectedStashTab;
+               _model.SelectedStashTabHandler.SelectedStashTab = previouslySelectedStashTab;
             }
          }
 
-         _model.SelectedStashTab ??= _model.StashTabList[0];
+         _model.SelectedStashTabHandler.SelectedStashTab ??= _model.StashTabList[0];
       }
 
       private void OnRefreshLeaguesButtonClicked( object sender, RoutedEventArgs e ) => LoadLeagueList();
@@ -197,7 +197,5 @@ namespace EnhancePoE.UI
                break;
          }
       }
-
-      private void OnSelectedStashTabChanged( object sender, System.Windows.Controls.SelectionChangedEventArgs e ) => _itemSetManager.Data.Tab = _model.SelectedStashTab;
    }
 }

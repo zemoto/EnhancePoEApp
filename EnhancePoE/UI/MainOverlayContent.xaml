@@ -5,9 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:EnhancePoE.UI"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              FontSize="14"
-             xmlns:properties="clr-namespace:EnhancePoE.Properties"
              xmlns:ui="clr-namespace:ZemotoCommon.UI"
              d:DataContext="{d:DesignInstance Type={x:Type local:RecipeStatusOverlayViewModel}}">
 
@@ -15,9 +15,14 @@
       <ui:BoolToObjectConverter x:Key="ItemIsActiveOpacityConverter"
                                 TrueValue="1.0"
                                 FalseValue="0.1" />
+
       <BooleanToVisibilityConverter x:Key="VisibleIfTrue" />
+
+      <ui:EqualityToVisibilityConverter x:Key="VisibleIfNotEqual"
+                                        Invert="True"
+                                        ComparisonType="{x:Type system:Int32}" />
    </UserControl.Resources>
-   
+
    <Grid>
       <Grid.ColumnDefinitions>
          <ColumnDefinition Width="5" />
@@ -40,14 +45,15 @@
          <RowDefinition Height="auto" />
          <RowDefinition Height="5" />
       </Grid.RowDefinitions>
+
       <Border Height="50"
               Width="50"
               Grid.Column="3"
               Grid.Row="1"
-              Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorGloves}"
+              Background="{Binding Settings.ColorGloves}"
               Margin="5,0"
               CornerRadius="6"
-              Opacity="{Binding Data.GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+              Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.GlovesActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               x:Name="Gloves">
          <Grid>
             <Image Source="/Assets/gloves.png"
@@ -55,7 +61,7 @@
                    MaxHeight="50" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
+                    Visibility="{Binding Settings.ShowItemAmount, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -68,7 +74,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding Data.GlovesAmount}" />
+                          Text="{Binding SelectedStashTabHandler.SelectedStashTab.GlovesAmount}" />
             </Border>
          </Grid>
 
@@ -79,16 +85,16 @@
               Width="50"
               CornerRadius="6"
               Margin="5,0"
-              Opacity="{Binding Data.BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+              Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.BootsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
               x:Name="Boots"
-              Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBoots}">
+              Background="{Binding Settings.ColorBoots}">
          <Grid>
             <Image MaxHeight="50"
                    MaxWidth="50"
                    Source="/Assets/boots.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
+                    Visibility="{Binding Settings.ShowItemAmount, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -101,7 +107,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding Data.BootsAmount}" />
+                          Text="{Binding SelectedStashTabHandler.SelectedStashTab.BootsAmount}" />
             </Border>
          </Grid>
       </Border>
@@ -112,15 +118,15 @@
               Width="50"
               Margin="5,0"
               x:Name="Chest"
-              Opacity="{Binding Data.ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-              Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorChest}">
+              Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.ChestsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+              Background="{Binding Settings.ColorChest}">
          <Grid>
             <Image MaxHeight="50"
                    MaxWidth="50"
                    Source="/Assets/chest.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
+                    Visibility="{Binding Settings.ShowItemAmount, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -133,7 +139,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding Data.ChestsAmount}" />
+                          Text="{Binding SelectedStashTabHandler.SelectedStashTab.ChestsAmount}" />
             </Border>
          </Grid>
 
@@ -145,15 +151,15 @@
               Width="50"
               Margin="5,0"
               x:Name="Weapon"
-              Opacity="{Binding Data.WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-              Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorWeapon}">
+              Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.WeaponsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+              Background="{Binding Settings.ColorWeapon}">
          <Grid>
             <Image MaxHeight="50"
                    MaxWidth="50"
                    Source="/Assets/weapon.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
+                    Visibility="{Binding Settings.ShowItemAmount, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -166,7 +172,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding Data.WeaponsAmount}" />
+                          Text="{Binding SelectedStashTabHandler.SelectedStashTab.WeaponsAmount}" />
             </Border>
          </Grid>
 
@@ -177,8 +183,8 @@
               CornerRadius="6"
               Width="50"
               Margin="5,0"
-              Opacity="{Binding Data.HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-              Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorHelmet}"
+              Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.HelmetsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+              Background="{Binding Settings.ColorHelmet}"
               x:Name="Helmet">
          <Grid>
             <Image MaxHeight="50"
@@ -186,7 +192,7 @@
                    Source="/Assets/helmet.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
+                    Visibility="{Binding Settings.ShowItemAmount, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -199,7 +205,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding Data.HelmetsAmount}" />
+                          Text="{Binding SelectedStashTabHandler.SelectedStashTab.HelmetsAmount}" />
             </Border>
          </Grid>
 
@@ -210,8 +216,8 @@
               CornerRadius="6"
               Width="50"
               Margin="5,0"
-              Opacity="{Binding Data.RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-              Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorRing}"
+              Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.RingsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+              Background="{Binding Settings.ColorRing}"
               x:Name="Rings">
          <Grid>
             <Image MaxHeight="50"
@@ -219,7 +225,7 @@
                    Source="/Assets/ring.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
+                    Visibility="{Binding Settings.ShowItemAmount, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -232,7 +238,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding Data.RingsAmount}" />
+                          Text="{Binding SelectedStashTabHandler.SelectedStashTab.RingsAmount}" />
             </Border>
          </Grid>
       </Border>
@@ -242,8 +248,8 @@
               CornerRadius="6"
               Width="50"
               Margin="5,0"
-              Opacity="{Binding Data.AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-              Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorAmulet}"
+              Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.AmuletsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+              Background="{Binding Settings.ColorAmulet}"
               x:Name="Amulet">
          <Grid>
             <Image MaxHeight="50"
@@ -251,7 +257,7 @@
                    Source="/Assets/amulet.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
+                    Visibility="{Binding Settings.ShowItemAmount, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -264,7 +270,7 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding Data.AmuletsAmount}" />
+                          Text="{Binding SelectedStashTabHandler.SelectedStashTab.AmuletsAmount}" />
             </Border>
          </Grid>
       </Border>
@@ -274,8 +280,8 @@
               CornerRadius="6"
               Width="50"
               Margin="5,0"
-              Opacity="{Binding Data.BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
-              Background="{Binding Source={x:Static properties:Settings.Default}, Path=ColorBelt}"
+              Opacity="{Binding SelectedStashTabHandler.SelectedStashTab.BeltsActive, Converter={StaticResource ItemIsActiveOpacityConverter}}"
+              Background="{Binding Settings.ColorBelt}"
               x:Name="Belt">
          <Grid>
             <Image MaxHeight="50"
@@ -283,7 +289,7 @@
                    Source="/Assets/belt.png" />
             <Border Width="20"
                     Height="20"
-                    Visibility="{Binding Data.AmountsAreVisible, Converter={StaticResource VisibleIfTrue}}"
+                    Visibility="{Binding Settings.ShowItemAmount, Converter={StaticResource VisibleIfNotEqual}, ConverterParameter=0}"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Right"
                     CornerRadius="50"
@@ -296,11 +302,26 @@
                           TextAlignment="Center"
                           Background="Transparent"
                           Foreground="Black"
-                          Text="{Binding Data.BeltsAmount}" />
+                          Text="{Binding SelectedStashTabHandler.SelectedStashTab.BeltsAmount}" />
             </Border>
 
          </Grid>
       </Border>
+
+      <Grid Grid.Row="1"
+            Grid.Column="3"
+            Grid.ColumnSpan="8"
+            Visibility="{Binding SelectedStashTabHandler.SelectedStashTab.NeedsItemFetch, Converter={StaticResource VisibleIfTrue}}">
+         <Grid.Background>
+            <SolidColorBrush Color="Gray"
+                             Opacity="0.9" />
+         </Grid.Background>
+         <TextBlock Text="Items Not Fetched"
+                    Foreground="White"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center" />
+      </Grid>
+
       <Button x:Name="RefreshButton"
               Click="OnFetchButtonClicked"
               Width="50"
@@ -308,7 +329,7 @@
               Grid.Column="11"
               Grid.Row="1"
               Content="Fetch"
-              Margin="5,0"></Button>
+              Margin="5,0" />
       <Button x:Name="OpenStashTabOverlay"
               Click="OpenStashTabOverlay_Click"
               Width="50"
@@ -327,7 +348,7 @@
          <TextBlock TextAlignment="Center"
                     VerticalAlignment="Center"
                     Text="Sets" />
-         <TextBlock Text="{Binding Data.FullSets}"
+         <TextBlock Text="{Binding SelectedStashTabHandler.SelectedStashTab.FullSets}"
                     VerticalAlignment="Center"
                     TextAlignment="Center" />
       </UniformGrid>

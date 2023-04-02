@@ -1,24 +1,53 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnhancePoE.Model;
+using ZemotoCommon.UI;
 
 namespace EnhancePoE
 {
-   internal sealed class ItemSetManager
+   internal interface ISelectedStashTabHandler
+   {
+      public StashTab SelectedStashTab { get; set; }
+   }
+
+   internal sealed class ItemSetManager : ViewModelBase, ISelectedStashTabHandler
    {
       private readonly List<ItemSet> _itemSetList = new();
 
-      public ItemSetData Data { get; } = new();
+      private StashTab _selectedStashTab;
+      public StashTab SelectedStashTab
+      {
+         get => _selectedStashTab;
+         set
+         {
+            if ( SetProperty( ref _selectedStashTab, value ) && _selectedStashTab is not null )
+            {
+               Properties.Settings.Default.SelectedStashTabName = _selectedStashTab.TabName;
+            }
+         }
+      }
+
+      public string LastError { get; private set; }
+
+      public ItemSetManager() => Properties.Settings.Default.PropertyChanged += OnSettingsChanged;
+
+      private void OnSettingsChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+      {
+         if ( e.PropertyName == nameof( Properties.Settings.Sets ) || e.PropertyName == nameof( Properties.Settings.ShowItemAmount ) )
+         {
+            _selectedStashTab.UpdateDisplay();
+         }
+      }
 
       public void UpdateData()
       {
          if ( ApiAdapter.FetchError )
          {
-            Data.WarningMessage = "Fetching Error...";
+            LastError = "Fetching Error...";
             return;
          }
 
-         if ( Data.Tab is null )
+         if ( _selectedStashTab is null )
          {
             return;
          }
@@ -27,7 +56,7 @@ namespace EnhancePoE
          GenerateItemSets();
          ActivateAllCellsForNextSet();
 
-         Data.FullSets = _itemSetList.Count( x => x.EmptyItemSlots.Count == 0 );
+         _selectedStashTab.FullSets = _itemSetList.Count( x => x.EmptyItemSlots.Count == 0 );
       }
 
       private void CalculateItemAmounts()
@@ -42,7 +71,7 @@ namespace EnhancePoE
          // 7: helmets
          // 8: boots
          int[] amounts = new int[9];
-         foreach ( var item in Data.Tab.ItemsForChaosRecipe )
+         foreach ( var item in _selectedStashTab.ItemsForChaosRecipe )
          {
             if ( item.ItemType == "Rings" )
             {
@@ -82,7 +111,7 @@ namespace EnhancePoE
             }
          }
 
-         Data.UpdateAmounts( amounts );
+         _selectedStashTab.UpdateAmounts( amounts );
       }
 
       private void ActivateAllCellsForNextSet()
@@ -95,7 +124,7 @@ namespace EnhancePoE
 
          foreach ( var i in _itemSetList[0].ItemList )
          {
-            Data.Tab.ActivateItemCells( i );
+            _selectedStashTab.ActivateItemCells( i );
          }
       }
 
@@ -108,7 +137,7 @@ namespace EnhancePoE
          }
 
          _ = _itemSetList[0].ItemList.Remove( cell.Item );
-         Data.Tab.DeactivateItemCells( cell.Item );
+         _selectedStashTab.DeactivateItemCells( cell.Item );
 
          if ( _itemSetList[0].ItemList.Count == 0 )
          {
@@ -128,7 +157,7 @@ namespace EnhancePoE
                Item closestMissingItem = null;
                double minDistance = double.PositiveInfinity;
 
-               foreach ( var item in Data.Tab.ItemsForChaosRecipe.Where( item => itemSet.NeedsItem( item ) && itemSet.GetItemDistance( item ) < minDistance ) )
+               foreach ( var item in _selectedStashTab.ItemsForChaosRecipe.Where( item => itemSet.NeedsItem( item ) && itemSet.GetItemDistance( item ) < minDistance ) )
                {
                   minDistance = itemSet.GetItemDistance( item );
                   closestMissingItem = item;
@@ -137,7 +166,7 @@ namespace EnhancePoE
                if ( closestMissingItem is not null )
                {
                   _ = itemSet.AddItem( closestMissingItem );
-                  _ = Data.Tab.ItemsForChaosRecipe.Remove( closestMissingItem );
+                  _ = _selectedStashTab.ItemsForChaosRecipe.Remove( closestMissingItem );
                }
                else
                {

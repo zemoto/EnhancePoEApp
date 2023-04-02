@@ -12,14 +12,18 @@ namespace EnhancePoE.UI
 
       private bool _initialized;
 
-      public MainViewModel() => Settings.PropertyChanged += OnSettingsChanged;
+      public MainViewModel( ISelectedStashTabHandler selectedStashTabHandler )
+      {
+         SelectedStashTabHandler = selectedStashTabHandler;
+         Settings.PropertyChanged += OnSettingsChanged;
+      }
 
       private void OnSettingsChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
       {
          if ( e.PropertyName == nameof( Settings.League ) && _initialized )
          {
             StashTabList.Clear();
-            SelectedStashTab = null;
+            SelectedStashTabHandler.SelectedStashTab = null;
          }
       }
 
@@ -45,22 +49,11 @@ namespace EnhancePoE.UI
       }
 
       public Properties.Settings Settings { get; } = Properties.Settings.Default;
+      public ISelectedStashTabHandler SelectedStashTabHandler { get; }
 
       public ObservableCollection<string> LeagueList { get; } = new();
       public ObservableCollection<StashTab> StashTabList { get; } = new();
 
-      private StashTab _selectedStashTab;
-      public StashTab SelectedStashTab
-      {
-         get => _selectedStashTab;
-         set
-         {
-            if ( SetProperty( ref _selectedStashTab, value ) && _selectedStashTab is not null )
-            {
-               Settings.SelectedStashTabName = _selectedStashTab.TabName;
-            }
-         }
-      }
 
       private bool _fetchingStashTabs;
       public bool FetchingStashTabs

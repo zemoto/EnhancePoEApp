@@ -18,7 +18,7 @@ namespace EnhancePoE.UI
       public StashTabWindow( ItemSetManager itemSetManager )
       {
          _itemSetManager = itemSetManager;
-         DataContext = _model = new StashTabWindowViewModel( _itemSetManager.Data );
+         DataContext = _model = new StashTabWindowViewModel( _itemSetManager );
 
          InitializeComponent();
 
@@ -61,7 +61,7 @@ namespace EnhancePoE.UI
          }
          else
          {
-            foreach ( var cell in _model.Data.Tab.OverlayCellsList.Where( cell => cell.Active ) )
+            foreach ( var cell in _model.SelectedStashTabHandler.SelectedStashTab.OverlayCellsList.Where( cell => cell.Active ) )
             {
                if ( UtilityMethods.HitTest( UtilityMethods.GetContainerForDataObject<Button>( StashTabControl, cell ), e.ClickLocation ) )
                {

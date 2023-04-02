@@ -5,12 +5,11 @@ namespace EnhancePoE.UI
 {
    internal sealed class RecipeStatusOverlayViewModel : ViewModelBase
    {
-      public RecipeStatusOverlayViewModel( ItemSetData data )
-      {
-         Data = data;
-      }
+      public RecipeStatusOverlayViewModel( ISelectedStashTabHandler selectedStashTabHandler ) => SelectedStashTabHandler = selectedStashTabHandler;
 
-      public ItemSetData Data { get; }
+      public Properties.Settings Settings => Properties.Settings.Default;
+
+      public ISelectedStashTabHandler SelectedStashTabHandler { get; }
 
       private bool _showProgress;
       public bool ShowProgress
@@ -24,6 +23,13 @@ namespace EnhancePoE.UI
       {
          get => _fetchButtonEnabled;
          set => SetProperty( ref _fetchButtonEnabled, value );
+      }
+
+      private string _warningMessage;
+      public string WarningMessage
+      {
+         get => _warningMessage;
+         set => SetProperty( ref _warningMessage, value );
       }
    }
 }
