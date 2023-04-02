@@ -11,36 +11,22 @@ namespace EnhancePoE
    {
       private readonly List<ItemSet> _itemSetList = new();
 
-      public CancellationTokenSource CancelTokenSource { get; private set; }
-
       public ItemSetData Data { get; } = new();
-
-      public void ResetCancelToken()
-      {
-         CancelTokenSource?.Dispose();
-         CancelTokenSource = new CancellationTokenSource();
-      }
 
       public void UpdateData()
       {
-         try
+         if ( ApiAdapter.FetchError )
          {
-            if ( ApiAdapter.FetchError )
-            {
-               Data.WarningMessage = "Fetching Error...";
-               return;
-            }
-
-            CalculateItemAmounts();
-            GenerateItemSets();
-            ActivateAllCellsForNextSet();
-
-            Data.FullSets = _itemSetList.Count( x => x.EmptyItemSlots.Count == 0 );
+            Data.WarningMessage = "Fetching Error...";
+            return;
          }
-         catch ( OperationCanceledException ex ) when ( ex.CancellationToken == CancelTokenSource.Token )
-         {
-            // cancelled
-         }
+
+         CalculateItemAmounts();
+         GenerateItemSets();
+         ActivateAllCellsForNextSet();
+
+         Data.FullSets = _itemSetList.Count( x => x.EmptyItemSlots.Count == 0 );
+
       }
 
       public void CalculateItemAmounts()

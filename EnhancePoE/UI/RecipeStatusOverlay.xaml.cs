@@ -62,13 +62,8 @@ namespace EnhancePoE.UI
             return;
          }
 
-         if ( !_model.FetchButtonEnabled ) // Fetch is still happening or is on cooldown
+         if ( !ApiAdapter.IsFetching )
          {
-            _itemSetManager.CancelTokenSource.Cancel();
-         }
-         else if ( !ApiAdapter.IsFetching )
-         {
-            _itemSetManager.ResetCancelToken();
             FetchData();
          }
       }
@@ -82,18 +77,9 @@ namespace EnhancePoE.UI
 
          if ( await ApiAdapter.GetItems() )
          {
-            try
-            {
-               await Task.Run( _itemSetManager.UpdateData, _itemSetManager.CancelTokenSource.Token );
-
-               _model.ShowProgress = false;
-
-               await Task.Delay( fetchCooldown * 1000 );
-            }
-            catch ( OperationCanceledException ex ) when ( ex.CancellationToken == _itemSetManager.CancelTokenSource.Token )
-            {
-               // cancelled
-            }
+            await Task.Run( _itemSetManager.UpdateData );
+            _model.ShowProgress = false;
+            await Task.Delay( fetchCooldown * 1000 );
          }
 
          if ( RateLimit.RateLimitExceeded )
