@@ -61,8 +61,8 @@
 
          <local:StashTabGridControl x:Name="StashTabControl" 
                                     Grid.Row="1" 
-                                    IsQuad="{Binding Tab.Quad}"
-                                    ItemsSource="{Binding Tab.OverlayCellsList}" />
+                                    IsQuad="{Binding Data.Tab.Quad}"
+                                    ItemsSource="{Binding Data.Tab.OverlayCellsList}" />
          
       </Grid>
    </Grid>

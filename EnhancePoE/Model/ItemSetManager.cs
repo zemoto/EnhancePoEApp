@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using EnhancePoE.Model;
-using EnhancePoE.UI;
 
 namespace EnhancePoE
 {
@@ -21,22 +18,20 @@ namespace EnhancePoE
             return;
          }
 
+         if ( Data.Tab is null )
+         {
+            return;
+         }
+
          CalculateItemAmounts();
          GenerateItemSets();
          ActivateAllCellsForNextSet();
 
          Data.FullSets = _itemSetList.Count( x => x.EmptyItemSlots.Count == 0 );
-
       }
 
-      public void CalculateItemAmounts()
+      private void CalculateItemAmounts()
       {
-         var tab = MainWindow.Instance.SelectedStashTab;
-         if ( tab is null )
-         {
-            return;
-         }
-
          // 0: rings
          // 1: amulets
          // 2: belts
@@ -47,7 +42,7 @@ namespace EnhancePoE
          // 7: helmets
          // 8: boots
          int[] amounts = new int[9];
-         foreach ( var item in tab.ItemsForChaosRecipe )
+         foreach ( var item in Data.Tab.ItemsForChaosRecipe )
          {
             if ( item.ItemType == "Rings" )
             {
@@ -100,7 +95,7 @@ namespace EnhancePoE
 
          foreach ( var i in _itemSetList[0].ItemList )
          {
-            MainWindow.Instance.SelectedStashTab.ActivateItemCells( i );
+            Data.Tab.ActivateItemCells( i );
          }
       }
 
@@ -113,7 +108,7 @@ namespace EnhancePoE
          }
 
          _ = _itemSetList[0].ItemList.Remove( cell.Item );
-         MainWindow.Instance.SelectedStashTab.DeactivateItemCells( cell.Item );
+         Data.Tab.DeactivateItemCells( cell.Item );
 
          if ( _itemSetList[0].ItemList.Count == 0 )
          {
@@ -125,8 +120,6 @@ namespace EnhancePoE
       private void GenerateItemSets()
       {
          _itemSetList.Clear();
-         var stashTab = MainWindow.Instance.SelectedStashTab;
-
          for ( int i = 0; i < Properties.Settings.Default.Sets; i++ )
          {
             var itemSet = new ItemSet();
@@ -135,7 +128,7 @@ namespace EnhancePoE
                Item closestMissingItem = null;
                double minDistance = double.PositiveInfinity;
 
-               foreach ( var item in stashTab.ItemsForChaosRecipe.Where( item => itemSet.NeedsItem( item ) && itemSet.GetItemDistance( item ) < minDistance ) )
+               foreach ( var item in Data.Tab.ItemsForChaosRecipe.Where( item => itemSet.NeedsItem( item ) && itemSet.GetItemDistance( item ) < minDistance ) )
                {
                   minDistance = itemSet.GetItemDistance( item );
                   closestMissingItem = item;
@@ -144,7 +137,7 @@ namespace EnhancePoE
                if ( closestMissingItem is not null )
                {
                   _ = itemSet.AddItem( closestMissingItem );
-                  _ = stashTab.ItemsForChaosRecipe.Remove( closestMissingItem );
+                  _ = Data.Tab.ItemsForChaosRecipe.Remove( closestMissingItem );
                }
                else
                {

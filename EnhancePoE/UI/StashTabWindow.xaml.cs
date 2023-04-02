@@ -13,12 +13,12 @@ namespace EnhancePoE.UI
       public bool IsOpen { get; set; }
 
       private readonly ItemSetManager _itemSetManager;
-      private readonly StashTabWindowViewModel _model = new();
+      private readonly StashTabWindowViewModel _model;
 
       public StashTabWindow( ItemSetManager itemSetManager )
       {
-         DataContext = _model;
          _itemSetManager = itemSetManager;
+         DataContext = _model = new StashTabWindowViewModel( _itemSetManager.Data );
 
          InitializeComponent();
 
@@ -42,14 +42,6 @@ namespace EnhancePoE.UI
 
       public new virtual void Show()
       {
-         var tab = MainWindow.Instance.SelectedStashTab;
-         if ( tab is null )
-         {
-            _ = MessageBox.Show( "No stash tabs available! Fetch before opening overlay.", "Stash Tab Error", MessageBoxButton.OK, MessageBoxImage.Error );
-            return;
-         }
-
-         _model.Tab = tab;
          IsOpen = true;
 
          MouseHook.Start();
@@ -58,7 +50,7 @@ namespace EnhancePoE.UI
 
       private void OnMouseHookClick( object sender, MouseHookEventArgs e )
       {
-         if ( !IsOpen || MainWindow.Instance.SelectedStashTab is null )
+         if ( !IsOpen )
          {
             return;
          }
@@ -69,7 +61,7 @@ namespace EnhancePoE.UI
          }
          else
          {
-            foreach ( var cell in _model.Tab.OverlayCellsList.Where( cell => cell.Active ) )
+            foreach ( var cell in _model.Data.Tab.OverlayCellsList.Where( cell => cell.Active ) )
             {
                if ( UtilityMethods.HitTest( UtilityMethods.GetContainerForDataObject<Button>( StashTabControl, cell ), e.ClickLocation ) )
                {

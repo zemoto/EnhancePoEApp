@@ -9,7 +9,6 @@ using EnhancePoE.Model;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using EnhancePoE.UI;
 
 namespace EnhancePoE
 {
@@ -18,12 +17,10 @@ namespace EnhancePoE
       public static bool IsFetching { get; set; }
       private static StashTabPropsList PropsList { get; set; }
       public static bool FetchError { get; set; }
-      public static bool FetchingDone { get; set; }
 
       public static async Task<List<StashTab>> FetchStashTabs()
       {
          FetchError = false;
-         FetchingDone = false;
          Trace.WriteLine( "generating uris!!" );
          if ( Properties.Settings.Default.accName != "" && Properties.Settings.Default.League != "" )
          {
@@ -116,11 +113,10 @@ namespace EnhancePoE
          return true;
       }
 
-      public static async Task<bool> GetItems()
+      public static async Task<bool> GetItems( StashTab stashTab )
       {
          if ( IsFetching )
          {
-            Trace.WriteLine( "already fetching" );
             return false;
          }
 
@@ -160,8 +156,6 @@ namespace EnhancePoE
                return false;
             }
 
-            var stashTab = MainWindow.Instance.SelectedStashTab;
-
             if ( !usedUris.Contains( stashTab.StashTabUri ) )
             {
                cookieContainer.Add( stashTab.StashTabUri, new Cookie( "POESESSID", sessionId ) );
@@ -196,7 +190,6 @@ namespace EnhancePoE
          }
 
          IsFetching = false;
-         FetchingDone = true;
          return true;
       }
    }

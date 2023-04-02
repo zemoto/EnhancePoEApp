@@ -5,6 +5,8 @@ namespace EnhancePoE.UI
 {
    internal sealed class StashTabWindowViewModel : ViewModelBase
    {
+      public StashTabWindowViewModel( ItemSetData data ) => Data = data;
+
       private bool _isEditing;
       public bool IsEditing
       {
@@ -12,11 +14,6 @@ namespace EnhancePoE.UI
          set => SetProperty( ref _isEditing, value );
       }
 
-      private StashTab _tab;
-      public StashTab Tab
-      {
-         get => _tab;
-         set => SetProperty( ref _tab, value );
-      }
+      public ItemSetData Data { get; }
    }
 }

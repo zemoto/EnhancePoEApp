@@ -99,6 +99,13 @@ namespace EnhancePoE.Model
          }
       }
 
+      private StashTab _tab;
+      public StashTab Tab
+      {
+         get => _tab;
+         set => SetProperty( ref _tab, value );
+      }
+
       private bool ShowAmountNeeded => Properties.Settings.Default.ShowItemAmount == 2;
 
       private int _ringsAmount;

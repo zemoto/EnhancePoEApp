@@ -14,12 +14,13 @@ namespace EnhancePoE.UI
       public bool IsOpen { get; private set; }
 
       private readonly StashTabWindow _stashTabOverlay;
-      private readonly ItemSetManager _itemSetManager = new();
+      private readonly ItemSetManager _itemSetManager;
 
       private readonly RecipeStatusOverlayViewModel _model;
 
-      public RecipeStatusOverlay()
+      public RecipeStatusOverlay( ItemSetManager itemSetManager )
       {
+         _itemSetManager = itemSetManager;
          DataContext = _model = new RecipeStatusOverlayViewModel( _itemSetManager.Data );
          _stashTabOverlay = new StashTabWindow( _itemSetManager );
 
@@ -56,7 +57,7 @@ namespace EnhancePoE.UI
             return;
          }
 
-         if ( MainWindow.Instance.SelectedStashTab is null )
+         if ( _itemSetManager.Data.Tab is null )
          {
             _ = MessageBox.Show( "Missing Settings!" + Environment.NewLine + "Please select a Stash Tab." );
             return;
@@ -75,7 +76,7 @@ namespace EnhancePoE.UI
          _model.ShowProgress = true;
          _model.FetchButtonEnabled = false;
 
-         if ( await ApiAdapter.GetItems() )
+         if ( await ApiAdapter.GetItems( _itemSetManager.Data.Tab ) )
          {
             await Task.Run( _itemSetManager.UpdateData );
             _model.ShowProgress = false;

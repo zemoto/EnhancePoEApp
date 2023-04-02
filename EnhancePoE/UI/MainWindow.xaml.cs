@@ -12,20 +12,17 @@ namespace EnhancePoE.UI
 {
    internal partial class MainWindow
    {
-      private static MainWindow _instance;
-      public static MainWindow Instance => _instance ??= new MainWindow();
-
-      private bool _closingFromTrayIcon;
-
       private readonly MainViewModel _model = new();
       private readonly LeagueGetter _leagueGetter = new();
       private readonly System.Windows.Forms.NotifyIcon _trayIcon = new();
-      private readonly RecipeStatusOverlay _recipeOverlay = new();
+      private readonly ItemSetManager _itemSetManager = new();
+      private readonly RecipeStatusOverlay _recipeOverlay;
 
-      public StashTab SelectedStashTab => _model.SelectedStashTab;
+      private bool _closingFromTrayIcon;
 
       public MainWindow()
       {
+         _recipeOverlay = new RecipeStatusOverlay( _itemSetManager );
          DataContext = _model;
 
          InitializeComponent();
@@ -200,5 +197,7 @@ namespace EnhancePoE.UI
                break;
          }
       }
+
+      private void OnSelectedStashTabChanged( object sender, System.Windows.Controls.SelectionChangedEventArgs e ) => _itemSetManager.Data.Tab = _model.SelectedStashTab;
    }
 }

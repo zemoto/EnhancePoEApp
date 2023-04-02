@@ -180,7 +180,8 @@
                                   ItemsSource="{Binding StashTabList}"
                                   SelectedItem="{Binding SelectedStashTab, Mode=TwoWay}"
                                   DisplayMemberPath="TabName"
-                                  VerticalContentAlignment="Center" />
+                                  VerticalContentAlignment="Center"
+                                  SelectionChanged="OnSelectedStashTabChanged" />
                         <Button Content="Fetch"
                                 Grid.Column="2"
                                 IsEnabled="{Binding FetchingStashTabs, Converter={StaticResource InvertBoolConverter}}"

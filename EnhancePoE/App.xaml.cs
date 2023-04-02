@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnhancePoE.UI;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,7 +19,6 @@ namespace EnhancePoE
          }
 
          SetupUnhandledExceptionHandling();
-         _singleInstance.PingedByOtherProcess += ( s, e ) => Dispatcher.Invoke( UI.MainWindow.Instance.Show );
       }
 
       private void SetupUnhandledExceptionHandling()
@@ -60,6 +60,11 @@ namespace EnhancePoE
          }
       }
 
-      private void OnStartup( object sender, StartupEventArgs e ) => UI.MainWindow.Instance.Show();
+      private void OnStartup( object sender, StartupEventArgs e )
+      {
+         var mainWindow = new MainWindow();
+         mainWindow.Show();
+         _singleInstance.PingedByOtherProcess += ( s, e ) => Dispatcher.Invoke( mainWindow.Show );
+      }
    }
 }
