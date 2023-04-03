@@ -1,9 +1,9 @@
-﻿using EnhancePoE.Model;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using EnhancePoE.Api;
 
 namespace EnhancePoE.UI;
 

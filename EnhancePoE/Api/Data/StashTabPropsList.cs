@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EnhancePoE.Model.WebDataTypes;
+namespace EnhancePoE.Api.Data;
 
 // property names from api
 public class StashTabProps

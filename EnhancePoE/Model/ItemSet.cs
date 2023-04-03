@@ -1,7 +1,7 @@
-﻿using System;
+﻿using EnhancePoE.Api.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using EnhancePoE.Model.WebDataTypes;
 
 namespace EnhancePoE.Model;
 

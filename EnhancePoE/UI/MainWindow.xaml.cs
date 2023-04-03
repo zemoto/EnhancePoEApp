@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.ComponentModel;
-using EnhancePoE.Model;
-using EnhancePoE.Utils;
 using System.Linq;
 using System.Threading.Tasks;
+using EnhancePoE.Utils;
+using EnhancePoE.Api;
 using ZemotoCommon;
 
 namespace EnhancePoE.UI;

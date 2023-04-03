@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EnhancePoE.Model.WebDataTypes;
+namespace EnhancePoE.Api.Data;
 
 // names are from api
 public class Item

@@ -1,4 +1,4 @@
-﻿namespace EnhancePoE.Model;
+﻿namespace EnhancePoE.Api;
 
 internal static class RateLimit
 {

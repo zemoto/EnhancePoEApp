@@ -1,7 +1,7 @@
-﻿using System;
+﻿using EnhancePoE.Api.Data;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using EnhancePoE.Model.WebDataTypes;
 using ZemotoCommon.UI;
 
 namespace EnhancePoE.Model;
