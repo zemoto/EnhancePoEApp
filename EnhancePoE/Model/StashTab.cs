@@ -190,34 +190,34 @@ internal sealed class StashTab : ViewModelBase
 
    private int _ringsAmount;
    public int RingsAmount => ShowAmountNeeded ? Math.Max( ( Properties.Settings.Default.Sets * 2 ) - _ringsAmount, 0 ) : _ringsAmount;
-   public bool RingsActive => ( Properties.Settings.Default.Sets * 2 ) - _ringsAmount > 0;
+   public bool RingsActive => NeedsItemFetch || ( Properties.Settings.Default.Sets * 2 ) - _ringsAmount > 0;
 
    private int _amuletsAmount;
    public int AmuletsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _amuletsAmount, 0 ) : _amuletsAmount;
-   public bool AmuletsActive => Properties.Settings.Default.Sets - _amuletsAmount > 0;
+   public bool AmuletsActive => NeedsItemFetch || Properties.Settings.Default.Sets - _amuletsAmount > 0;
 
    private int _beltsAmount;
    public int BeltsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _beltsAmount, 0 ) : _beltsAmount;
-   public bool BeltsActive => Properties.Settings.Default.Sets - _beltsAmount > 0;
+   public bool BeltsActive => NeedsItemFetch || Properties.Settings.Default.Sets - _beltsAmount > 0;
 
    private int _chestsAmount;
    public int ChestsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _chestsAmount, 0 ) : _chestsAmount;
-   public bool ChestsActive => Properties.Settings.Default.Sets - _chestsAmount > 0;
+   public bool ChestsActive => NeedsItemFetch || Properties.Settings.Default.Sets - _chestsAmount > 0;
 
    private int _weaponsSmallAmount;
    private int _weaponsBigAmount;
    public int WeaponsAmount => ShowAmountNeeded ? Math.Max( ( Properties.Settings.Default.Sets * 2 ) - ( _weaponsSmallAmount + ( _weaponsBigAmount * 2 ) ), 0 ) : _weaponsSmallAmount + ( _weaponsBigAmount * 2 );
-   public bool WeaponsActive => ( Properties.Settings.Default.Sets * 2 ) - ( _weaponsSmallAmount + ( _weaponsBigAmount * 2 ) ) > 0;
+   public bool WeaponsActive => NeedsItemFetch || ( Properties.Settings.Default.Sets * 2 ) - ( _weaponsSmallAmount + ( _weaponsBigAmount * 2 ) ) > 0;
 
    private int _glovesAmount;
    public int GlovesAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _glovesAmount, 0 ) : _glovesAmount;
-   public bool GlovesActive => Properties.Settings.Default.Sets - _glovesAmount > 0;
+   public bool GlovesActive => NeedsItemFetch || Properties.Settings.Default.Sets - _glovesAmount > 0;
 
    private int _helmetsAmount;
    public int HelmetsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _helmetsAmount, 0 ) : _helmetsAmount;
-   public bool HelmetsActive => Properties.Settings.Default.Sets - _helmetsAmount > 0;
+   public bool HelmetsActive => NeedsItemFetch || Properties.Settings.Default.Sets - _helmetsAmount > 0;
 
    private int _bootsAmount;
    public int BootsAmount => ShowAmountNeeded ? Math.Max( Properties.Settings.Default.Sets - _bootsAmount, 0 ) : _bootsAmount;
-   public bool BootsActive => Properties.Settings.Default.Sets - _bootsAmount > 0;
+   public bool BootsActive => NeedsItemFetch || Properties.Settings.Default.Sets - _bootsAmount > 0;
 }

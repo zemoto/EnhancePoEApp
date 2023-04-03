@@ -108,7 +108,7 @@ internal partial class RecipeStatusOverlay
 
    private void CheckForFullSets()
    {
-      if ( _itemSetManager.SelectedStashTab.FullSets >= Properties.Settings.Default.Sets )
+      if ( !_itemSetManager.SelectedStashTab.NeedsItemFetch && _itemSetManager.SelectedStashTab.FullSets >= Properties.Settings.Default.Sets )
       {
          _model.WarningMessage = _setsFullText;
       }
