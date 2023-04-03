@@ -4,62 +4,61 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ZemotoCommon.UI;
 
-namespace EnhancePoE.UI
+namespace EnhancePoE.UI;
+
+internal sealed class MainViewModel : ViewModelBase
 {
-   internal sealed class MainViewModel : ViewModelBase
+   public const string AppVersionText = "v.1.5.1-zemoto";
+
+   private bool _initialized;
+
+   public MainViewModel( ISelectedStashTabHandler selectedStashTabHandler )
    {
-      public const string AppVersionText = "v.1.5.1-zemoto";
+      SelectedStashTabHandler = selectedStashTabHandler;
+      Settings.PropertyChanged += OnSettingsChanged;
+   }
 
-      private bool _initialized;
-
-      public MainViewModel( ISelectedStashTabHandler selectedStashTabHandler )
+   private void OnSettingsChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+   {
+      if ( e.PropertyName == nameof( Settings.League ) && _initialized )
       {
-         SelectedStashTabHandler = selectedStashTabHandler;
-         Settings.PropertyChanged += OnSettingsChanged;
+         StashTabList.Clear();
+         SelectedStashTabHandler.SelectedStashTab = null;
+      }
+   }
+
+   public void UpdateLeagueList( IEnumerable<string> leagueList )
+   {
+      var selectedLeague = Settings.League;
+      LeagueList.Clear();
+      foreach ( var league in leagueList )
+      {
+         LeagueList.Add( league );
       }
 
-      private void OnSettingsChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
+      if ( string.IsNullOrEmpty( selectedLeague ) )
       {
-         if ( e.PropertyName == nameof( Settings.League ) && _initialized )
-         {
-            StashTabList.Clear();
-            SelectedStashTabHandler.SelectedStashTab = null;
-         }
+         Settings.League = LeagueList.FirstOrDefault();
+      }
+      else
+      {
+         Settings.League = selectedLeague;
       }
 
-      public void UpdateLeagueList( IEnumerable<string> leagueList )
-      {
-         var selectedLeague = Settings.League;
-         LeagueList.Clear();
-         foreach ( var league in leagueList )
-         {
-            LeagueList.Add( league );
-         }
+      _initialized = true;
+   }
 
-         if ( string.IsNullOrEmpty( selectedLeague ) )
-         {
-            Settings.League = LeagueList.FirstOrDefault();
-         }
-         else
-         {
-            Settings.League = selectedLeague;
-         }
+   public Properties.Settings Settings { get; } = Properties.Settings.Default;
+   public ISelectedStashTabHandler SelectedStashTabHandler { get; }
 
-         _initialized = true;
-      }
-
-      public Properties.Settings Settings { get; } = Properties.Settings.Default;
-      public ISelectedStashTabHandler SelectedStashTabHandler { get; }
-
-      public ObservableCollection<string> LeagueList { get; } = new();
-      public ObservableCollection<StashTab> StashTabList { get; } = new();
+   public ObservableCollection<string> LeagueList { get; } = new();
+   public ObservableCollection<StashTab> StashTabList { get; } = new();
 
 
-      private bool _fetchingStashTabs;
-      public bool FetchingStashTabs
-      {
-         get => _fetchingStashTabs;
-         set => SetProperty( ref _fetchingStashTabs, value );
-      }
+   private bool _fetchingStashTabs;
+   public bool FetchingStashTabs
+   {
+      get => _fetchingStashTabs;
+      set => SetProperty( ref _fetchingStashTabs, value );
    }
 }

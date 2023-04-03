@@ -1,37 +1,36 @@
 ﻿using EnhancePoE.Model.WebDataTypes;
 using ZemotoCommon.UI;
 
-namespace EnhancePoE.Model
+namespace EnhancePoE.Model;
+
+internal sealed class Cell : ViewModelBase
 {
-   internal sealed class Cell : ViewModelBase
+   public int XIndex { get; }
+   public int YIndex { get; }
+   public Item Item { get; private set; }
+
+   private bool _active;
+   public bool Active
    {
-      public int XIndex { get; }
-      public int YIndex { get; }
-      public Item Item { get; private set; }
+      get => _active;
+      private set => SetProperty( ref _active, value );
+   }
 
-      private bool _active;
-      public bool Active
-      {
-         get => _active;
-         private set => SetProperty( ref _active, value );
-      }
+   public Cell( int x, int y )
+   {
+      XIndex = x;
+      YIndex = y;
+   }
 
-      public Cell( int x, int y )
-      {
-         XIndex = x;
-         YIndex = y;
-      }
+   public void Activate( ref Item item )
+   {
+      Active = true;
+      Item = item;
+   }
 
-      public void Activate( ref Item item )
-      {
-         Active = true;
-         Item = item;
-      }
-
-      public void Deactivate()
-      {
-         Active = false;
-         Item = null;
-      }
+   public void Deactivate()
+   {
+      Active = false;
+      Item = null;
    }
 }

@@ -11,120 +11,119 @@ using System.Text.Json;
 using ZemotoCommon;
 using EnhancePoE.Model.WebDataTypes;
 
-namespace EnhancePoE
+namespace EnhancePoE;
+
+internal sealed class StashTabGetter
 {
-   internal sealed class StashTabGetter
+   private bool _isFetching;
+
+   public async Task<List<StashTab>> FetchStashTabsAsync()
    {
-      private bool _isFetching;
+      string accName = Properties.Settings.Default.accName.Trim();
+      string league = Properties.Settings.Default.League.Trim();
 
-      public async Task<List<StashTab>> FetchStashTabsAsync()
+      var stashTabPropsList = await GetStashPropsAsync( accName, league );
+      if ( stashTabPropsList is not null )
       {
-         string accName = Properties.Settings.Default.accName.Trim();
-         string league = Properties.Settings.Default.League.Trim();
-
-         var stashTabPropsList = await GetStashPropsAsync( accName, league );
-         if ( stashTabPropsList is not null )
+         var stashTabs = new List<StashTab>();
+         for ( int i = 0; i < stashTabPropsList.tabs.Count; i++ )
          {
-            var stashTabs = new List<StashTab>();
-            for ( int i = 0; i < stashTabPropsList.tabs.Count; i++ )
-            {
-               var stashTabProps = stashTabPropsList.tabs[i];
-               var uri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={i}&league={league}" );
-               stashTabs.Add( new StashTab( stashTabProps.n, stashTabProps.i, uri ) );
-            }
-
-            return stashTabs;
+            var stashTabProps = stashTabPropsList.tabs[i];
+            var uri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabIndex={i}&league={league}" );
+            stashTabs.Add( new StashTab( stashTabProps.n, stashTabProps.i, uri ) );
          }
 
-         _isFetching = false;
+         return stashTabs;
+      }
+
+      _isFetching = false;
+      return null;
+   }
+
+   private async Task<StashTabPropsList> GetStashPropsAsync( string accName, string league )
+   {
+      if ( _isFetching || RateLimit.CheckForBan() )
+      {
          return null;
       }
 
-      private async Task<StashTabPropsList> GetStashPropsAsync( string accName, string league )
+      // -1 for 1 request + 3 times if ratelimit high exceeded
+      if ( RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4 )
       {
-         if ( _isFetching || RateLimit.CheckForBan() )
-         {
-            return null;
-         }
-
-         // -1 for 1 request + 3 times if ratelimit high exceeded
-         if ( RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4 )
-         {
-            RateLimit.RateLimitExceeded = true;
-            return null;
-         }
-
-         _isFetching = true;
-         using var __ = new ScopeGuard( () => _isFetching = false );
-
-         var propsUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}&tabIndex=" );
-         using var res = await DoAuthenticatedGetRequestAsync( propsUri );
-         if ( !res.IsSuccessStatusCode )
-         {
-            _ = MessageBox.Show( res.StatusCode == HttpStatusCode.Forbidden ? "Connection forbidden. Please check your Account Name and Session ID." : res.ReasonPhrase,
-                                 "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
-            return null;
-         }
-
-         using var content = res.Content;
-         string resContent = await content.ReadAsStringAsync();
-         return JsonSerializer.Deserialize<StashTabPropsList>( resContent );
+         RateLimit.RateLimitExceeded = true;
+         return null;
       }
 
-      public async Task<bool> GetItemsAsync( StashTab stashTab )
+      _isFetching = true;
+      using var __ = new ScopeGuard( () => _isFetching = false );
+
+      var propsUri = new Uri( $"https://www.pathofexile.com/character-window/get-stash-items?accountName={accName}&tabs=1&league={league}&tabIndex=" );
+      using var res = await DoAuthenticatedGetRequestAsync( propsUri );
+      if ( !res.IsSuccessStatusCode )
       {
-         if ( _isFetching || RateLimit.CheckForBan() )
-         {
-            return false;
-         }
-
-         if ( RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4 )
-         {
-            RateLimit.RateLimitExceeded = true;
-            return false;
-         }
-
-         _isFetching = true;
-         using var __ = new ScopeGuard( () => _isFetching = false );
-
-         using var res = await DoAuthenticatedGetRequestAsync( stashTab.StashTabUri );
-         if ( !res.IsSuccessStatusCode )
-         {
-            _ = MessageBox.Show( res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
-            return false;
-         }
-
-         using var content = res.Content;
-         string resContent = await content.ReadAsStringAsync();
-         var deserializedContent = JsonSerializer.Deserialize<ItemList>( resContent );
-
-         stashTab.Quad = deserializedContent.quadLayout;
-         stashTab.FilterItemsForChaosRecipe( deserializedContent.items );
-
-         return true;
+         _ = MessageBox.Show( res.StatusCode == HttpStatusCode.Forbidden ? "Connection forbidden. Please check your Account Name and Session ID." : res.ReasonPhrase,
+                              "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
+         return null;
       }
 
-      private async Task<HttpResponseMessage> DoAuthenticatedGetRequestAsync( Uri uri )
+      using var content = res.Content;
+      string resContent = await content.ReadAsStringAsync();
+      return JsonSerializer.Deserialize<StashTabPropsList>( resContent );
+   }
+
+   public async Task<bool> GetItemsAsync( StashTab stashTab )
+   {
+      if ( _isFetching || RateLimit.CheckForBan() )
       {
-         var cookieContainer = new CookieContainer();
-         cookieContainer.Add( uri, new Cookie( "POESESSID", Properties.Settings.Default.SessionId ) );
-
-         using var handler = new HttpClientHandler() { CookieContainer = cookieContainer };
-         using var client = new HttpClient( handler );
-
-         // add user agent
-         client.DefaultRequestHeaders.Add( "User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}" );
-
-         var res = await client.GetAsync( uri );
-
-         // get new rate limit values
-         string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
-         string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
-         string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
-         RateLimit.DeserializeRateLimits( rateLimit, rateLimitState );
-         RateLimit.DeserializeResponseSeconds( responseTime );
-
-         return res; // Needs to be disposed
+         return false;
       }
+
+      if ( RateLimit.RateLimitState[0] >= RateLimit.MaximumRequests - 4 )
+      {
+         RateLimit.RateLimitExceeded = true;
+         return false;
+      }
+
+      _isFetching = true;
+      using var __ = new ScopeGuard( () => _isFetching = false );
+
+      using var res = await DoAuthenticatedGetRequestAsync( stashTab.StashTabUri );
+      if ( !res.IsSuccessStatusCode )
+      {
+         _ = MessageBox.Show( res.ReasonPhrase, "Error fetching data", MessageBoxButton.OK, MessageBoxImage.Error );
+         return false;
+      }
+
+      using var content = res.Content;
+      string resContent = await content.ReadAsStringAsync();
+      var deserializedContent = JsonSerializer.Deserialize<ItemList>( resContent );
+
+      stashTab.Quad = deserializedContent.quadLayout;
+      stashTab.FilterItemsForChaosRecipe( deserializedContent.items );
+
+      return true;
+   }
+
+   private async Task<HttpResponseMessage> DoAuthenticatedGetRequestAsync( Uri uri )
+   {
+      var cookieContainer = new CookieContainer();
+      cookieContainer.Add( uri, new Cookie( "POESESSID", Properties.Settings.Default.SessionId ) );
+
+      using var handler = new HttpClientHandler() { CookieContainer = cookieContainer };
+      using var client = new HttpClient( handler );
+
+      // add user agent
+      client.DefaultRequestHeaders.Add( "User-Agent", $"EnhancePoEApp/v{Assembly.GetExecutingAssembly().GetName().Version}" );
+
+      var res = await client.GetAsync( uri );
+
+      // get new rate limit values
+      string rateLimit = res.Headers.GetValues( "X-Rate-Limit-Account" ).FirstOrDefault();
+      string rateLimitState = res.Headers.GetValues( "X-Rate-Limit-Account-State" ).FirstOrDefault();
+      string responseTime = res.Headers.GetValues( "Date" ).FirstOrDefault();
+      RateLimit.DeserializeRateLimits( rateLimit, rateLimitState );
+      RateLimit.DeserializeResponseSeconds( responseTime );
+
+      return res; // Needs to be disposed
    }
 }

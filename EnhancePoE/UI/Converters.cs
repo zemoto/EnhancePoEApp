@@ -3,30 +3,29 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace EnhancePoE.UI
+namespace EnhancePoE.UI;
+
+[ValueConversion( typeof( string ), typeof( Color ) )]
+internal sealed class StringColorConverter : IValueConverter
 {
-   [ValueConversion( typeof( string ), typeof( Color ) )]
-   internal sealed class StringColorConverter : IValueConverter
+   public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
    {
-      public object Convert( object value, Type targetType, object parameter, CultureInfo culture )
+      if ( value is string stringValue && !string.IsNullOrEmpty( stringValue ) )
       {
-         if ( value is string stringValue && !string.IsNullOrEmpty( stringValue ) )
-         {
 
-            return (Color)ColorConverter.ConvertFromString( stringValue );
-         }
-
-         return null;
+         return (Color)ColorConverter.ConvertFromString( stringValue );
       }
 
-      public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
-      {
-         if ( value is Color colorValue )
-         {
-            return colorValue.ToString();
-         }
+      return null;
+   }
 
-         return string.Empty;
+   public object ConvertBack( object value, Type targetType, object parameter, CultureInfo culture )
+   {
+      if ( value is Color colorValue )
+      {
+         return colorValue.ToString();
       }
+
+      return string.Empty;
    }
 }
