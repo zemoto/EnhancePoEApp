@@ -50,7 +50,7 @@ internal partial class StashTabWindow : Window
 
    private void OnMouseHookClick( object sender, MouseHookEventArgs e )
    {
-      if ( !IsOpen )
+      if ( !IsOpen || _model.SelectedStashTabHandler.SelectedStashTab is null )
       {
          return;
       }
