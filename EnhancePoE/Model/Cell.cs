@@ -1,4 +1,5 @@
-﻿using ZemotoCommon.UI;
+﻿using EnhancePoE.Model.WebDataTypes;
+using ZemotoCommon.UI;
 
 namespace EnhancePoE.Model
 {

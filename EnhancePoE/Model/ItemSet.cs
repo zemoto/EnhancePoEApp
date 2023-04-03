@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnhancePoE.Model.WebDataTypes;
 
 namespace EnhancePoE.Model
 {
-   public class ItemSet
+   internal sealed class ItemSet
    {
       public List<Item> ItemList { get; }
       public List<string> EmptyItemSlots { get; }

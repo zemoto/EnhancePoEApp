@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using EnhancePoE.Model.WebDataTypes;
 using ZemotoCommon.UI;
 
 namespace EnhancePoE.Model
@@ -18,10 +19,10 @@ namespace EnhancePoE.Model
          StashTabUri = tabUri;
       }
 
-      public void InitializeCellList()
+      public void FilterItemsForChaosRecipe( List<Item> itemList )
       {
+         // (re)initialize the cell list
          OverlayCellsList.Clear();
-
          int size = Quad ? 24 : 12;
          for ( int i = 0; i < size; i++ )
          {
@@ -30,12 +31,9 @@ namespace EnhancePoE.Model
                OverlayCellsList.Add( new Cell( j, i ) );
             }
          }
-      }
 
-      public void FilterItemsForChaosRecipe( List<Item> itemList )
-      {
          ItemsForChaosRecipe.Clear();
-         foreach( var item in itemList )
+         foreach ( var item in itemList )
          {
             if ( ( item.identified && !Properties.Settings.Default.IncludeIdentified ) || item.frameType != 2 )
             {

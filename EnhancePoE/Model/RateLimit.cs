@@ -3,7 +3,6 @@
    internal static class RateLimit
    {
       public static int[] RateLimitState { get; set; } = new int[3];
-      public static bool HeaderParsingError { get; set; }
       public static int RequestCounter { get; set; }
       public static int MaximumRequests { get; set; } = 45;
       public static bool RateLimitExceeded;
@@ -18,15 +17,10 @@
          {
             ResponseSeconds = s;
          }
-         else
-         {
-            HeaderParsingError = true;
-         }
       }
 
       public static void DeserializeRateLimits( string _, string rateLimitStateString )
       {
-         HeaderParsingError = false;
          string[] maxSplitsState = rateLimitStateString.Split( ',' );
          string[] maxSplitsLowState = maxSplitsState[0].Split( ':' );
 
@@ -35,10 +29,6 @@
             if ( int.TryParse( maxSplitsLowState[i], out int splitInt ) )
             {
                RateLimitState[i] = splitInt;
-            }
-            else
-            {
-               HeaderParsingError = true;
             }
          }
       }
@@ -51,11 +41,6 @@
             return true;
          }
          return false;
-      }
-
-      public static void IncreaseRequestCounter()
-      {
-         RateLimitState[0]++;
       }
 
       public static int GetSecondsToWait() => 60 - ResponseSeconds;

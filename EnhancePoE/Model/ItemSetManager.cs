@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnhancePoE.Model;
+using EnhancePoE.Model.WebDataTypes;
 using ZemotoCommon.UI;
 
 namespace EnhancePoE
@@ -27,8 +28,6 @@ namespace EnhancePoE
          }
       }
 
-      public string LastError { get; private set; }
-
       public ItemSetManager() => Properties.Settings.Default.PropertyChanged += OnSettingsChanged;
 
       private void OnSettingsChanged( object sender, System.ComponentModel.PropertyChangedEventArgs e )
@@ -41,12 +40,6 @@ namespace EnhancePoE
 
       public void UpdateData()
       {
-         if ( ApiAdapter.FetchError )
-         {
-            LastError = "Fetching Error...";
-            return;
-         }
-
          if ( _selectedStashTab is null )
          {
             return;

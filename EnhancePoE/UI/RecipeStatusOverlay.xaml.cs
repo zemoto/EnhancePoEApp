@@ -16,12 +16,14 @@ namespace EnhancePoE.UI
 
       private readonly StashTabWindow _stashTabOverlay;
       private readonly ItemSetManager _itemSetManager;
+      private readonly StashTabGetter _stashTabGetter;
 
       private readonly RecipeStatusOverlayViewModel _model;
 
-      public RecipeStatusOverlay( ItemSetManager itemSetManager )
+      public RecipeStatusOverlay( ItemSetManager itemSetManager, StashTabGetter stashTabGetter )
       {
          _itemSetManager = itemSetManager;
+         _stashTabGetter = stashTabGetter;
          DataContext = _model = new RecipeStatusOverlayViewModel( _itemSetManager );
          _stashTabOverlay = new StashTabWindow( _itemSetManager );
 
@@ -68,27 +70,19 @@ namespace EnhancePoE.UI
             return;
          }
 
-         if ( !ApiAdapter.IsFetching )
-         {
-            FetchData();
-         }
+         FetchDataAsync(); // Fire and forget async
       }
 
-      private async void FetchData()
+      private async void FetchDataAsync()
       {
          _model.WarningMessage = string.Empty;
 
          _model.ShowProgress = true;
          _model.FetchButtonEnabled = false;
 
-         if ( await ApiAdapter.GetItems( _itemSetManager.SelectedStashTab ) )
+         if ( await _stashTabGetter.GetItemsAsync( _itemSetManager.SelectedStashTab ) )
          {
             await Task.Run( _itemSetManager.UpdateData );
-            if ( !string.IsNullOrEmpty( _itemSetManager.LastError) )
-            {
-               _model.WarningMessage = _itemSetManager.LastError;
-            }
-
             _model.ShowProgress = false;
             await Task.Delay( fetchCooldown * 1000 );
          }

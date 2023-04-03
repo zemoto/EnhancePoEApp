@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EnhancePoE
+namespace EnhancePoE.Model.WebDataTypes
 {
    // names are from api
    public class Item
@@ -19,7 +19,6 @@ namespace EnhancePoE
       public int x { get; set; }
       public int y { get; set; }
       public string icon { get; set; }
-      public List<PropertiesList> properties { get; set; }
 
       // own prop
       public string ItemType { get; set; }
@@ -49,13 +48,6 @@ namespace EnhancePoE
          }
          ItemType = itemClass;
       }
-   }
-
-   public class PropertiesList
-   {
-      public string name { get; set; }
-      public int displayMode { get; set; }
-      public int type { get; set; }
    }
 
    public class ItemList

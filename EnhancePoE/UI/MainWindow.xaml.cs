@@ -15,6 +15,7 @@ namespace EnhancePoE.UI
       private readonly MainViewModel _model;
       private readonly RecipeStatusOverlay _recipeOverlay;
       private readonly LeagueGetter _leagueGetter = new();
+      private readonly StashTabGetter _stashTabGetter = new();
       private readonly System.Windows.Forms.NotifyIcon _trayIcon = new();
 
       private bool _closingFromTrayIcon;
@@ -22,7 +23,7 @@ namespace EnhancePoE.UI
       public MainWindow()
       {
          var itemSetManager = new ItemSetManager();
-         _recipeOverlay = new RecipeStatusOverlay( itemSetManager );
+         _recipeOverlay = new RecipeStatusOverlay( itemSetManager, _stashTabGetter );
          DataContext = _model = new MainViewModel( itemSetManager );
 
          InitializeComponent();
@@ -143,7 +144,7 @@ namespace EnhancePoE.UI
          using var __ = new ScopeGuard( () => _model.FetchingStashTabs = false );
 
          _model.SelectedStashTabHandler.SelectedStashTab = null;
-         var stashTabs = await ApiAdapter.FetchStashTabs();
+         var stashTabs = await _stashTabGetter.FetchStashTabsAsync();
          if ( stashTabs is null )
          {
             _ = MessageBox.Show( "Failed to fetch stash tabs", "Request Failed", MessageBoxButton.OK, MessageBoxImage.Error );
