@@ -16,6 +16,7 @@
         MouseDown="Window_MouseDown"
         Background="Transparent"
         ShowInTaskbar="False"
+        Loaded="OnLoaded"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftOverlay, Mode=TwoWay}"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopOverlay, Mode=TwoWay}"
         d:DataContext="{d:DesignInstance Type={x:Type local:RecipeStatusOverlayViewModel}">

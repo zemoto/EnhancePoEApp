@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using EnhancePoE.Api;
+using EnhancePoE.Utils;
 
 namespace EnhancePoE.UI;
 
@@ -32,6 +33,8 @@ internal partial class RecipeStatusOverlay
       UpdateOverlayType();
       Properties.Settings.Default.PropertyChanged += OnSettingsChanged;
    }
+
+   private void OnLoaded( object sender, RoutedEventArgs e ) => Win32.MakeToolWindow( this );
 
    private void OnSettingsChanged( object sender, PropertyChangedEventArgs e )
    {

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interop;
 using EnhancePoE.Utils;
 
 namespace EnhancePoE.UI;
@@ -24,6 +23,8 @@ internal partial class StashTabWindow : Window
 
       MouseHook.MouseAction += OnMouseHookClick;
    }
+
+   private void OnLoaded( object sender, RoutedEventArgs e ) => Win32.MakeToolWindow( this );
 
    public new virtual void Hide()
    {
@@ -80,14 +81,13 @@ internal partial class StashTabWindow : Window
 
    private void MakeWindowClickThrough( bool clickThrough )
    {
-      var handle = new WindowInteropHelper( this ).Handle;
       if ( clickThrough )
       {
-         Win32.MakeTransparent( handle );
+         Win32.MakeTransparent( this );
       }
       else
       {
-         Win32.MakeNormal( handle );
+         Win32.MakeNormal( this );
       }
    }
 

@@ -13,6 +13,8 @@
         Topmost="True"
         MouseLeftButtonDown="OnMouseLeftButtonDown"
         ResizeMode="CanResizeWithGrip"
+        Loaded="OnLoaded"
+        ShowInTaskbar="False"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=LeftStashTabOverlay, Mode=TwoWay}"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=TopStashTabOverlay, Mode=TwoWay}"
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=YStashTabOverlay, Mode=TwoWay}"
