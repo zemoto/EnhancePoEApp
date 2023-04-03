@@ -50,6 +50,8 @@ internal partial class MainWindow
       {
          Show();
          _ = Activate();
+         Topmost = true;
+         Topmost = false;
          ShowInTaskbar = true;
          WindowState = WindowState.Normal;
       };
