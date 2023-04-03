@@ -147,6 +147,11 @@ internal partial class RecipeStatusOverlay
       }
       else
       {
+         if ( _itemSetManager.SelectedStashTab.NeedsItemFetch )
+         {
+            RunFetching();
+         }
+
          _stashTabOverlay.Show();
       }
    }
