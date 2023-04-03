@@ -2,5 +2,5 @@
 
 internal static class Constants
 {
-   public const string AppVersionText = "v.1.5.1-zemoto";
+   public const string AppVersionText = "v.1.6.0-zemoto";
 }
