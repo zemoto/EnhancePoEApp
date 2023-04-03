@@ -8,7 +8,6 @@ namespace EnhancePoE.UI;
 
 internal sealed class MainViewModel : ViewModelBase
 {
-   public const string AppVersionText = "v.1.5.1-zemoto";
 
    private bool _initialized;
 

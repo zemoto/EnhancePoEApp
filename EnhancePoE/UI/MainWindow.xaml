@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:base="clr-namespace:EnhancePoE"
         xmlns:local="clr-namespace:EnhancePoE.UI"
         mc:Ignorable="d"
         FontSize="14"
@@ -540,7 +541,7 @@
             </TextBlock>
             <TextBlock Grid.Column="2"
                        Grid.Row="3"
-                       Text="{x:Static local:MainViewModel.AppVersionText}"
+                       Text="{x:Static base:Constants.AppVersionText}"
                        FontSize="12"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center" />
